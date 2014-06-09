@@ -1,15 +1,10 @@
-import testing.vars;
+
 
 
 
 
 public class testing2 {
 
-vars a = vars.CHAR;
+	public int lior = 0;
 
-//sdkjvhskdvnlsdv
-//sdvnksdkvnsdklvndsv
-//sdvkndskvbsdkvbsdv
-//sdvkbsdjvbjdsvbjsdv
-//sdvjbdvjbdsvb
 }
