@@ -8,11 +8,6 @@
  */
 public interface Type {
 	
-//	/**
-//	 * The enum type - int, double, String, boolean, char, array or void.
-//	 */
-//	public enum VarType {INT, DOUBLE, STRING, BOOLEAN, CHAR, ARRAY, VOID};
-	
 	@Override
 	/**
 	 * This method overrides the toString of Object class. 
