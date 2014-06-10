@@ -17,7 +17,7 @@ public class BadInputException extends Exception{
 	
 	@Override
 	public String getLocalizedMessage() {
-		return ERROR_MESSAGE+varType.toString();
+		return ERROR_MESSAGE+this.varType.toString();
 	}
 	
 	//for testing
