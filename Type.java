@@ -22,6 +22,15 @@ public interface Type {
 	public String toString();
 	
 	/**
+	 * This method checks if the code contains a correct variable declaration.
+	 * for example, if the code is: "int a;", the method will check if the word
+	 * int is correct, and in this case the method should do nothing. for
+	 * example, if the code is: "inti a;", the varibale declaration is 
+	 * incorrect (inti instead of int) and the method should throw an Exception
+	 */
+	public void checkType() throws BadVarDeclarationException;
+	
+	/**
 	 * This method checks if the input expression in the code matches the 
 	 * variable type. For example, if the code has the line: "int a = 3;", the
 	 * input expression is the number "3", and in this case the method should
@@ -30,5 +39,6 @@ public interface Type {
 	 * @throw BadInputException
 	 * @return
 	 */
-	public void checkExpression() throws BadInputException; 
+	public void checkExpression() throws BadInputException;
+	
 }
