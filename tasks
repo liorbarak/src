@@ -2,4 +2,5 @@ Tasks:
 Taldo
 a‪.‬ Create Type interface with joint methods.
 b. Create a class for each class type.
-c. Create reggae method for each class type.
+c. Create regex method for each class type.
+d. Create factory of type with enum.
