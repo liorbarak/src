@@ -11,26 +11,26 @@ public abstract class TypeFactory {
 	 */
 	public enum VarType {INT, DOUBLE, STRING, BOOLEAN, CHAR, ARRAY, VOID};
 	
-	public static Type createType(String varTypeRepresentation) 
-		throws BadVarDeclarationException {
+	public static Type createType(VarType type,String varTypeRepresentation,
+			String varName) throws BadVarDeclarationException {
 		
-		switch(varTypeRepresentation) {
+		switch(type) {
 		
-		return "str";
-		
-		case(VarType.INT):
-		
-		case(VarType.DOUBLE):
-		
-		case(VarType.STRING):
-		
-		case(VarType.BOOLEAN):
-		
-		case(VarType.CHAR):
-		
-		case(VarType.ARRAY):
-		
-		case(VarType.VOID):
+		case INT:
+			return new Int(varName);
+//		case(VarType.DOUBLE.name()):
+//		
+//		case(VarType.STRING.name()):
+//		
+//		case(VarType.BOOLEAN.name()):
+//		
+//		case(VarType.CHAR.name()):
+//		
+//		case(VarType.ARRAY.name()):
+//		
+//		case(VarType.VOID.name()):
+		default:
+			throw new BadVarDeclarationException(varTypeRepresentation);
 		}
 		
 	}

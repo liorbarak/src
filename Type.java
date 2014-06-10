@@ -8,6 +8,7 @@
  */
 public interface Type {
 	
+	
 	@Override
 	/**
 	 * This method overrides the toString of Object class. 
@@ -23,7 +24,7 @@ public interface Type {
 	 * example, if the code is: "inti a;", the varibale declaration is 
 	 * incorrect (inti instead of int) and the method should throw an Exception
 	 */
-	public void checkType() throws BadVarDeclarationException;
+	public void checkType(String strToCheck) throws BadVarDeclarationException;
 	
 	/**
 	 * This method checks if the input expression in the code matches the 
