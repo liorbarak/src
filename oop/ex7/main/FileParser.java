@@ -30,7 +30,7 @@ public class FileParser {
 		while (currentLine!=null){
 			checkLineLegal(lineNumber, currentLine);
 
-			if(!isLineComment(currentLine)) {//if it is commented simply continue and dont add to list
+			if(!isLineCommentOrBlank(currentLine)) {//if it is commented simply continue and dont add to list
 				fileLines.add(currentLine);
 			}
 
@@ -48,7 +48,7 @@ public class FileParser {
 	 * @param currentLine
 	 * @return
 	 */
-	private static boolean isLineComment(String currentLine) {
+	private static boolean isLineCommentOrBlank(String currentLine) {
 		// TODO Auto-generated method stub
 		return false;
 	}
