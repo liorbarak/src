@@ -14,6 +14,7 @@ public class testing_bla {
 		vars a = vars.INT;
 		String lior = "0";
 		lior="1";
+		blalala;
 		
 		//change to test if i can sync
 	}
