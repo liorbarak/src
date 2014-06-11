@@ -20,8 +20,8 @@ public abstract class TypeFactory {
 	public static final String CHAR = "char";
 	public static final String VOID = "void";
 	
-	public static Type createType(String varTypeRepresentation,
-			String varName) throws BadVarDeclarationException {
+	public static Type createType(String varTypeRepresentation)
+			throws BadVarDeclarationException {
 		
 		switch(varTypeRepresentation) {
 		

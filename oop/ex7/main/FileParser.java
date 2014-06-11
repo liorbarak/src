@@ -65,7 +65,20 @@ public class FileParser {
 
 
 	}
-
+	//return 1-scope
+	//return 2-variable
+	public static int scopeOrVAriable(String lineText){
+		
+	}
+	
+	
+	
+	public static int  findLastCloser(ArrayList<String> relevantLines, int i){
+		//finds last closer so i can initialize a proper scope
+		//first line is decleration line
+		//if EOF throw smtng
+		return 0;
+	}
 
 
 }
