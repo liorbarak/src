@@ -3,6 +3,9 @@ package oop.ex7.main;
 import java.io.File;
 import java.util.ArrayList;
 
+import oop.ex7.scope.*;
+import oop.ex7.scope.Class;
+
 
 public class Sjavac {
 
@@ -19,7 +22,7 @@ public class Sjavac {
 		ArrayList<String> fileLines= FileParser.getlinesList(origin);
 		
 		Class mainClass= new Class(fileLines);
-		
+		mainClass.compileScope();
 		
 	}
 	catch(Exception e){	//TODO change type of exception

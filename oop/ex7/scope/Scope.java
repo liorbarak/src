@@ -10,7 +10,9 @@ public abstract class Scope {
 	
 	
 	public abstract void compileScope();
-		
+	
+	
+
 	
 	
 	
