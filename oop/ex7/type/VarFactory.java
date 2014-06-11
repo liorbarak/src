@@ -6,7 +6,7 @@ package oop.ex7.type;
  * @author taldovrat
  *
  */
-public abstract class TypeFactory {
+public abstract class VarFactory {
 
 	/**
 	 * The enum type - int, double, String, boolean, char, array or void.

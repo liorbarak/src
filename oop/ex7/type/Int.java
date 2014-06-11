@@ -18,7 +18,7 @@ public class Int implements Type {
 	
 	@Override
 	public void checkType(String strToCheck) throws BadVarDeclarationException {
-		if (!strToCheck.equals(TypeFactory.INT)) {
+		if (!strToCheck.equals(VarFactory.INT)) {
 			throw new BadVarDeclarationException(strToCheck);
 		}
 	}
