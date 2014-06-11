@@ -12,7 +12,7 @@ public class testing_bla {
 
 		
 		vars a = vars.INT;
-		String lior = "0";
+		
 		
 		//change to test if i can sync
 	}

@@ -6,6 +6,11 @@
  */
 public class BadVarDeclarationException extends Exception{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private static final String ERROR_MESSAGE = "temp error messsage with: ";
 	private String badDeclaration;
 	
@@ -21,7 +26,7 @@ public class BadVarDeclarationException extends Exception{
 	//for testing
 	public static void main(String[] args) {
 		
-		Exception a = new Exception();
+//		Exception a = new Exception();
 	
 	}
 }

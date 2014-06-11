@@ -6,6 +6,11 @@
  */
 public class BadInputException extends Exception{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private static final String ERROR_MESSAGE = "temp error messsage with: ";
 	//the type variable that the inserted input was bad.
 	private Type varType;
@@ -23,7 +28,7 @@ public class BadInputException extends Exception{
 	//for testing
 	public static void main(String[] args) {
 		
-		Exception a = new Exception();
+//		Exception a = new Exception();
 	
 	}
 }
