@@ -1,5 +1,6 @@
 package oop.ex7.type;
 
+
 /**
  * This class represents the int variable type. 
  * @author taldovrat
@@ -17,7 +18,7 @@ public class Int implements Type {
 	
 	@Override
 	public void checkType(String strToCheck) throws BadVarDeclarationException {
-		if (!strToCheck.equals(TypeFactory.VarType.INT.name())) {
+		if (!strToCheck.equals(TypeFactory.INT)) {
 			throw new BadVarDeclarationException(strToCheck);
 		}
 	}

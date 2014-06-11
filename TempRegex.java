@@ -1,4 +1,4 @@
-
+import oop.ex7.type.*;
 import java.util.regex.*;
 
 import oop.ex7.type.BadVarDeclarationException;
@@ -80,6 +80,24 @@ public class TempRegex {
 	public void charDeclaration(String lineToCheck) throws BadVarDeclarationException{
 		
 		Pattern declarationLine = Pattern.compile(CHAR_REGEX_EXP);
+		
+		Matcher matcher = declarationLine.matcher(lineToCheck);
+		
+		if (!matcher.matches()) {
+			throw new BadVarDeclarationException(lineToCheck);
+		}
+	}
+	
+	public Type getType(String lineToCheck) {
+		
+		return new Int(lineToCheck);
+	}
+	
+	public void arrDeclaration(String lineToCheck) throws BadVarDeclarationException{
+		
+		
+		
+		Pattern declarationLine = Pattern.compile(DOUBLE_REGEX_EXP);
 		
 		Matcher matcher = declarationLine.matcher(lineToCheck);
 		
