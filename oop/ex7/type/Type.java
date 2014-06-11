@@ -1,3 +1,5 @@
+package oop.ex7.type;
+
 /**
  * This interface represents the type of the variable in the code - int,
  * double, String, boolean, char, an array of one of these types and the return

@@ -1,3 +1,5 @@
+package oop.ex7.type;
+
 /**
  * This class creates the different variable types for the different Type 
  * classes implementations. 

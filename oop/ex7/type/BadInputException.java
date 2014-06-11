@@ -1,3 +1,5 @@
+package oop.ex7.type;
+
 /**
  * This class represents an Exception of type BadInputException. This class is
  * thrown when a non-matching input expression is inserted.

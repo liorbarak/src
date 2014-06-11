@@ -1,6 +1,8 @@
 
 import java.util.regex.*;
 
+import oop.ex7.type.BadVarDeclarationException;
+
 public class TempRegex {
 	
 	public static final String GENERAL_NAME = "[_]?[^ ]+( )*";

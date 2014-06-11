@@ -1,8 +1,10 @@
+package oop.ex7.main;
+
 import java.io.File;
 import java.util.ArrayList;
 
 
-public class mainCompiler {
+public class Sjavac {
 
 	enum returnValues{NO_ERRORS,INPUT_ERRORS,CRITICAL_IO_ERRORS};
 	

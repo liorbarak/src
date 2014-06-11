@@ -1,3 +1,4 @@
+package oop.ex7.main;
 
 /**
  * 
