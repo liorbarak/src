@@ -4,14 +4,22 @@ import java.util.ArrayList;
 
 public class Class extends Scope {
 
+
 	
 	public Class(ArrayList<String> lines){
-		
+		this.relevantLines=lines;
 	}
 	
 	@Override
 	public void compileScope() {
-		// TODO Auto-generated method stub
+		
+		for(String line: relevantLines){
+			if (isScope(line)){
+				
+			}
+			
+		}
+		
 		
 	}
 
