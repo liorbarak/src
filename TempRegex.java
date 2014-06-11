@@ -29,12 +29,21 @@ public class TempRegex {
 	
 	
 	public static void main(String[] args) {
-		TempRegex a = new TempRegex();
-		try {
-			a.intDeclaration("int  int= 3;");
-		}
-		catch(BadVarDeclarationException ex) {
-			System.out.println(ex.getLocalizedMessage());
+//		TempRegex a = new TempRegex();
+//		try {
+//			a.intDeclaration("int  int= 3;");
+//		}
+//		catch(BadVarDeclarationException ex) {
+//			System.out.println(ex.getLocalizedMessage());
+//		}
+		
+		String regexTest = TYPE_INT+GENERAL_NAME+INPUT_INT;//+"|"+TYPE_INT+GENERAL_NAME+INPUT_INT;
+		Pattern declarationLine = Pattern.compile(regexTest);
+		
+		Matcher matcher = declarationLine.matcher("int int = 3;");
+		
+		if (!matcher.matches()) {
+			System.out.println("a");
 		}
 	}
 }
