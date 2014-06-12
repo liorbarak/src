@@ -9,9 +9,36 @@ package oop.ex7.type;
  * @author taldovrat
  *
  */
-public interface Type {
+public abstract class  Type {
+	
+//	public static final String INT = "int";
+//	public static final String DOUBLE = "double";
+//	public static final String STRING = "String";
+//	public static final String BOOLEAN = "boolean";
+//	public static final String CHAR = "char";
+//	public static final String VOID = "void";
 
-
+	
+	enum DifferentTypes{
+		INT("int"),
+	    DOUBLE ("double"),
+	    STRING ("String"),
+	    BOOLEAN ("boolean"),
+	    CHAR ("char"), 
+	    VOID ("void");
+	    
+	    public final String innerString;
+		
+		DifferentTypes(String a){
+			innerString=a;
+		}
+		@Override
+		public String toString() {
+			return innerString;
+			}
+	}
+	
+	
 	//	@Override
 	//	/**
 	//	 * This method overrides the toString of Object class. 
@@ -52,6 +79,55 @@ public interface Type {
 	 * @return
 	 */
 	public abstract String getRegex();
-
+	
+	public Type createType(String check) throws Exception{//TODO create specific exception
+		
+		
+		if (check.equals(DifferentTypes.INT.toString())){
+			return new IntType();
+		}
+		
+		if (check.equals(DifferentTypes.DOUBLE.toString())){
+			return new DoubleType();
+		}
+		if (check.equals (DifferentTypes.STRING.toString())) {
+			return new StringType();
+		}
+		if (check.equals (DifferentTypes.BOOLEAN.toString())) {
+			return new BooleanType();
+		}	
+		
+		if (check.equals (DifferentTypes.CHAR.toString())) {
+			return new CharType();
+		}
+		
+		if (check.equals (DifferentTypes.VOID.toString())) {// TODO must handle what happens if something is void
+			return new VoidType();
+		}	
+		
+		
+			throw new Exception();//throw exception because not a valid type string
+		
+	}
+		
+//		switch(check){
+//		case DifferentTypes.INT.toString():
+//			return new IntType();
+//		case DifferentTypes.DOUBLE.toString():
+//			return new DoubleType();
+//		case DifferentTypes.STRING.toString() :
+//			return new StringType();
+//		case DifferentTypes.BOOLEAN.toString() :
+//			return new BooleanType();
+//		case DifferentTypes.CHAR.toString() :
+//			return new CharType();
+//		case DifferentTypes.VOID.toString() :
+//			return new VoidType();
+//		default:
+//			throw new Exception();//throw exception because not a valid type string
+//			break;
+//		}
+//		return null;
+//	}
 
 }

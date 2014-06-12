@@ -1,6 +1,6 @@
 package oop.ex7.type;
 
-public class StringType implements Type {
+public class StringType extends Type {
 
 	
 	public static final String INPUT_STRING = "=( )*\"[^\"]*\"( )*;";

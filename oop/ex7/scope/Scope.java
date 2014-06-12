@@ -9,7 +9,7 @@ import oop.ex7.type.VariableFactory;
 
 
 
-
+enum Scopetypes {CLASS,METHOD,IF,WHILE};
 
 
 public abstract class Scope implements ScopeMediator{
@@ -17,17 +17,15 @@ public abstract class Scope implements ScopeMediator{
 	ArrayList<String> relevantLines;
 	ArrayList<Scope> innerScopes;
 	ArrayList<Variable> innerVariables;
-	ArrayList<Integer> validScopes;
+	ArrayList<Scopetypes> validScopes;
 	ArrayList<Integer> validVarOperations;
 	
 	
 	//constructor
-	private Scope(){
-		
-		
+	protected Scope(){	
 	}
 
-	public  void compileScope() {
+	public  void compileScope()  {
 
 		ArrayList<Integer> variableIndexArray=new ArrayList<Integer>();
 		int lineType;
@@ -39,7 +37,7 @@ public abstract class Scope implements ScopeMediator{
 
 			if (lineType==1){
 				int closer = FileParser.findLastCloser(relevantLines,i);
-				tempScope = ScopeFactory.createScope(relevantLines,i,closer);
+				tempScope = ScopeFactory.createScope(relevantLines,i,closer, this);
 
 				if (!isScopeValid(tempScope)){
 					throw new Exception();//TODO create unique exception
@@ -54,11 +52,11 @@ public abstract class Scope implements ScopeMediator{
 		}
 		for (Integer j : variableIndexArray ){
 			
-			//if assignment/declaration/both////
-			tempVar= VariableFactory.createVar(relevantLines.get(j));
+			tempVar= VariableFactory.createVar(relevantLines.get(j), this);
 			
+			if (tempVar!=null){
 			innerVariables.add(tempVar);
-
+			}
 
 		}
 		//recursively calls all the crap in the universe. 

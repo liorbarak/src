@@ -6,7 +6,7 @@ package oop.ex7.type;
  * @author taldovrat
  *
  */
-public class IntType implements Type {
+public class IntType extends Type {
 	
 	public static final String INPUT_INT = "=( )*(-)?[\\d]+( )*;";
 

@@ -1,6 +1,6 @@
 package oop.ex7.type;
 
-public class CharType implements Type {
+public class CharType extends Type {
 
 	
 	public static final String INPUT_CHAR = "=( )*'[^']?'( )*;";

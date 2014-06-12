@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import oop.ex7.scope.*;
-import oop.ex7.scope.Class;
+import oop.ex7.scope.ClassScope;
 
 
 public class Sjavac {
@@ -21,7 +21,7 @@ public class Sjavac {
 		File origin = new File(args[0]);//todo handle throws
 		ArrayList<String> fileLines= FileParser.getlinesList(origin);
 		
-		Class mainClass= new Class(fileLines);
+		ClassScope mainClass= new ClassScope(fileLines);
 		mainClass.compileScope();
 		
 	}

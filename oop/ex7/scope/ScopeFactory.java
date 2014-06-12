@@ -6,19 +6,22 @@ import oop.ex7.type.*;
 public abstract class ScopeFactory {
 
 	public static final String WHILE_LINE ="";
-	public static final String 
-	public static final String 
+	public static final String IF_LINE="";
+	public static final String METHOD_LINE=""; 
 	public static final String 
 	public static final String 
 	public static final String 
 
-	public static Scope createScope(ArrayList<String> lines,int start, int finish,ScopeMediator thisScope){//throws exceptions
+	public static Scope createScope(ArrayList<String> lines,int start, int finish,ScopeMediator myScope){//throws exceptions
 		//TODO split line to words
 		String firstWord="";
 
 
 
-
+		if (myScope==null){
+			return new ClassScope(lines);
+		}
+		
 		if (isWhile(line)){
 			
 			//check if inside brackets is boolean, or method

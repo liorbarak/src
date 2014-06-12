@@ -1,6 +1,6 @@
 package oop.ex7.type;
 
-public class DoubleType implements Type {
+public class DoubleType extends Type {
 
 	
 	public static final String INPUT_INT = "=( )*(-)?[\\d]+( )*;";

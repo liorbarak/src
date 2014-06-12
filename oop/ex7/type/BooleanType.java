@@ -1,6 +1,6 @@
 package oop.ex7.type;
 
-public class BooleanType implements Type {
+public class BooleanType extends Type {
 
 	public static final String INPUT_BOOLEAN = "=( )*(true|false)( )*;";
 	

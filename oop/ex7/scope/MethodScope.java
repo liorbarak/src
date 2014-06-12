@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import oop.ex7.main.Variable;
 import oop.ex7.type.Type;
 
-public class Method extends Scope {
+public class MethodScope extends Scope {
 
 	private Type returnType;
 	private String nameOfMethod;
 	//TODO add method's input variables - their type by their order!
 	
-	public Method(){
+	public MethodScope(){
 		
 	}
 	
