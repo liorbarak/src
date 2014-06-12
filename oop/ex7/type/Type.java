@@ -80,7 +80,7 @@ public abstract class  Type {
 	 */
 	public abstract String getRegex();
 	
-	public Type createType(String check) throws Exception{//TODO create specific exception
+	public static Type createType(String check) throws Exception{//TODO create specific exception
 		
 		
 		if (check.equals(DifferentTypes.INT.toString())){

@@ -5,7 +5,8 @@ import java.util.regex.Pattern;
 import java.util.zip.CheckedInputStream;
 
 import oop.ex7.main.Variable;
-import oop.ex7.scope.Method;
+
+import oop.ex7.scope.MethodScope;
 import oop.ex7.scope.ScopeMediator;
 
 /**
@@ -144,7 +145,7 @@ public abstract class VariableFactory {
 			}
 		}
 		
-		Method tempMethod = Method.checkMethod(inputValue);
+		MethodScope tempMethod = MethodScope.checkMethod(inputValue);
 		if (tempMethod != null) {
 			if (varTemp.getType().toString().equals(tempMethod.getReturnType().toString())) {
 				varTemp.setInitialized(true);
@@ -180,7 +181,7 @@ public abstract class VariableFactory {
 	}
 
 	private static String[] getAssigmentStr(String line) {
-		
+		//1 - index of input value
 		String linetemp = line.trim();
 		String[] stringsInLine = linetemp.split("=");
 		stringsInLine[1] = stringsInLine[1].trim();
@@ -189,10 +190,20 @@ public abstract class VariableFactory {
 	}
 	
 	private static String[] getDecStr(String line) {
-		
+		//1 - index of name of var
 		String linetemp = line.trim();
 		String[] stringsInLine = linetemp.split("[ ]+");
 		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
 		return stringsInLine;
+	}
+	
+	public static String[] getBothStr(String line) {
+		
+		String declarationLine =  getAssigmentStr(line)[0];
+		String[] declaration = getDecStr(declarationLine);
+		String inputValue = getAssigmentStr(line)[1];
+		String[] bothStrings = {declaration[0], declaration[1], inputValue};
+		return bothStrings;
+		
 	}
 }

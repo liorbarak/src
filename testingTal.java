@@ -1,6 +1,6 @@
 import java.util.regex.Pattern;
 
-
+import oop.ex7.type.*;
 public class testingTal {
 
 	enum types{ABC, DEF, GHI};
@@ -35,10 +35,8 @@ public class testingTal {
 	
 	public static void main(String[] args) {
 
-		String linetemp = "int dljlkj ;".trim();
-		String[] stringsInLine = linetemp.split("[ ]+");
-		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
-		//String inputValue = stringsInLine[3];
+		String line = "double s=sdsd;";
+		String[] stringsInLine = VariableFactory.getBothStr(line);
 		
 		for (String word:stringsInLine) {
 			System.out.println(word);
