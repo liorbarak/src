@@ -7,6 +7,7 @@ import oop.ex7.main.Variable;
 import oop.ex7.type.Type;
 
 public abstract class Scope implements  ScopeMediator {
+	//lior comment
 	Scope FatherScope;
 	ArrayList<String> relevantLines;
 	ArrayList<Scope> innerScopes;
