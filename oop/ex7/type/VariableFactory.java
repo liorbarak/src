@@ -1,11 +1,10 @@
 package oop.ex7.type;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.zip.CheckedInputStream;
+import javax.print.DocFlavor.INPUT_STREAM;
+
+import org.omg.PortableInterceptor.INACTIVE;
 
 import oop.ex7.main.Variable;
-
 import oop.ex7.scope.MethodScope;
 import oop.ex7.scope.ScopeMediator;
 
@@ -16,12 +15,29 @@ import oop.ex7.scope.ScopeMediator;
  *
  */
 public abstract class VariableFactory {
-
-	public enum lineType{DECLARATION, ASSIGNMENT, BOTH};
+	
+	public enum lineType {
+		DECLARATION (validTypes+"[ ]+"+GENERAL_NAME+"[ ]*;[ ]*"),
+		ASSIGNMENT (GENERAL_NAME+"[ ]*=[ ]*"+VALID_EXP+"[ ]*;[ ]*"), 
+		BOTH ();
+		
+		private static final String regex;
+		
+		lineType(String regex) {
+			this.regex = regex;
+		}
+		public String getRegex() {
+			return regex;
+		}
+	}
+	
+	
 	
 	public static final String validTypes = "( )*(int|double|String|char|boolean)( )*";
 	public static final String GENERAL_NAME = "[_]?[^ ]+( )*";
 	public static final String UNINITIALIZED = ";";
+	
+	
 	
 	public static final String TYPE_INT = "( )*int( )*";
 	public static final String INPUT_INT = "=( )*(-)?[\\d]+( )*;";
@@ -38,18 +54,23 @@ public abstract class VariableFactory {
 	public static final String TYPE_CHAR = "( )*char( )*";
 	public static final String INPUT_CHAR = "=( )*'[^']?'( )*;";
 	
+	public static final String SOME_TYPE_VALUE = "("+INPUT_INT+"|"+
+													INPUT_DOUBLE+"|"+
+													INPUT_CHAR+"|"+
+													INPUT_STRING+"|"+
+													INPUT_BOOLEAN+")";
+	
+	public static final String VALID_METHOD_CALL = GENERAL_NAME+"((("+GENERAL_NAME+")?|(("+GENERAL_NAME+"),)+))";
+
+	
+	public static final String VALID_EXP = "(GENERAL_NAME|SOME_TYPE_VALUE|VALID_METHOD_CALL)";
+	
 	public static final String INT_REGEX_EXP = TYPE_INT+GENERAL_NAME+"("+UNINITIALIZED+"|"+INPUT_INT+")";
 	public static final String DOUBLE_REGEX_EXP = TYPE_DOUBLE+GENERAL_NAME+"("+UNINITIALIZED+"|"+INPUT_DOUBLE+")";
 	public static final String STRING_REGEX_EXP = TYPE_STRING+GENERAL_NAME+"("+UNINITIALIZED+"|"+INPUT_STRING+")";
 	public static final String BOOLEAN_REGEX_EXP = TYPE_BOOLEAN+GENERAL_NAME+"("+UNINITIALIZED+"|"+INPUT_BOOLEAN+")";
 	public static final String CHAR_REGEX_EXP = TYPE_CHAR+GENERAL_NAME+"("+UNINITIALIZED+"|"+INPUT_CHAR+")";
-	
-	
-	/**
-	 * The enum type - int, double, String, boolean, char, array or void.
-	 */
-	//public enum VarType {INT, DOUBLE, STRING, BOOLEAN, CHAR, ARRAY, VOID};
-	
+		
 	public static final String INT = "int";
 	public static final String DOUBLE = "double";
 	public static final String STRING = "String";
@@ -73,6 +94,42 @@ public abstract class VariableFactory {
 		if (checkLine(line) == lineType.BOTH.ordinal()) {
 			return bothLine(line, currScope);
 		}
+		
+		return null;
+	}
+	
+
+	private static int checkLine(String line) {
+		switch(line) {
+		
+		case
+		}
+		
+	}
+
+	private static Variable varExist(String nameOfVar, ScopeMediator currScope) {
+		
+		ScopeMediator tempScope = currScope; 
+		
+		for (Variable varOfScope:currScope.getVariables()) {
+			if (varOfScope.getName().equals(nameOfVar)) {
+				return varOfScope;
+			}
+		}
+		return null;
+	}
+	
+	private static Variable varExistInAll(String nameOfVar, ScopeMediator currScope) {
+		
+		ScopeMediator tempScope = currScope;
+		Variable tempVar;
+		while(tempScope != null) {
+			tempVar = varExist(nameOfVar, tempScope);
+			if (tempVar != null) {
+				return tempVar;
+			}
+			tempScope = tempScope.getFatherScope();
+		}
 		return null;
 	}
 	
@@ -82,34 +139,30 @@ public abstract class VariableFactory {
 		//save the left expression as the name of the variable
 		//save the right expression as the input value
 		String linetemp = line.trim();
-		String[] stringsInLine = linetemp.split("[ ]+");
+		String[] stringsInLine = getBothStr(linetemp);
 		String typeOfVar = stringsInLine[0];
 		String nameOfVar = stringsInLine[1];
-		String inputValue = stringsInLine[3];
+		String inputValue = stringsInLine[2];
 		
-		return null;
-	}
-
-	private static int checkLine(String line) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	private static Variable varExist(String nameOfVar, ScopeMediator currScope) {
-		
-		ScopeMediator tempScope = currScope; 
-		
-		while (tempScope != null) {
-			for (Variable varOfScope:currScope.getVariables()) {
-				if (varOfScope.getName().equals(nameOfVar)) {
-					return varOfScope;
-				}
+		try {
+			Type varType = Type.createType(typeOfVar);
+			Variable tempVar = varExist(nameOfVar, currScope);
+			if (tempVar == null) {
+				throw new VarExistException();
 			}
-			tempScope = tempScope.getFatherScope();
+			if (varType.checkExpression(inputValue)); {
+				tempVar.setInitialized(true);
+				return tempVar;
+			}
 		}
+		catch(Exception ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}
+		
 		return null;
 	}
-
+	
+	
 	private static Variable assignmentLine(String line, ScopeMediator currScope) throws Exception {
 		
 		Variable varTemp;
@@ -118,8 +171,8 @@ public abstract class VariableFactory {
 		String nameOfVar = stringsInLine[0];
 		String inputValue = stringsInLine[1];
 		
-		//if the variable exists, put it into varTemp, else, put null into varTemp.
-		varTemp = varExist(nameOfVar, currScope);
+		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
+		varTemp = varExistInAll(nameOfVar, currScope);
 		
 		//if the variable doesn't exist:
 		if (varTemp == null) {
@@ -133,7 +186,7 @@ public abstract class VariableFactory {
 		}
 		
 		//check if the right expression is a variable in itself
-		Variable tempExpVar = varExist(inputValue, currScope);
+		Variable tempExpVar = varExistInAll(inputValue, currScope);
 		//if it is a variable, check if its type matches the type of the leftside variable.
 		if (tempExpVar != null) {
 			if (varTemp.getType().checkExpression(tempExpVar.getType().toString())) {
