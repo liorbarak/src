@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import oop.ex7.main.FileParser;
 import oop.ex7.main.Variable;
 import oop.ex7.type.Type;
+import oop.ex7.type.VariableFactory;
+
+
+
+
+
 
 public abstract class Scope implements ScopeMediator{
 	Scope FatherScope;
@@ -47,13 +53,6 @@ public abstract class Scope implements ScopeMediator{
 			//if assignment/declaration/both////
 			tempVar= VariableFactory.createVar(relevantLines.get(j));
 			
-			if (!isVarScopeValid(tempVar)){
-				throw new Exception();//TODO create unique exception
-			}
-			if (!isVarExpValid(tempVar)){
-				throw new Exception();//TODO create unique exception
-			}
-
 			innerVariables.add(tempVar);
 
 
