@@ -3,6 +3,10 @@ public class testingTal {
 
 	enum types{ABC, DEF, GHI};
 	
+	public void justAnotherMethod(testing_LIOR s) {
+		return;
+	}
+	
 	public static void main(types type) {
 		
 		
@@ -12,5 +16,6 @@ public class testingTal {
 			
 		}
 		
+	
 	}
 }
