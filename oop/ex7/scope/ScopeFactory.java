@@ -4,53 +4,42 @@ import java.util.ArrayList;
 import oop.ex7.type.*;
 
 public abstract class ScopeFactory {
-	
 
-	
-	
-	public static Scope createScope(ArrayList<String> lines,int start, int finish){//throws exceptions
+	public static final String WHILE_LINE ="";
+	public static final String 
+	public static final String 
+	public static final String 
+	public static final String 
+	public static final String 
+
+	public static Scope createScope(ArrayList<String> lines,int start, int finish,ScopeMediator thisScope){//throws exceptions
 		//TODO split line to words
 		String firstWord="";
-		
-		
-//		switch(firstWord){
-//		case "if":
-//			break;
-//			
-//		case "while":
-//			break;
-//			
-//			
-//		default : 	
-//			
-//			try{
-//				
-//			Type returnTupe=TypeFactory.createType(firstWord);
-//			
-//			return Method(returnTupe);
-//			
-//			}
-//			
-//			catch (Exception e){//TODO be more specific
-//				
-//			}
-		
-		
+
+
+
+
 		if (isWhile(line)){
+			
+			//check if inside brackets is boolean, or method
+			//return new initialized scope
 		}
-		
+
 		else if (isIf(line)){
+			//check if inside brackets is boolean, or method
+			//return new initialized scope
 			
 		}
 		else if (isMethod(line)){
-			
+			//if method already exists throw error
+			//return new initialized method 
 		}
-		
+
 		//implicit default
-		//throw exception
-			
+		//throw exception because line is not compatible with if/method/while
+
 	}
-	
-	
-	
+
+
+
 }

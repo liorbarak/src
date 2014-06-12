@@ -22,6 +22,10 @@ public abstract class Scope implements ScopeMediator{
 	
 	
 	//constructor
+	private Scope(){
+		
+		
+	}
 
 	public  void compileScope() {
 
@@ -117,6 +121,17 @@ public abstract class Scope implements ScopeMediator{
 
 
 
+	public ArrayList<Variable> getVariables(){
+		return innerVariables;
+	}
+	
+	public ArrayList<Scope> getScopes(){
+		return innerScopes;
+	}
+	
+	public Scope getFatherScope(){
+		return FatherScope;
+	}
 
 
 }

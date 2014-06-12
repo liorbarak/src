@@ -10,19 +10,16 @@ public class testing_LIOR {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		testingTal test1=new testingTal();
+		testingTal test2=new testingTal();
+		testingTal testcheck=test1.getA();
+		System.out.println(testcheck);
+		testcheck=test2;
+		System.out.println(test1.getA());
 		
-<<<<<<< HEAD
-		vars a = vars.INT;
-		
-=======
-		System.out.println(vars.INT.ordinal());
-//		vars a = vars.INT;
-//		String lior = "0";
-//		lior="1";
-//		blalala;
->>>>>>> FETCH_HEAD
-		
-		//change to test if i can sync
 	}
 
+	
+	
+	
 }
