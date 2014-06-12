@@ -54,5 +54,29 @@ public class Method extends Scope {
 
 
 
+	public Type getReturnType() {
+		return returnType;
+	}
+
+
+
+	public void setReturnType(Type returnType) {
+		this.returnType = returnType;
+	}
+
+
+
+	public String getNameOfMethod() {
+		return nameOfMethod;
+	}
+
+
+
+	public void setNameOfMethod(String nameOfMethod) {
+		this.nameOfMethod = nameOfMethod;
+	}
+
+
+
 	
 }

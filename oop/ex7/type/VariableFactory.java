@@ -57,7 +57,7 @@ public abstract class VariableFactory {
 	public static final String VOID = "void";
 	
 	public static Variable createVar(String line, ScopeMediator currScope)
-			throws VarExistException{
+			throws Exception{
 		
 		Variable varTemp;
 		
@@ -101,7 +101,14 @@ public abstract class VariableFactory {
 			Method tempMethod = Method.checkMethod(inputValue);
 			
 			if (tempMethod != null) {
-				exp
+				if (varTemp.getType().toString().equals(tempMethod.getReturnType().toString())) {
+					varTemp.setInitialized(true);
+					return varTemp;
+				}
+				else {
+					throw new Exception();
+				}
+			}
 				
 		}
 	
