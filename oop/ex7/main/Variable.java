@@ -1,5 +1,6 @@
 package oop.ex7.main;
 import oop.ex7.type.*;
+
 public class Variable {
 	
 	private Type type;

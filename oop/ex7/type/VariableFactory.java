@@ -2,6 +2,7 @@ package oop.ex7.type;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.CheckedInputStream;
 
 import oop.ex7.main.Variable;
 import oop.ex7.scope.ScopeMediator;
@@ -55,12 +56,18 @@ public abstract class VariableFactory {
 	public static final String VOID = "void";
 	
 	public static Variable createVariable(String line, ScopeMediator currScope)
-			throws BadVarDeclarationException {
+			throws VarExistException{
 		
 		Variable varTemp;
+		
 		if (checkLine(line) == lineType.ASSIGNMENT.ordinal()) {
 			varTemp = varExist(line, currScope);
-				
+			
+			if (varTemp == null) {
+				throw new VarExistException();
+			}
+			checkExpTypecorrect(targetType)
+			
 			
 		}
 	
@@ -106,12 +113,11 @@ public abstract class VariableFactory {
 			}
 			tempScope = tempScope.getFatherScope();
 		}
-		
-		
+		return null;
 	}
 	
 	
-	private boolean checkExpTypecorrect(Type targetType){
+	private static boolean checkExpTypecorrect(Type targetType){
 		
 	}
 }

@@ -6,7 +6,7 @@ import oop.ex7.main.FileParser;
 import oop.ex7.main.Variable;
 import oop.ex7.type.Type;
 
-public abstract class Scope {
+public abstract class Scope implements ScopeMediator{
 	Scope FatherScope;
 	ArrayList<String> relevantLines;
 	ArrayList<Scope> innerScopes;
