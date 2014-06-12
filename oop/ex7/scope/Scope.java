@@ -6,7 +6,7 @@ import oop.ex7.main.FileParser;
 import oop.ex7.main.Variable;
 import oop.ex7.type.Type;
 
-public abstract class Scope {
+public abstract class Scope implements  ScopeMediator {
 	Scope FatherScope;
 	ArrayList<String> relevantLines;
 	ArrayList<Scope> innerScopes;
@@ -47,12 +47,12 @@ public abstract class Scope {
 			//if assignment/declaration/both////
 			tempVar= VariableFactory.createVar(relevantLines.get(j));
 
-			if (!isVarScopeValid(tempVar)){
-				throw new Exception();//TODO create unique exception
-			}
-			if (!isVarExpValid(tempVar)){
-				throw new Exception();//TODO create unique exception
-			}
+//			if (!isVarScopeValid(tempVar)){
+//				throw new Exception();//TODO create unique exception
+//			}
+//			if (!isVarExpValid(tempVar)){
+//				throw new Exception();//TODO create unique exception
+//			}
 
 			innerVariables.add(tempVar);
 
@@ -116,6 +116,20 @@ public abstract class Scope {
 		
 	}
 
+
+	
+	//these 3 are from scope mediator
+	public ArrayList<Variable> getVariables(){
+		return innerVariables;
+	}
+	
+	public ArrayList<Scope> getScopes(){
+		return innerScopes;
+	}
+	
+	public Scope getFatherScope(){
+		return FatherScope;
+	}
 
 
 
