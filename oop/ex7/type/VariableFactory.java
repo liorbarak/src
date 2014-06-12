@@ -1,5 +1,8 @@
 package oop.ex7.type;
 
+import oop.ex7.main.Variable;
+import oop.ex7.scope.ScopeMediator;
+
 /**
  * This class creates the different variable types for the different Type 
  * classes implementations. 
@@ -20,8 +23,9 @@ public abstract class VariableFactory {
 	public static final String CHAR = "char";
 	public static final String VOID = "void";
 	
-	public static Type createType(String varTypeRepresentation)
+	public static Type createType(String varTypeRepresentation, ScopeMediator currScope)
 			throws BadVarDeclarationException {
+		
 		
 		switch(varTypeRepresentation) {
 		
@@ -42,6 +46,15 @@ public abstract class VariableFactory {
 		default:
 			throw new BadVarDeclarationException(varTypeRepresentation);
 		}
+		
+	}
+	
+	private Type checkVarExist(Variable tempVar){
+		
+	}
+	
+	
+	private boolean checkExpTypecorrect(Type targetType){
 		
 	}
 }

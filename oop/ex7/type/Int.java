@@ -8,8 +8,6 @@ package oop.ex7.type;
  */
 public class Int implements Type {
 
-	private String varName;
-	private boolean isInitialized;
 	
 	public Int(String varName) { //, boolean isInitialized
 		this.varName = varName;
