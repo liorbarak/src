@@ -91,7 +91,7 @@ public class TempRegex {
 	
 	public Type getType(String lineToCheck) {
 		
-		return new Int(lineToCheck);
+		return new IntType(lineToCheck);
 	}
 	
 	public void arrDeclaration(String lineToCheck) throws BadVarDeclarationException{
