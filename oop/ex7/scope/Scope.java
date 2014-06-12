@@ -43,6 +43,8 @@ public abstract class Scope {
 
 		}
 		for (Integer j : variableIndexArray ){
+			
+			//if assignment/declaration/both////
 			tempVar= VariableFactory.createVar(relevantLines.get(j));
 
 			if (!isVarScopeValid(tempVar)){
