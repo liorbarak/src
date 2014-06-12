@@ -1,20 +1,27 @@
+import java.util.regex.Pattern;
+
 
 public class testingTal {
 
 	enum types{ABC, DEF, GHI};
 
 
-	public static void main(types type) {
+	
+	public static void main(String[] args) {
 
-
-
-		switch(type) {
-
-		case ABC: return; 
-
+		String line = "    test =       ss   ;     "    ;
+		String linetemp = line.trim();
+		String[] nameOfVar = linetemp.split("[ ]+");
+		System.out.println(nameOfVar.length);
+		
+		for (String word:nameOfVar) {
+			System.out.println(word);
 		}
+		
+			
 
 	}
-	
+
+		
 }
 
