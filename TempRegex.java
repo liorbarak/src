@@ -106,16 +106,16 @@ public class TempRegex {
 			throw new BadVarDeclarationException(lineToCheck);
 		}
 	}
-	
-	public static void main(String[] args) {
-		TempRegex a = new TempRegex();
-		try {
-			a.charDeclaration("char _ai    ;");
-		}
-		catch(BadVarDeclarationException ex) {
-			System.out.println(ex.getLocalizedMessage());
-		}
-		
+//	
+//	public static void main(String[] args) {
+//		TempRegex a = new TempRegex();
+//		try {
+//			a.charDeclaration("char _ai    ;");
+//		}
+//		catch(BadVarDeclarationException ex) {
+//			System.out.println(ex.getLocalizedMessage());
+//		}
+//		
 //		Pattern declarationLine = Pattern.compile("a|b");
 //		
 //		Matcher matcher = declarationLine.matcher("ab");
