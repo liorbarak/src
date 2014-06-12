@@ -60,7 +60,7 @@ public abstract class Scope implements ScopeMediator{
 			tempVar= VariableFactory.createVar(relevantLines.get(j), this);
 			
 			if (tempVar!=null){
-			innerVariables.add(tempVar);
+				innerVariables.add(tempVar);
 			}
 
 		}

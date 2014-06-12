@@ -23,10 +23,10 @@ public class MethodScope extends Scope {
 	}
 
 	
-	public static MethodScope checkMethod(String line, Scope myScope) {
-		Scope TempScope=
-		
-		
+
+	public static MethodScope checkMethod(String line) {
+		return new MethodScope(); //TODO implement!
+
 	}
 		
 		

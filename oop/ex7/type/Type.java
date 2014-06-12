@@ -35,7 +35,7 @@ public abstract class  Type {
 		@Override
 		public String toString() {
 			return innerString;
-			}
+		}
 	}
 	
 	
@@ -76,11 +76,11 @@ public abstract class  Type {
 	/**
 	 * returns the regex compatible with a specific type. the actual string
 	 * can be used if an external method wants to compare regexes by itself
-	 * @return
+	 * @return true if type is ok
 	 */
 	public abstract String getRegex();
 	
-	public Type createType(String check) throws Exception{//TODO create specific exception
+	public static Type createType(String check) throws Exception{//TODO create specific exception
 		
 		
 		if (check.equals(DifferentTypes.INT.toString())){
