@@ -2,10 +2,12 @@ package oop.ex7.scope;
 
 import java.util.ArrayList;
 
+import oop.ex7.main.EndOfFileException;
 import oop.ex7.main.FileParser;
 import oop.ex7.main.Variable;
 import oop.ex7.type.Type;
 import oop.ex7.type.VariableFactory;
+import oop.ex7.type.badEndOfLineException;
 
 
 
@@ -13,7 +15,8 @@ enum Scopetypes {CLASS,METHOD,IF,WHILE};
 
 
 public abstract class Scope implements ScopeMediator{
-	Scope FatherScope;
+	String stringRepresentation;
+	Scope fatherScope;
 	ArrayList<String> relevantLines;
 	ArrayList<Scope> innerScopes;
 	ArrayList<Variable> innerVariables;
@@ -21,11 +24,13 @@ public abstract class Scope implements ScopeMediator{
 	ArrayList<Integer> validVarOperations;
 	
 	
-	//constructor
-	protected Scope(){	
+//no constructor at the moment
+	Scope (ArrayList<String> lines, Scope father){
+		fatherScope=father;
+		relevantLines=lines;
 	}
-
-	public  void compileScope()  {
+	
+	public  void compileScope() throws InvalidScopeException, EndOfFileException, badEndOfLineException,Exception  {
 
 		ArrayList<Integer> variableIndexArray=new ArrayList<Integer>();
 		int lineType;
@@ -33,14 +38,14 @@ public abstract class Scope implements ScopeMediator{
 		Scope tempScope;
 
 		for(int i=0;i<relevantLines.size();i++){
-			lineType=FileParser.scopeOrVAriable(relevantLines.get(i));//throws if not valid scope or var declaration
+			lineType=FileParser.scopeOrVariable(relevantLines.get(i),i);//throws if not valid scope or var declaration
 
 			if (lineType==1){
 				int closer = FileParser.findLastCloser(relevantLines,i);
 				tempScope = ScopeFactory.createScope(relevantLines,i,closer, this);
 
 				if (!isScopeValid(tempScope)){
-					throw new Exception();//TODO create unique exception
+					throw new InvalidScopeException(tempScope);//TODO create unique exception
 				}
 				innerScopes.add(tempScope);
 				i=closer;
@@ -61,7 +66,7 @@ public abstract class Scope implements ScopeMediator{
 		}
 		//recursively calls all the crap in the universe. 
 		for (Scope inner:innerScopes){
-			compileScope(); 
+			inner.compileScope(); 
 		}
 
 
@@ -82,41 +87,22 @@ public abstract class Scope implements ScopeMediator{
 	}
 
 	/**
-	 * 
+	 * checks if this is a legal kind of scope that could be initialized in the
+	 * current scope.
+	 * example- class scope can only contain method scopes
+	 * example2-method scope can only contain if/while
 	 * @param tempScope
 	 * @return
 	 */
 	private boolean isScopeValid(Scope tempScope) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+		return validScopes.contains(tempScope.toString());	//does this even work? needs checking
+		}
 
-	/**
-	 * checks back compatibility of vars 
-	 * also checks if right hand side exp matches type of var
-	 * 
-	 * 
-	 * @param tempVar
-	 * @return
-	 */
-	private boolean isVarScopeValid(Variable tempVar) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	/**
-	 * checks if var exsits in this scope or the ones above it.recursive.
-	 * @return null if not exist
-	 */
-	private Type checkVarExist(Variable tempVar){
-		
-	}
-	
-	
-	private boolean checkExpTypecorrect(Type targetType){
-		
-	}
 
+	
+	public String toString(){
+		return stringRepresentation;
+	}
 
 
 	public ArrayList<Variable> getVariables(){
@@ -128,7 +114,7 @@ public abstract class Scope implements ScopeMediator{
 	}
 	
 	public Scope getFatherScope(){
-		return FatherScope;
+		return fatherScope;
 	}
 
 

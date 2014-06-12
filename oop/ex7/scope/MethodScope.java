@@ -9,27 +9,35 @@ public class MethodScope extends Scope {
 
 	private Type returnType;
 	private String nameOfMethod;
+	private ArrayList<Variable> inputVars; 
 	//TODO add method's input variables - their type by their order!
+
 	
-	public MethodScope(){
+	
+	public MethodScope(ArrayList<String> lines, Scope father){
+		super(lines, father);
+		stringRepresentation=Scopetypes.METHOD.name();
+		
+		validScopes.add(Scopetypes.WHILE);
+		validScopes.add(Scopetypes.IF);
+	}
+
+	
+	public static MethodScope checkMethod(String line, Scope myScope) {
+		Scope TempScope=
+		
 		
 	}
-	
-
-
-	@Override
-	public void compileScope() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public static Method checkMethod(String line) {
-		return new Method(); //TODO implement!
-	}
 		
 		
 	
 
+	
+	
+	
+	
+	
+	
 	@Override
 	public ArrayList<Variable> getVariables() {
 		// TODO Auto-generated method stub

@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import oop.ex7.type.badEndOfLineException;
+
 /**
  * 
  * @author Lior
@@ -18,8 +20,9 @@ public class FileParser {
 	 * @return
 	 * @throws FileNotFoundException 
 	 * @throws BadLineSyntaxException 
+	 * @throws badEndOfLineException 
 	 */
-	public static ArrayList<String>  getlinesList(File origin) throws FileNotFoundException, BadLineSyntaxException{
+	public static ArrayList<String>  getlinesList(File origin) throws FileNotFoundException, BadLineSyntaxException, badEndOfLineException{
 		
 		ArrayList<String> fileLines = new ArrayList<String>();
 		Scanner myScan= new Scanner(origin);
@@ -28,7 +31,7 @@ public class FileParser {
 		currentLine=myScan.nextLine();
 
 		while (currentLine!=null){
-			checkLineLegal(lineNumber, currentLine);
+			scopeOrVariable(currentLine,lineNumber);
 
 			if(!isLineCommentOrBlank(currentLine)) {//if it is commented simply continue and dont add to list
 				fileLines.add(currentLine);
@@ -54,30 +57,54 @@ public class FileParser {
 	}
 
 
-	/*
-	 * if line is illegal throws exception
-	 */
-	private static void checkLineLegal(int lineNum ,String lineText) throws BadLineSyntaxException  {
-
-		if(){//TODO is bad input
-			throw new BadLineSyntaxException(lineNum,lineText);
-		}
-
-
-	}
+//	/*
+//	 * if line is illegal throws exception
+//	 */
+//	private static void checkLineLegal(int lineNum ,String lineText) throws BadLineSyntaxException  {
+//
+//		if(){//TODO is bad input
+//			throw new BadLineSyntaxException(lineNum,lineText);
+//		}
+//
+//
+//	}
+	
+	
 	//return 1-scope
 	//return 2-variable
-	public static int scopeOrVAriable(String lineText){
-		
+	public static int scopeOrVariable(String lineText,int lineNumber) throws badEndOfLineException{
+		String tempString=lineText.trim();
+		if(tempString.endsWith("{")){
+			return 1;
+		}
+		else if (tempString.endsWith(";")){
+			return 2;
+		}
+		throw new badEndOfLineException(lineNumber);
 	}
-	
-	
-	
-	public static int  findLastCloser(ArrayList<String> relevantLines, int i){
-		//finds last closer so i can initialize a proper scope
-		//first line is decleration line
-		//if EOF throw smtng
-		return 0;
+
+
+
+	public static int  findLastCloser(ArrayList<String> relevantLines, int i) throws EndOfFileException{
+
+		int bracketCounter=1;//initial size is 1 because 
+		for (int index=i+1; index<relevantLines.size(); index++){
+			String tempString=relevantLines.get(index);
+			tempString=tempString.trim();
+
+			if (tempString.endsWith("}")){
+				bracketCounter--;
+			}
+			else if(tempString.endsWith("{")){
+				bracketCounter++;
+			}
+
+			if (bracketCounter==0){
+				return index;
+			}
+
+		}
+		throw new EndOfFileException();
 	}
 
 
