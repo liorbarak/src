@@ -5,6 +5,7 @@ import oop.ex7.type.BadVarDeclarationException;
 
 public class TempRegex {
 	
+	public static final String validTypes = "( )*(int|double|String|char|boolean)( )*";
 	public static final String GENERAL_NAME = "[_]?[^ ]+( )*";
 	public static final String UNINITIALIZED = ";";
 	
