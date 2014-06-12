@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import java.util.zip.CheckedInputStream;
 
 import oop.ex7.main.Variable;
+import oop.ex7.scope.Method;
 import oop.ex7.scope.ScopeMediator;
 
 /**
@@ -55,20 +56,53 @@ public abstract class VariableFactory {
 	public static final String CHAR = "char";
 	public static final String VOID = "void";
 	
-	public static Variable createVariable(String line, ScopeMediator currScope)
+	public static Variable createVar(String line, ScopeMediator currScope)
 			throws VarExistException{
 		
 		Variable varTemp;
 		
+		//if the line is an assignment of the form a an assignment:
 		if (checkLine(line) == lineType.ASSIGNMENT.ordinal()) {
-			varTemp = varExist(line, currScope);
 			
+			//save the left expression as the name of the variable
+			//save the right expression as the input value
+			String linetemp = line.trim();
+			String[] stringsInLine = linetemp.split("[ ]+");
+			String nameOfVar = stringsInLine[0];
+			String inputValue = stringsInLine[2];
+			
+			//if the variable exists, put it into varTemp, else, put null into varTemp.
+			varTemp = varExist(nameOfVar, currScope);
+			
+			//if the variable doesn't exist:
 			if (varTemp == null) {
 				throw new VarExistException();
 			}
-			checkExpTypecorrect(targetType)
 			
+			//check if the right expression is of the same type.
+			if (varTemp.getType().checkExpression(inputValue)) {
+				varTemp.setInitialized(true);
+				return varTemp;
+			}
 			
+			//check if the right expression is a variable in itself
+			Variable tempExpVar = varExist(inputValue, currScope);
+			//if it is a variable, check if its type matches the type of the leftside variable.
+			if (tempExpVar != null) {
+				if (varTemp.getType().checkExpression(tempExpVar.getType().toString())) {
+					varTemp.setInitialized(true);
+					return varTemp;
+				}
+				else {
+					throw new Exception();
+				}
+			}
+			
+			Method tempMethod = Method.checkMethod(inputValue);
+			
+			if (tempMethod != null) {
+				exp
+				
 		}
 	
 //		switch(varTypeRepresentation) {
@@ -87,9 +121,9 @@ public abstract class VariableFactory {
 //		
 //		case(VarType.VOID.name()):
 		
-		default:
-			throw new BadVarDeclarationException(varTypeRepresentation);
-		}
+//		default:
+//			throw new BadVarDeclarationException(varTypeRepresentation);
+//		}
 		
 	}
 	
@@ -98,12 +132,9 @@ public abstract class VariableFactory {
 		return 0;
 	}
 
-	private static Variable varExist(String line, ScopeMediator currScope) {
+	private static Variable varExist(String nameOfVar, ScopeMediator currScope) {
 		
 		ScopeMediator tempScope = currScope; 
-		String linetemp = line.trim();
-		String[] expInLine = linetemp.split("[ ]+");
-		String nameOfVar = expInLine[0];
 		
 		while (tempScope != null) {
 			for (Variable varOfScope:currScope.getVariables()) {
@@ -115,9 +146,6 @@ public abstract class VariableFactory {
 		}
 		return null;
 	}
+
 	
-	
-	private static boolean checkExpTypecorrect(Type targetType){
-		
-	}
 }
