@@ -59,81 +59,36 @@ public abstract class VariableFactory {
 	public static Variable createVar(String line, ScopeMediator currScope)
 			throws Exception{
 		
-		Variable varTemp;
 		
 		//if the line is an assignment of the form a an assignment:
 		if (checkLine(line) == lineType.ASSIGNMENT.ordinal()) {
-			
-			//save the left expression as the name of the variable
-			//save the right expression as the input value
-			String linetemp = line.trim();
-			String[] stringsInLine = linetemp.split("[ ]+");
-			String nameOfVar = stringsInLine[0];
-			String inputValue = stringsInLine[2];
-			
-			//if the variable exists, put it into varTemp, else, put null into varTemp.
-			varTemp = varExist(nameOfVar, currScope);
-			
-			//if the variable doesn't exist:
-			if (varTemp == null) {
-				throw new VarExistException();
-			}
-			
-			//check if the right expression is of the same type.
-			if (varTemp.getType().checkExpression(inputValue)) {
-				varTemp.setInitialized(true);
-				return varTemp;
-			}
-			
-			//check if the right expression is a variable in itself
-			Variable tempExpVar = varExist(inputValue, currScope);
-			//if it is a variable, check if its type matches the type of the leftside variable.
-			if (tempExpVar != null) {
-				if (varTemp.getType().checkExpression(tempExpVar.getType().toString())) {
-					varTemp.setInitialized(true);
-					return varTemp;
-				}
-				else {
-					throw new Exception();
-				}
-			}
-			
-			Method tempMethod = Method.checkMethod(inputValue);
-			
-			if (tempMethod != null) {
-				if (varTemp.getType().toString().equals(tempMethod.getReturnType().toString())) {
-					varTemp.setInitialized(true);
-					return varTemp;
-				}
-				else {
-					throw new Exception();
-				}
-			}
-				
+			return assignmentLine(line, currScope);
 		}
-	
-//		switch(varTypeRepresentation) {
-//		
-//		case (INT): return new Int(varName);
-//		
-//		case(DOUBLE):
-//			return new Int(varName);
-//		case(VarType.STRING.name()):
-//		
-//		case(VarType.BOOLEAN.name()):
-//		
-//		case(VarType.CHAR.name()):
-//		
-//		case(VarType.ARRAY.name()):
-//		
-//		case(VarType.VOID.name()):
 		
-//		default:
-//			throw new BadVarDeclarationException(varTypeRepresentation);
-//		}
+		if (checkLine(line) == lineType.DECLARATION.ordinal()) {
+			return declarationLine(line, currScope);
+		}
 		
+		if (checkLine(line) == lineType.BOTH.ordinal()) {
+			return bothLine(line, currScope);
+		}
+		return null;
 	}
 	
+	private static Variable bothLine(String line, ScopeMediator currScope) {
+		
+		Variable varTemp;
+		//save the left expression as the name of the variable
+		//save the right expression as the input value
+		String linetemp = line.trim();
+		String[] stringsInLine = linetemp.split("[ ]+");
+		String typeOfVar = stringsInLine[0];
+		String nameOfVar = stringsInLine[1];
+		String inputValue = stringsInLine[3];
+		
+		return null;
+	}
+
 	private static int checkLine(String line) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -154,5 +109,90 @@ public abstract class VariableFactory {
 		return null;
 	}
 
+	private static Variable assignmentLine(String line, ScopeMediator currScope) throws Exception {
+		
+		Variable varTemp;
+		
+		String[] stringsInLine = getAssigmentStr(line);		
+		String nameOfVar = stringsInLine[0];
+		String inputValue = stringsInLine[1];
+		
+		//if the variable exists, put it into varTemp, else, put null into varTemp.
+		varTemp = varExist(nameOfVar, currScope);
+		
+		//if the variable doesn't exist:
+		if (varTemp == null) {
+			throw new VarExistException();
+		}
+		
+		//check if the right expression is of the same type.
+		if (varTemp.getType().checkExpression(inputValue)) {
+			varTemp.setInitialized(true);
+			return varTemp;
+		}
+		
+		//check if the right expression is a variable in itself
+		Variable tempExpVar = varExist(inputValue, currScope);
+		//if it is a variable, check if its type matches the type of the leftside variable.
+		if (tempExpVar != null) {
+			if (varTemp.getType().checkExpression(tempExpVar.getType().toString())) {
+				varTemp.setInitialized(true);
+				return varTemp;
+			}
+			else {
+				throw new Exception();
+			}
+		}
+		
+		Method tempMethod = Method.checkMethod(inputValue);
+		if (tempMethod != null) {
+			if (varTemp.getType().toString().equals(tempMethod.getReturnType().toString())) {
+				varTemp.setInitialized(true);
+				return varTemp;
+			}
+			else {
+				throw new Exception();
+			}
+		}
+			
+		return null;
+	}
 	
+
+	private static Variable declarationLine(String line, ScopeMediator currScope) {
+		
+		Variable varTemp;
+		//save the left expression as the name of the variable
+		//save the right expression as the input value
+		String[] stringsInLine = getDecStr(line);
+		String typeOfVar = stringsInLine[0];
+		String nameOfVar = stringsInLine[1];
+		
+		Type newVarType = Type.createType(typeOfVar);
+		//if the variable exists, put it into varTemp, else, put null into varTemp.
+		varTemp = varExist(nameOfVar, currScope);
+		//if the variable doesn't exist:
+		if (varTemp == null) {
+			return new Variable(newVarType, nameOfVar);
+		}
+	
+	return null;
+	}
+
+	private static String[] getAssigmentStr(String line) {
+		
+		String linetemp = line.trim();
+		String[] stringsInLine = linetemp.split("=");
+		stringsInLine[1] = stringsInLine[1].trim();
+		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
+		return stringsInLine;
+	}
+	
+	private static String[] getDecStr(String line) {
+		
+		String linetemp = line.trim();
+		String[] stringsInLine = linetemp.split("[ ]+");
+		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
+		return stringsInLine;
+	}
 }

@@ -7,8 +7,10 @@ public class Variable {
 	private String name;
 	private boolean isInitialized;
 	
-	public Variable() {
-		
+	public Variable(Type type, String name) {
+		this.type = type;
+		this.name = name;
+		this.isInitialized = false;
 	}
 
 	public Type getType() {

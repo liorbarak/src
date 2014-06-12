@@ -33,17 +33,18 @@ public class testingTal {
 		this.a = a;
 	}
 	
-//	public static void main(String[] args) {
-//
-//		String line = "    test =       ss   ;     "    ;
-//		String linetemp = line.trim();
-//		String[] nameOfVar = linetemp.split("[ ]+");
-//		System.out.println(nameOfVar.length);
-//		
-//		for (String word:nameOfVar) {
-//			System.out.println(word);
-//		}
-//		
+	public static void main(String[] args) {
+
+		String linetemp = "int dljlkj ;".trim();
+		String[] stringsInLine = linetemp.split("[ ]+");
+		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
+		//String inputValue = stringsInLine[3];
+		
+		for (String word:stringsInLine) {
+			System.out.println(word);
+		}
+	} 
+		
 //			
 //
 //	}
