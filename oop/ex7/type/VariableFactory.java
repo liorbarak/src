@@ -168,16 +168,20 @@ public abstract class VariableFactory {
 		String[] stringsInLine = getDecStr(line);
 		String typeOfVar = stringsInLine[0];
 		String nameOfVar = stringsInLine[1];
-		
-		Type newVarType = Type.createType(typeOfVar);
-		//if the variable exists, put it into varTemp, else, put null into varTemp.
-		varTemp = varExist(nameOfVar, currScope);
-		//if the variable doesn't exist:
-		if (varTemp == null) {
-			return new Variable(newVarType, nameOfVar);
+		try {
+			Type newVarType = Type.createType(typeOfVar);
+			//if the variable exists, put it into varTemp, else, put null into varTemp.
+			varTemp = varExist(nameOfVar, currScope);
+			//if the variable doesn't exist:
+			if (varTemp == null) {
+				return new Variable(newVarType, nameOfVar);
+			}
+		}
+		catch(Exception ex) {
+			System.out.println(ex.getLocalizedMessage());
 		}
 	
-	return null;
+		return null;
 	}
 
 	private static String[] getAssigmentStr(String line) {

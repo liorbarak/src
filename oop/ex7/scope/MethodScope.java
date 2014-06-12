@@ -23,8 +23,8 @@ public class MethodScope extends Scope {
 		
 	}
 	
-	public static Method checkMethod(String line) {
-		return new Method(); //TODO implement!
+	public static MethodScope checkMethod(String line) {
+		return new MethodScope(); //TODO implement!
 	}
 		
 		
