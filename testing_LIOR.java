@@ -14,10 +14,11 @@ public class testing_LIOR {
 		for(DifferentTypes i:abc){
 			System.out.println(i);
 		}
-		
 
-
+}
 	
-	
-	
+	public int bla(int a){
+		a=6;
+		return 8;
+	}
 }

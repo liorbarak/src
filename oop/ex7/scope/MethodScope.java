@@ -20,13 +20,28 @@ public class MethodScope extends Scope {
 	}
 
 
+	//innerScopes.add(new MethodScope (lines,start,finish,Type.createType(returnType),methodName,inputVars, this)   );
+	public MethodScope(ArrayList<String> lines, int start,int finish,
+			Type returnType, String methodName, ArrayList<Variable> inputVars,
+			Scope father){
+		
+		super(lines,start,finish, father);
+		//stringRepresentation=Scopetypes.METHOD.name();
 
-	public MethodScope(ArrayList<String> lines, Scope father){
-		super(lines, father);
-		stringRepresentation=Scopetypes.METHOD.name();
-
-		validScopes.add(Scopetypes.WHILE);
-		validScopes.add(Scopetypes.IF);
+//		validScopes.add(Scopetypes.WHILE);
+//		validScopes.add(Scopetypes.IF);
+		this.returnType=returnType;
+		this.nameOfMethod=methodName;
+		
+		//handleinput vars
+		for(Variable var:inputVars){
+			var.setInitialized(true);
+			inputVars.add(var);
+			innerVariables.add(var);
+			
+		}
+		
+		
 	}
 
 
