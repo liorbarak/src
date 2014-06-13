@@ -110,8 +110,8 @@ public abstract class  Type {
 		
 	}
 	
-	public static boolean sameType(Type one, Type two){
-		return one.getClass().equals(two.getClass());
+	public boolean sameType(Type target){
+		return this.getClass().equals(target.getClass());
 	}
 		
 //		switch(check){

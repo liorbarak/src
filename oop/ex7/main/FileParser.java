@@ -1,5 +1,6 @@
 package oop.ex7.main;
 
+import java.awt.geom.GeneralPath;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -16,6 +17,32 @@ import oop.ex7.type.badEndOfLineException;
  */
 public class FileParser {
 
+	public static final String GENERAL_NAME = "( )*([_][^ ]+|[^\\d_][^ ]*)( )*";
+	public static final String TYPE_INT = "( )*int( )*";
+	public static final String INPUT_INT = "( )*(-)?[\\d]+( )*";
+	
+	public static final String TYPE_DOUBLE = "( )*double( )*";
+	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|( )*(-)?[\\d]+.([\\d]+)?( )*)";
+	
+	
+	public static final String TYPE_STRING = "( )*String( )*";
+	public static final String INPUT_STRING = "( )*\"[^\"]+\"( )*";
+	
+	public static final String TYPE_BOOLEAN = "( )*boolean( )*";
+	public static final String INPUT_BOOLEAN = "( )*(true|false)( )*";
+	
+	public static final String TYPE_CHAR = "( )*char( )*";
+	public static final String INPUT_CHAR = "( )*'[^']'( )*";
+	
+	public static final String SOME_TYPE_VALUE = "("+INPUT_INT+"|"+
+													INPUT_DOUBLE+"|"+
+													INPUT_CHAR+"|"+
+													INPUT_STRING+"|"+
+													INPUT_BOOLEAN+")";
+	
+	
+	
+	
 	/**
 	 * parses original file 
 	 * @param origin
@@ -86,7 +113,28 @@ public class FileParser {
 	}
 	
 	public static void checkExpression(Type type, String expression, ScopeMediator med) {
-		//TODO implement
+		
+		if (analize(expression) == SOME_TYPE_VALUE) {
+			Type expType = Type.createType(expression);
+			if (!type.sameType(expType)) {
+				throw new Exception();
+			}
+		}
+		
+		if (analize(expression) == GENERAL_NAME) {
+			
+			ScopeMediator tempScope = med;
+			
+			while (tempScope != null) {
+				for(Variable var:tempScope.getVariables()) {
+					
+				}
+			}
+			
+			
+		}
+		
+		
 	}
 
 
