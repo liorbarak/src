@@ -157,8 +157,6 @@ public class FileParser {
 		
 	}
 
-
-
 	public static int  findLastCloser(ArrayList<String> relevantLines, int i) throws EndOfFileException{
 
 		int bracketCounter=1;//initial size is 1 because 

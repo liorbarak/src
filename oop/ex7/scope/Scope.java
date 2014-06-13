@@ -196,8 +196,6 @@ public abstract class Scope implements ScopeMediator{
 		//TODO check if scope declaration valid inside the specific scope.
 	}
 
-//______________________________________________________________________________
-
 	private void assignmentLine(String line) throws Exception {
 		
 		Variable varTemp;
@@ -261,9 +259,6 @@ public abstract class Scope implements ScopeMediator{
 		}
 		
 	}
-
-
-	
 
 	private static String[] getAssigmentStr(String line) {
 		//1 - index of input value
