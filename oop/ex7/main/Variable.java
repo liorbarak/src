@@ -7,8 +7,13 @@ public class Variable {
 	private String name;
 	private boolean isInitialized;
 	
-	public Variable(Type type, String name) {
-		this.type = type;
+	public Variable(String type, String name) {
+		try {
+			this.type = Type.createType(type);
+		}
+		catch(Exception ex) {
+			System.out.println(ex.getLocalizedMessage());
+		}
 		this.name = name;
 		this.isInitialized = false;
 	}
@@ -37,7 +42,7 @@ public class Variable {
 		this.isInitialized = isInitialized;
 	}
 	
-	public boolean compareType(String target) {
+	public boolean compareType(Type target) {
 		return this.type.sameType(target);
 	}
 	

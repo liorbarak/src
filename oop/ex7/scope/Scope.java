@@ -6,6 +6,7 @@ import oop.ex7.main.EndOfFileException;
 import oop.ex7.main.FileParser;
 import oop.ex7.main.Variable;
 import oop.ex7.type.Type;
+import oop.ex7.type.VarExistException;
 import oop.ex7.type.VariableFactory;
 import oop.ex7.type.badEndOfLineException;
 import oop.ex7.type.VariableFactory.lineType;
@@ -123,35 +124,33 @@ public abstract class Scope implements ScopeMediator{
 /////////////////////////////////////////////////////////////////////////////////////////////////operations
 	public void lineAnalizerOp(String line) throws Exception {
 		//4 cases- return, assign,initialize, both
-
-		if (checkLine(line) == lineType.ASSIGNMENT.ordinal()) {
-			return assignmentLine(line, currScope);
-		}
-		
-		if (checkLine(line) == lineType.RETURN.ordinal())
-		
-		if (checkLine(line) == lineType.DECLARATION.ordinal()) {
-			return declarationLine(line, currScope);
-		}
-		
-		if (checkLine(line) == lineType.BOTH.ordinal()) {
-			return bothLine(line, currScope);
-		}
-		
-		return null;
-		
+//
+//		if (checkLine(line) == lineType.ASSIGNMENT.ordinal()) {
+//			return assignmentLine(line, currScope);
+//		}
+//		
+//		if (checkLine(line) == lineType.RETURN.ordinal())
+//		
+//		if (checkLine(line) == lineType.DECLARATION.ordinal()) {
+//			return declarationLine(line, currScope);
+//		}
+//		
+//		if (checkLine(line) == lineType.BOTH.ordinal()) {
+//			return bothLine(line, currScope);
+//		}
+//		
+//		return null;
+//		
 		//return
 		if (line.matches(RegexConfig.)){
 			String returnExpression=line.substring(line.indexOf(" "), line.indexOf(";")).trim();
-//			String returnExpression = line.trim();
-//			returnExpression = returnExpression.replaceAll("( )*;?", "");
 			if(!handleReturn(returnExpression)){
 				throw new Exception();//return in incorrect location
 			}
 		}
 		//assign
 		else if (line.matches(RegexConfig.)){
-
+			
 		}
 		//initialize
 		else if (line.matches(RegexConfig.)){
@@ -197,8 +196,132 @@ public abstract class Scope implements ScopeMediator{
 		//TODO check if scope declaration valid inside the specific scope.
 	}
 
+//______________________________________________________________________________
+
+	private void assignmentLine(String line) throws Exception {
+		
+		Variable varTemp;
+		
+		String[] stringsInLine = getAssigmentStr(line);		
+		String nameOfVar = stringsInLine[0];
+		String inputValue = stringsInLine[1];
+		
+		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
+		varTemp = this.varExistInAll(nameOfVar);
+		
+		
+		
+		//if the variable doesn't exist:
+		if (varTemp == null) {
+			throw new VarExistException();
+		}
+		
+		//check if the right expression is of the same type.
+		if (varTemp.getType().checkExpression(inputValue)) {
+			varTemp.setInitialized(true);
+			return;
+		}
+		throw new Exception(); //TODO
+	}
+	
+	private void declarationLine(String line) throws Exception {
+		
+		Variable varTemp;
+		//save the left expression as the name of the variable
+		//save the right expression as the input value
+		String[] stringsInLine = getDecStr(line);
+		String typeOfVar = stringsInLine[0];
+		String nameOfVar = stringsInLine[1];
+	
+		//if the variable exists, put it into varTemp, else, put null into varTemp.
+		varTemp = this.varExist(nameOfVar);
+		//if the variable doesn't exist:
+		if (varTemp == null) {
+			this.innerVariables.add(new Variable(typeOfVar, nameOfVar));
+		}
+		throw new Exception();	
+	}
+	
+	private void bothLine(String line) {
+		
+		Variable varTemp;
+		//save the left expression as the name of the variable
+		//save the right expression as the input value
+		String linetemp = line.trim();
+		String[] stringsInLine = getBothStr(linetemp);
+		String decLine = stringsInLine[0];
+		String assLine = stringsInLine[1];
+		
+		try {
+			this.declarationLine(decLine);
+			this.assignmentLine(assLine);	
+		}
+		catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+	}
+
+
+	
+
+	private static String[] getAssigmentStr(String line) {
+		//1 - index of input value
+		String linetemp = line.trim();
+		String[] stringsInLine = linetemp.split("=");
+		stringsInLine[1] = stringsInLine[1].trim();
+		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
+		return stringsInLine;
+	}
+	
+	private static String[] getDecStr(String line) {
+		//1 - index of name of var
+		String linetemp = line.trim();
+		String[] stringsInLine = linetemp.split("[ ]+");
+		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
+		return stringsInLine;
+	}
+	
+	private static String[] getBothStr(String line) {
+		
+		String declarationLine =  getAssigmentStr(line)[0];
+		String[] declaration = getDecStr(declarationLine);
+		String inputValue = getAssigmentStr(line)[1];
+		String decLine = declaration[0]+" "+declaration[1];
+		String assLine = declaration[1]+"="+inputValue;
+		String[] both = {decLine, assLine};
+		return both;
+		
+	}
 
 
 
+	private Variable varExist(String nameOfVar) {
+		
+		Scope tempScope = this; 
+		
+		for (Variable varOfScope:tempScope.getVariables()) {
+			if (varOfScope.getName().equals(nameOfVar)) {
+				return varOfScope;
+			}
+		}
+		return null;
+	}
+	
+	private Variable varExistInAll(String nameOfVar) {
+		
+		Scope tempScope = this;
+		Variable tempVar;
+		while(tempScope != null) {
+			tempVar = tempScope.varExist(nameOfVar);
+			if (tempVar != null) {
+				return tempVar;
+			}
+			tempScope = tempScope.getFatherScope();
+		}
+		return null;
+	}
+	
+	
 
 }

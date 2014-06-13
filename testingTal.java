@@ -3,7 +3,7 @@ import java.util.regex.*;
 import oop.ex7.type.*;
 public class testingTal {
 
-	
+	int a;
 
 	public static final String validTypes = "( )*(int|double|String|char|boolean)( )*";
 	public static final String GENERAL_NAME = "( )*([_][^ ]+|[^\\d_][^ ]*)( )*";
@@ -41,26 +41,49 @@ public class testingTal {
 	public static final String VALID_GENERAL_EXP = "(("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")|("+VALID_METHOD_CALL+"))( )*;( )*";
 	
 	public static final String test1 = "( )*("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+VALID_METHOD_CALL+")( )*";
-	 
-
-	int a;
 	
-	public static boolean sameType(Type one, Type two){
-		return one.getClass().equals(two.getClass());
+	
+	private static String[] getAssigmentStr(String line) {
+		//1 - index of input value
+		String linetemp = line.trim();
+		String[] stringsInLine = linetemp.split("=");
+		stringsInLine[1] = stringsInLine[1].trim();
+		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
+		return stringsInLine;
+	}
+	
+	private static String[] getDecStr(String line) {
+		//1 - index of name of var
+		String linetemp = line.trim().replaceAll(";", "");
+		String[] stringsInLine = linetemp.split("[ ]+");
+		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
+		return stringsInLine;
+	}
+	
+	private static String[] getBothStr(String line) {
+		
+		String declarationLine =  getAssigmentStr(line)[0];
+		String[] declaration = getDecStr(declarationLine);
+		String inputValue = getAssigmentStr(line)[1];
+		String decLine = declaration[0]+" "+declaration[1];
+		String assLine = declaration[1]+"="+inputValue;
+		String[] both = {decLine, assLine};
+		return both;
+		
+	}	
+	
+	public void check() {
+		int a = 5;
+		this.a = a;
 	}
 	
 	public static void main(String[] args) {
-		
-		String line = "return testanmmvd2114555 ;";
-		String returnExpression=line.substring(line.indexOf(" "), line.indexOf(";")).trim();
-		System.out.println(returnExpression);
-//
-//		String testStr = "a_a";
-//		Pattern p = Pattern.compile(GENERAL_NAME);
-//		System.out.println(testStr);
-//		Matcher m = p.matcher(testStr);
-//		System.out.println(m.matches());
-		
+	
+		String both = " int     a = foooo(foo( dafdf  ),asd)     ;";
+		String[] testArr = getBothStr(both);
+		for (String str:testArr) {
+			System.out.println(str);
+		}
 	} 
 		
 //			
