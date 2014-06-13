@@ -8,6 +8,7 @@ import oop.ex7.main.Variable;
 import oop.ex7.type.Type;
 import oop.ex7.type.VariableFactory;
 import oop.ex7.type.badEndOfLineException;
+import oop.ex7.type.VariableFactory.lineType;
 
 
 
@@ -123,9 +124,27 @@ public abstract class Scope implements ScopeMediator{
 	public void lineAnalizerOp(String line) throws Exception {
 		//4 cases- return, assign,initialize, both
 
+		if (checkLine(line) == lineType.ASSIGNMENT.ordinal()) {
+			return assignmentLine(line, currScope);
+		}
+		
+		if (checkLine(line) == lineType.RETURN.ordinal())
+		
+		if (checkLine(line) == lineType.DECLARATION.ordinal()) {
+			return declarationLine(line, currScope);
+		}
+		
+		if (checkLine(line) == lineType.BOTH.ordinal()) {
+			return bothLine(line, currScope);
+		}
+		
+		return null;
+		
 		//return
 		if (line.matches(RegexConfig.)){
 			String returnExpression=line.substring(line.indexOf(" "), line.indexOf(";")).trim();
+//			String returnExpression = line.trim();
+//			returnExpression = returnExpression.replaceAll("( )*;?", "");
 			if(!handleReturn(returnExpression)){
 				throw new Exception();//return in incorrect location
 			}

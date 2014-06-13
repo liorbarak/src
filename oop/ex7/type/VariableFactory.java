@@ -103,11 +103,8 @@ public abstract class VariableFactory {
 	
 
 	private static int checkLine(String line) {
-		switch(line) {
-		
-		case
-		}
-		
+		return 1;
+			
 	}
 
 	private static Variable varExist(String nameOfVar, ScopeMediator currScope) {

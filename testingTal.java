@@ -42,25 +42,24 @@ public class testingTal {
 	
 	public static final String test1 = "( )*("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+VALID_METHOD_CALL+")( )*";
 	 
+
+	int a;
 	
-	public static boolean check(Type one, Type two){
+	public static boolean sameType(Type one, Type two){
 		return one.getClass().equals(two.getClass());
 	}
 	
 	public static void main(String[] args) {
+		
+		String line = "return testanmmvd2114555 ;";
+		String returnExpression=line.substring(line.indexOf(" "), line.indexOf(";")).trim();
+		System.out.println(returnExpression);
 //
 //		String testStr = "a_a";
 //		Pattern p = Pattern.compile(GENERAL_NAME);
 //		System.out.println(testStr);
 //		Matcher m = p.matcher(testStr);
 //		System.out.println(m.matches());
-
-		IntType in1 = new IntType();
-		IntType in2 = new IntType();
-		BooleanType test = new BooleanType();
-		
-		System.out.println(check(in1, in2));
-		System.out.println(check(in1, test));
 		
 	} 
 		

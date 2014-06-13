@@ -6,9 +6,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import oop.ex7.scope.MethodScope;
+import oop.ex7.scope.Scope;
 import oop.ex7.scope.ScopeMediator;
 import oop.ex7.type.Type;
-import oop.ex7.type.badEndOfLineException;
+
 
 /**
  * 
@@ -40,7 +42,7 @@ public class FileParser {
 													INPUT_STRING+"|"+
 													INPUT_BOOLEAN+")";
 	
-	
+	public static final String VALID_METHOD_CALL = GENERAL_NAME+"\\((|("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")|(\\)";
 	
 	
 	/**
@@ -112,11 +114,11 @@ public class FileParser {
 		throw new badEndOfLineException(lineNumber);
 	}
 	
-	public static void checkExpression(Type type, String expression, ScopeMediator med) {
+	public static void checkExpression(Type typeToCompare, String expression, ScopeMediator med) {
 		
 		if (analize(expression) == SOME_TYPE_VALUE) {
 			Type expType = Type.createType(expression);
-			if (!type.sameType(expType)) {
+			if (!typeToCompare.sameType(expType)) {
 				throw new Exception();
 			}
 		}
@@ -127,10 +129,28 @@ public class FileParser {
 			
 			while (tempScope != null) {
 				for(Variable var:tempScope.getVariables()) {
-					
+					if (var.getName().equals(expression)) {
+						if(!typeToCompare.sameType(var.getType())) {
+							throw new Exception();
+						}
+					}
 				}
+				tempScope = tempScope.getFatherScope();
+			}
+		}
+		
+		if (analize(expression) == VALID_METHOD_CALL) {
+			
+			ScopeMediator tempScope = med;
+			//get to the Class
+			while (tempScope.getFatherScope() != null) {
+				tempScope = tempScope.getFatherScope();
 			}
 			
+			for(Scope method:tempScope.getScopes()) {
+				MethodScope tempMethodScope = (MethodScope) method;
+				tempMethodScope.
+			}
 			
 		}
 		

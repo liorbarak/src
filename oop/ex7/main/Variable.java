@@ -37,5 +37,9 @@ public class Variable {
 		this.isInitialized = isInitialized;
 	}
 	
+	public boolean compareType(String target) {
+		return this.type.sameType(target);
+	}
+	
 	
 }
