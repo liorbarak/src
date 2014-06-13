@@ -42,8 +42,10 @@ public class FileParser {
 													INPUT_STRING+"|"+
 													INPUT_BOOLEAN+")";
 	
-	public static final String VALID_METHOD_CALL = GENERAL_NAME+"\\((|("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")|(\\)";
+	public static final String METHOD_CALL = "( )*"+GENERAL_NAME+"\\(( )*([^ ],?)*( )*\\)( )*;";
 	
+	
+	public enum expTypes {SOME_TYPE_INPUT, VAR, METHOD} 
 	
 	/**
 	 * parses original file 
@@ -116,14 +118,15 @@ public class FileParser {
 	
 	public static void checkExpression(Type typeToCompare, String expression, ScopeMediator med) {
 		
-		if (analize(expression) == SOME_TYPE_VALUE) {
+		if (analyze(expression) == expTypes.SOME_TYPE_INPUT) {
 			Type expType = Type.createType(expression);
 			if (!typeToCompare.sameType(expType)) {
 				throw new Exception();
 			}
+			return;
 		}
 		
-		if (analize(expression) == GENERAL_NAME) {
+		if (analyze(expression) == expTypes.VAR) {
 			
 			ScopeMediator tempScope = med;
 			
@@ -133,30 +136,52 @@ public class FileParser {
 						if(!typeToCompare.sameType(var.getType())) {
 							throw new Exception();
 						}
+						return;
 					}
 				}
 				tempScope = tempScope.getFatherScope();
 			}
 		}
 		
-		if (analize(expression) == VALID_METHOD_CALL) {
+		if (analyze(expression) == expTypes.METHOD) {
 			
 			ScopeMediator tempScope = med;
-			//get to the Class
+			//get to the Class scope
 			while (tempScope.getFatherScope() != null) {
 				tempScope = tempScope.getFatherScope();
 			}
 			
 			for(Scope method:tempScope.getScopes()) {
 				MethodScope tempMethodScope = (MethodScope) method;
-				tempMethodScope.
+				if (tempMethodScope.compareMethod(expression)) {
+					if(!typeToCompare.sameType(tempMethodScope.getReturnType())) {
+						throw new Exception();
+					}
+					return;
+					
+				}
 			}
-			
 		}
-		
-		
 	}
 
+	private expTypes analyze(String expression) throws Exception {
+		
+		if(expression.matches(SOME_TYPE_VALUE)) {
+			return expTypes.SOME_TYPE_INPUT;
+		}
+		
+		if(expression.matches(GENERAL_NAME)) {
+			return expTypes.VAR;
+		}
+		
+		if (expression.matches(METHOD_CALL)) {
+			return expTypes.METHOD;
+		}
+		throw new Exception();
+	}
+	
+	
+	
 	public static int  findLastCloser(ArrayList<String> relevantLines, int i) throws EndOfFileException{
 
 		int bracketCounter=1;//initial size is 1 because 
