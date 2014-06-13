@@ -2,6 +2,7 @@ package oop.ex7.scope;
 
 import java.util.ArrayList;
 
+import oop.ex7.main.FileParser;
 import oop.ex7.main.Variable;
 import oop.ex7.type.Type;
 
@@ -125,6 +126,11 @@ public class MethodScope extends Scope {
 		this.nameOfMethod = nameOfMethod;
 	}
 
+	
+	public boolean handleReturn(String returnExpression){
+		FileParser.checkExpression(this.returnType,returnExpression,this);
+		return true;
+	}
 
 
 

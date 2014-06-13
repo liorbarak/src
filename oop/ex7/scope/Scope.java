@@ -23,14 +23,14 @@ public abstract class Scope implements ScopeMediator{
 	ArrayList<Variable> innerVariables;
 	ArrayList<Scopetypes> validScopes;
 	ArrayList<Integer> validVarOperations;
-	
-	
-//no constructor at the moment
+
+
+	//no constructor at the moment
 	Scope (ArrayList<String> lines, Scope father){
 		fatherScope=father;
 		relevantLines=lines;
 	}
-	
+
 	public  void compileScope() throws InvalidScopeException, EndOfFileException, badEndOfLineException,Exception  {
 
 		ArrayList<Integer> variableIndexArray=new ArrayList<Integer>();
@@ -45,7 +45,7 @@ public abstract class Scope implements ScopeMediator{
 				int closer = FileParser.findLastCloser(relevantLines,i);
 				//replace to lineAnalizerSc
 				tempScope = ScopeFactory.createScope(relevantLines,i,closer, this);
-				
+
 				//if scope is legal in that specific scope. for example, if/while in scope class is invalid.
 				if (!isScopeValid(tempScope)){
 					throw new InvalidScopeException(tempScope);//TODO create unique exception
@@ -61,7 +61,7 @@ public abstract class Scope implements ScopeMediator{
 		for (Integer j : variableIndexArray ){
 			//replace to LineAnalizerOp
 			tempVar= VariableFactory.createVar(relevantLines.get(j), this);
-			
+
 			if (tempVar!=null){
 				innerVariables.add(tempVar);
 			}
@@ -78,16 +78,6 @@ public abstract class Scope implements ScopeMediator{
 
 
 
-	/**
-	 * 
-	 * 
-	 * @param tempVar
-	 * @return
-	 */
-	private boolean isVarExpValid(Variable tempVar) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	/**
 	 * checks if this is a legal kind of scope that could be initialized in the
@@ -99,16 +89,9 @@ public abstract class Scope implements ScopeMediator{
 	 */
 	private boolean isScopeValid(Scope tempScope) {
 		return validScopes.contains(tempScope.toString());	//does this even work? needs checking
-		}
+	}
 
 
-	public void lineAnalizerOp(String line) {
-		return; //TODO variable operations
-	}
-	
-	public void lineAnalizerSc(String line) {
-		//TODO check if scope declaration valid inside the specific scope.
-	}
 	public String toString(){
 		return stringRepresentation;
 	}
@@ -117,14 +100,86 @@ public abstract class Scope implements ScopeMediator{
 	public ArrayList<Variable> getVariables(){
 		return innerVariables;
 	}
-	
+
 	public ArrayList<Scope> getScopes(){
 		return innerScopes;
 	}
-	
+
 	public Scope getFatherScope(){
 		return fatherScope;
 	}
+	
+	/**
+	 * overridden in methodScope 
+	 * all other scopes do not have return type
+	 * @return
+	 */
+	public Type getReturnType() {
+		return null;
+	}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////operations
+	public void lineAnalizerOp(String line) throws Exception {
+		//4 cases- return, assign,initialize, both
+
+		//return
+		if (line.matches(RegexConfig.)){
+			String returnExpression=line.substring(line.indexOf(" "), line.indexOf(";")).trim();
+			if(!handleReturn(returnExpression)){
+				throw new Exception();//return in incorrect location
+			}
+		}
+		//assign
+		else if (line.matches(RegexConfig.)){
+
+		}
+		//initialize
+		else if (line.matches(RegexConfig.)){
+
+		}
+		//both
+		else if (line.matches(RegexConfig.)){
+
+		}
+
+		//TODO create specific error. happens if doesnt match any of the known operations
+		throw new Exception();
+
+	}
+
+	private boolean handleReturn(String returnExpression){
+		if (fatherScope==null){
+			return false;
+		}
+		
+		return fatherScope.handleReturn(returnExpression);
+	}
+
+	private void handleAssign(String assignExp){
+		//VariableFactory.assignment line 
+	}
+
+	private void handleInitialize(String initializeExp) throws Exception{//TODO change exception type to specific
+		 if (VariableFactory.createVar(initializeExp, this)!=null){
+			 
+		 }
+	}
+
+//maybe combine assign and init	
+//	private void handleBoth(){
+//
+//	}
+
+	
+///////////////////////////////////////////////////////////////////////////////////////////scopes
+	
+	public void lineAnalizerSc(String line) {
+		//TODO check if scope declaration valid inside the specific scope.
+	}
+
+
+
 
 
 }
