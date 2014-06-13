@@ -1,5 +1,7 @@
 package oop.ex7.type;
 
+import oop.ex7.main.RegexConfig;
+
 
 /**
  * This interface represents the type of the variable in the code - int,
@@ -40,7 +42,7 @@ public abstract class  Type {
 	 * @param check
 	 * @return
 	 */
-	public abstract boolean checkExpression(String check);
+	public abstract boolean isExpressionMatch(String check);
 
 	/**
 	 * returns the regex compatible with a specific type. the actual string
@@ -54,28 +56,28 @@ public abstract class  Type {
 	public static Type createType(String check) throws Exception{//TODO create specific exception
 		
 		
-		if (check.equals(DifferentTypes.INT.toString())){
+		if (check.matches(RegexConfig.INPUT_INT)){
 			return new IntType();
 		}
 		
-		if (check.equals(DifferentTypes.DOUBLE.toString())){
+		if (check.matches(RegexConfig.INPUT_DOUBLE)){
 			return new DoubleType();
 		}
-		if (check.equals (DifferentTypes.STRING.toString())) {
+		if (check.matches(RegexConfig.INPUT_STRING)){ 
 			return new StringType();
 		}
-		if (check.equals (DifferentTypes.BOOLEAN.toString())) {
+		if (check.matches(RegexConfig.INPUT_BOOLEAN)){ 
 			return new BooleanType();
 		}	
 		
-		if (check.equals (DifferentTypes.CHAR.toString())) {
+		if (check.matches(RegexConfig.INPUT_CHAR)){ 
 			return new CharType();
 		}
 		
-		if (check.equals (DifferentTypes.VOID.toString())) {// TODO must handle what happens if something is void
-			return new VoidType();
-		}	
-		
+//		if (check.matches(RegexConfig.INPUT_VOID)){ { {// TODO must handle what happens if something is void
+//			return new VoidType();
+//		}	
+//		
 		
 			throw new Exception();//throw exception because not a valid type string
 		

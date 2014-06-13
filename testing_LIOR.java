@@ -14,8 +14,6 @@ public class testing_LIOR {
 	
 
 
-	public static final String VALID_IF_CALL ="( )*if( )*[(].+[)]( )*[{]";
-
 
 	public static final String VALID_TYPES = "( )*(int|double|String|char|boolean)( )*";
 	public static final String GENERAL_NAME = "[_]?[^ ]+( )*";
@@ -24,7 +22,8 @@ public class testing_LIOR {
 	public static final String TYPE_PLUS_VAR = "( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*"; 
 	public static final String VALID_METHOD_DECLARE="( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*[(]"+"("+TYPE_PLUS_VAR+","+")"+"*"+TYPE_PLUS_VAR+"[)]( )*[{]( )*";
 	public static final String VALID_OPERATOR = "[+-/*]";
-
+	public static final String VALID_
+	
 	public enum vars {INT , STUFF, CHAR };
 	/**
 	 * @param args
