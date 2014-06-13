@@ -43,7 +43,7 @@ public class FileParser {
 													INPUT_STRING+"|"+
 													INPUT_BOOLEAN+")";
 	
-	public static final String METHOD_CALL = "( )*"+GENERAL_NAME+"\\(( )*([^ ],?)*( )*\\)( )*;";
+	public static final String METHOD_CALL = "( )*"+GENERAL_NAME+"\\([\\d]*[\\D]*\\)( )*;";
 	
 	
 	public enum expTypes {SOME_TYPE_INPUT, VAR, METHOD} 
@@ -119,7 +119,7 @@ public class FileParser {
 	
 	public static void checkExpression(Type typeToCompare, String expression, ScopeMediator med) {
 		
-		if (analyze(expression) == expTypes.SOME_TYPE_INPUT) {
+		if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
 			Type expType = Type.createType(expression);
 			if (!typeToCompare.sameType(expType)) {
 				throw new Exception();
@@ -127,7 +127,7 @@ public class FileParser {
 			return;
 		}
 		
-		if (analyze(expression) == expTypes.VAR) {
+		if (analyze(expression).equals(expTypes.VAR)) {
 			
 			ScopeMediator tempScope = med;
 			
@@ -144,7 +144,7 @@ public class FileParser {
 			}
 		}
 		
-		if (analyze(expression) == expTypes.METHOD) {
+		if (analyze(expression).equals(expTypes.METHOD)) {
 			
 			ScopeMediator tempScope = med;
 			//get to the Class scope
@@ -180,8 +180,6 @@ public class FileParser {
 		}
 		throw new Exception();
 	}
-	
-	
 	
 	public static int  findLastCloser(ArrayList<String> relevantLines, int i) throws EndOfFileException{
 
