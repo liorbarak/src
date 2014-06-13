@@ -22,16 +22,9 @@ public class Variable {
 		return type;
 	}
 
-	public void setType(Type type) {
-		this.type = type;
-	}
 
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public boolean isInitialized() {
