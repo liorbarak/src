@@ -28,7 +28,12 @@ public class testingTal {
 	public static final String TYPE_CHAR = "( )*char( )*";
 	public static final String INPUT_CHAR = "( )*'[^']'( )*";
 
-	
+	public static final String SOME_TYPE_VALUE = "("+INPUT_INT+"|"+
+			INPUT_DOUBLE+"|"+
+			INPUT_CHAR+"|"+
+			INPUT_STRING+"|"+
+			INPUT_BOOLEAN+")";
+
 
 //	public static final String VALID_GENERAL_EXP = "(("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")|("+VALID_METHOD_CALL+"))( )*;( )*";
 	
@@ -43,9 +48,28 @@ public class testingTal {
 	}
 	
 	public static void main(String[] args) {
-	
-		String methodCall = "   foo(foo());";
-		System.out.println(methodCall.matches(METHOD_CALL));
+		String line = "    foo   (  a c  ,   b  );";
+		String callName=line.substring(0, line.indexOf("(")).trim();
+		String variablesCall=line.substring(line.indexOf("(")+1,line.indexOf(")")).trim();
+		//Need to check valid expression structure
+		String[] stringVars=variablesCall.split(",");
+		String[] expVars = new String[stringVars.length];
+		
+		for(int i = 0; i< stringVars.length; i++) {
+			expVars[i] = stringVars[i].trim();
+			
+		}
+		for (String str:expVars) {
+			if (str.contains(" ")) {
+				System.out.println("Var not valid!");
+				return;
+			}
+		}
+		System.out.println(callName);
+		System.out.println(variablesCall);
+		for(String str:expVars) {
+			System.out.println(str);
+		}
 	} 
 		
 //			

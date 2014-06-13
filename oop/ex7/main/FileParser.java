@@ -117,7 +117,7 @@ public class FileParser {
 		throw new badEndOfLineException(lineNumber);
 	}
 	
-	public static void checkExpression(Type typeToCompare, String expression, ScopeMediator med) {
+	public static void checkExpression(Type typeToCompare, String expression, ScopeMediator med) throws Exception {
 		
 		if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
 			Type expType = Type.createType(expression);
@@ -154,12 +154,11 @@ public class FileParser {
 			
 			for(Scope method:tempScope.getScopes()) {
 				MethodScope tempMethodScope = (MethodScope) method;
-				if (tempMethodScope.compareMethod(expression)) {
+				if (tempMethodScope.compareMethod(expression, med)) {
 					if(!typeToCompare.sameType(tempMethodScope.getReturnType())) {
 						throw new Exception();
 					}
-					return;
-					
+					return;	
 				}
 			}
 		}

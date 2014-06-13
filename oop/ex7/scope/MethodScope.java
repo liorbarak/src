@@ -46,53 +46,27 @@ public class MethodScope extends Scope {
 
 
 
-	public static MethodScope checkMethod(String line,Scope myScope) {
-
-		String callName=line.substring(0, line.indexOf("("));
-		String varCall=line.substring(line.indexOf("("),line.indexOf(")"));
-		String[] stringVars=line.split(",");
-		ArrayList<Type> callVarsType;
-
-		for (String i: stringVars){
-			//push into callvars the type of i. need to implement a method
+	public boolean compareMethod(String line, ScopeMediator med) {
+		
+		String callName = getMethodCallNameFromExp(line);
+		if (!this.getNameOfMethod().equals(callName)) {
+			return false;
 		}
-
-
-		//go to main class
-		Scope tempScope= myScope;
-		while(tempScope.getFatherScope()!=null){
-			tempScope=tempScope.getFatherScope();
-		}
-
-		for (Scope i:tempScope.getScopes()){
-			MethodScope myMethod=(MethodScope)(i);//casting scope to method. there are only method in main class
-			ArrayList<Variable> currentVars= myMethod.getInputVars();
-
-			if (myMethod.getNameOfMethod().equals(callName)){
-				if (callVarsType.size()!=currentVars.size()){
-					return null;
-				}
-				for (int j=0; j<callVarsType.size();j++){
-					if (!callVarsType.get(j).equals(currentVars.get(j).getType())){//TODO check if this shit even works
-						return null;
-					}
-				}
-				return myMethod;
+		
+		String[] varsCall = getMethodVarsFromCallExp(line);
+		
+		for (int i = 0; i < this.innerVariables.size(); i++) {
+			try {
+				FileParser.checkExpression(this.innerVariables.get(i).getType(), varsCall[i], med);
 			}
-
+			catch(Exception ex) {
+				System.out.println(ex.getMessage());
+				System.exit(-1);
+			}
 		}
-
-		return null;
+		return true;
 	}
-
-
-
-
-
-
-
-
-
+			
 
 
 	@Override
@@ -143,10 +117,31 @@ public class MethodScope extends Scope {
 
 	
 	public boolean handleReturn(String returnExpression){
-		FileParser.checkExpression(this.returnType,returnExpression,this);
+		try {
+			FileParser.checkExpression(this.returnType,returnExpression,this);
+		}
+		catch(Exception ex) {
+			ex.getMessage();
+			System.exit(-1);
+		}
 		return true;
 	}
+	
+	private static String getMethodCallNameFromExp(String call) {
+		return call.substring(0, call.indexOf("(")).trim();
+	}
 
+	private static String[] getMethodVarsFromCallExp(String call) {
+		String variablesCall = call.substring(call.indexOf("(")+1,call.indexOf(")")).trim();
+		//Need to check valid expression structure
+		String[] stringVars=variablesCall.split(",");
+		String[] expVars = new String[stringVars.length];
+		
+		for(int i = 0; i< stringVars.length; i++) {
+			expVars[i] = stringVars[i].trim();
+		}
+		return expVars;
+	}
 
 
 }
