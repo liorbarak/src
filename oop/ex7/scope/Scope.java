@@ -126,7 +126,7 @@ public abstract class Scope implements ScopeMediator{
 		//4 cases- return, assign,initialize, both
 
 		//return
-		if (line.matches(RegexConfig.)){
+		if (line.matches(RegexConfig.lineType.RETURN.getRegex())){
 			String returnExpression=line.substring(line.indexOf(" "), line.indexOf(";")).trim();
 			if(!handleReturn(returnExpression)){
 				throw new Exception();//return in case of incorrect location
@@ -134,15 +134,15 @@ public abstract class Scope implements ScopeMediator{
 		}
 
 		//assign
-		else if (line.matches(RegexConfig.)){
+		else if (line.matches(RegexConfig.lineType.ASSIGNMENT.getRegex())){
 			assignmentLine(line);
 		}
 		//initialize
-		else if (line.matches(RegexConfig.)){
+		else if (line.matches(RegexConfig.lineType.DECLARATION.getRegex())){
 			declarationLine(line);
 		}
 		//both
-		else if (line.matches(RegexConfig.)){
+		else if (line.matches(RegexConfig.lineType.BOTH.getRegex())){
 			bothLine(line);
 		}
 
@@ -286,14 +286,14 @@ public abstract class Scope implements ScopeMediator{
 	///////////////////////////////////////////////////////////////////////////////////////////scopes
 
 	//public void lineAnalizerSc(String line) {
-	public void lineAnalizerSc (ArrayList<String> lines,int start, int finish){
+	public void lineAnalizerSc (ArrayList<String> lines,int start, int finish) throws Exception{
 		
 		String firstline=lines.get(start);
 		ArrayList<String> subScopeLines=(ArrayList<String>) (lines.subList(start, finish));
 		
 		
 		//method
-		if (firstline.matches(RegexConfig.)){
+		if (firstline.matches(RegexConfig.VALID_METHOD_DECLARE)){
 			
 			if (fatherScope!=null){
 				throw new InvalidScopeException(start);
@@ -302,7 +302,7 @@ public abstract class Scope implements ScopeMediator{
 			methodInput(lines, start, finish);
 		}
 		//while
-		else if (firstline.matches(RegexConfig.)){
+		else if (firstline.matches(RegexConfig.VALID_WHILE_CALL)){
 			if (fatherScope==null){
 				throw new InvalidScopeException(start);
 			}
@@ -311,7 +311,7 @@ public abstract class Scope implements ScopeMediator{
 			innerScopes.add( new WhileScope(subScopeLines,start,finish,this));
 		}
 		//if
-		else if (firstline.matches(RegexConfig.)){
+		else if (firstline.matches(RegexConfig.VALID_IF_CALL)){
 			if (fatherScope==null){
 				throw new InvalidScopeException(start);
 			}
@@ -322,7 +322,6 @@ public abstract class Scope implements ScopeMediator{
 		
 		throw new BadLineSyntaxException(start, firstline);
 		
-	//TODO check if scope declaration valid inside the specific scope.
 }
 
 	
