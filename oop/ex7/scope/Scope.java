@@ -43,6 +43,7 @@ public abstract class Scope implements ScopeMediator{
 
 			if (lineType==lineTypes.SCOPE.ordinal()){
 				int closer = FileParser.findLastCloser(relevantLines,i);
+				//replace to lineAnalizerSc
 				tempScope = ScopeFactory.createScope(relevantLines,i,closer, this);
 				
 				//if scope is legal in that specific scope. for example, if/while in scope class is invalid.
@@ -58,7 +59,7 @@ public abstract class Scope implements ScopeMediator{
 
 		}
 		for (Integer j : variableIndexArray ){
-			
+			//replace to LineAnalizerOp
 			tempVar= VariableFactory.createVar(relevantLines.get(j), this);
 			
 			if (tempVar!=null){

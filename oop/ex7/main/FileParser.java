@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import oop.ex7.scope.ScopeMediator;
+import oop.ex7.type.Type;
 import oop.ex7.type.badEndOfLineException;
 
 /**
@@ -81,6 +83,10 @@ public class FileParser {
 			return 2;
 		}
 		throw new badEndOfLineException(lineNumber);
+	}
+	
+	public static void checkExpression(Type type, String expression, ScopeMediator med) {
+		//TODO implement
 	}
 
 
