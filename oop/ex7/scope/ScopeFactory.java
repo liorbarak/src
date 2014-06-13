@@ -8,12 +8,6 @@ public abstract class ScopeFactory {
 	public static final String WHILE_LINE ="";
 	public static final String IF_LINE="";
 	public static final String METHOD_LINE=""; 
-//	public static final String 
-//	public static final String 
-//	public static final String 
-
-	
-	
 	
 	public static Scope createScope(ArrayList<String> lines,int start, int finish,ScopeMediator myScope){//throws exceptions
 		//TODO split line to words

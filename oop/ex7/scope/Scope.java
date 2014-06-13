@@ -2,9 +2,12 @@ package oop.ex7.scope;
 
 import java.util.ArrayList;
 
+import oop.ex7.main.BadLineSyntaxException;
 import oop.ex7.main.EndOfFileException;
 import oop.ex7.main.FileParser;
+import oop.ex7.main.RegexConfig;
 import oop.ex7.main.Variable;
+import oop.ex7.type.BooleanType;
 import oop.ex7.type.Type;
 import oop.ex7.type.VarExistException;
 import oop.ex7.type.VariableFactory;
@@ -35,7 +38,7 @@ public abstract class Scope implements ScopeMediator{
 
 	public  void compileScope() throws InvalidScopeException, EndOfFileException, badEndOfLineException,Exception  {
 
-		ArrayList<Integer> variableIndexArray=new ArrayList<Integer>();
+		ArrayList<Integer> opIndexArray=new ArrayList<Integer>();
 		int lineType;
 		Variable tempVar;
 		Scope tempScope;
@@ -46,29 +49,23 @@ public abstract class Scope implements ScopeMediator{
 			if (lineType==lineTypes.SCOPE.ordinal()){
 				int closer = FileParser.findLastCloser(relevantLines,i);
 				//replace to lineAnalizerSc
-				tempScope = ScopeFactory.createScope(relevantLines,i,closer, this);
-
-				//if scope is legal in that specific scope. for example, if/while in scope class is invalid.
-				if (!isScopeValid(tempScope)){
-					throw new InvalidScopeException(tempScope);//TODO create unique exception
-				}
-				innerScopes.add(tempScope);
+				//tempScope = ScopeFactory.createScope(relevantLines,i,closer, this);
+				
+				lineAnalizerSc(relevantLines,i,closer);
+				
+				//innerScopes.add(tempScope);
 				i=closer;
 			}
 			else{
-				variableIndexArray.add(i);
+				opIndexArray.add(i);
 			}
 
 		}
-		for (Integer j : variableIndexArray ){
-			//replace to LineAnalizerOp
-			tempVar= VariableFactory.createVar(relevantLines.get(j), this);
+		for (Integer j : opIndexArray ){
 
-			if (tempVar!=null){
-				innerVariables.add(tempVar);
-			}
-
+			lineAnalizerOp(relevantLines.get(j));
 		}
+
 		//recursively calls all the crap in the universe. 
 		for (Scope inner:innerScopes){
 			inner.compileScope(); 
@@ -110,7 +107,7 @@ public abstract class Scope implements ScopeMediator{
 	public Scope getFatherScope(){
 		return fatherScope;
 	}
-	
+
 	/**
 	 * overridden in methodScope 
 	 * all other scopes do not have return type
@@ -121,44 +118,29 @@ public abstract class Scope implements ScopeMediator{
 	}
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////operations
+	/////////////////////////////////////////////////////////////////////////////////////////////////operations
 	public void lineAnalizerOp(String line) throws Exception {
 		//4 cases- return, assign,initialize, both
-//
-//		if (checkLine(line) == lineType.ASSIGNMENT.ordinal()) {
-//			return assignmentLine(line, currScope);
-//		}
-//		
-//		if (checkLine(line) == lineType.RETURN.ordinal())
-//		
-//		if (checkLine(line) == lineType.DECLARATION.ordinal()) {
-//			return declarationLine(line, currScope);
-//		}
-//		
-//		if (checkLine(line) == lineType.BOTH.ordinal()) {
-//			return bothLine(line, currScope);
-//		}
-//		
-//		return null;
-//		
+
 		//return
 		if (line.matches(RegexConfig.)){
 			String returnExpression=line.substring(line.indexOf(" "), line.indexOf(";")).trim();
 			if(!handleReturn(returnExpression)){
-				throw new Exception();//return in incorrect location
+				throw new Exception();//return in case of incorrect location
 			}
 		}
+
 		//assign
 		else if (line.matches(RegexConfig.)){
-			
+			assignmentLine(line);
 		}
 		//initialize
 		else if (line.matches(RegexConfig.)){
-
+			declarationLine(line);
 		}
 		//both
 		else if (line.matches(RegexConfig.)){
-
+			bothLine(line);
 		}
 
 		//TODO create specific error. happens if doesnt match any of the known operations
@@ -170,50 +152,31 @@ public abstract class Scope implements ScopeMediator{
 		if (fatherScope==null){
 			return false;
 		}
-		
+
 		return fatherScope.handleReturn(returnExpression);
 	}
 
-	private void handleAssign(String assignExp){
-		//VariableFactory.assignment line 
-	}
 
-	private void handleInitialize(String initializeExp) throws Exception{//TODO change exception type to specific
-		 if (VariableFactory.createVar(initializeExp, this)!=null){
-			 
-		 }
-	}
 
-//maybe combine assign and init	
-//	private void handleBoth(){
-//
-//	}
-
-	
-///////////////////////////////////////////////////////////////////////////////////////////scopes
-	
-	public void lineAnalizerSc(String line) {
-		//TODO check if scope declaration valid inside the specific scope.
-	}
 
 	private void assignmentLine(String line) throws Exception {
-		
+
 		Variable varTemp;
-		
+
 		String[] stringsInLine = getAssigmentStr(line);		
 		String nameOfVar = stringsInLine[0];
 		String inputValue = stringsInLine[1];
-		
+
 		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
 		varTemp = this.varExistInAll(nameOfVar);
-		
-		
-		
+
+
+
 		//if the variable doesn't exist:
 		if (varTemp == null) {
 			throw new VarExistException();
 		}
-		
+
 		//check if the right expression is of the same type.
 		if (varTemp.getType().checkExpression(inputValue)) {
 			varTemp.setInitialized(true);
@@ -221,16 +184,16 @@ public abstract class Scope implements ScopeMediator{
 		}
 		throw new Exception(); //TODO
 	}
-	
+
 	private void declarationLine(String line) throws Exception {
-		
+
 		Variable varTemp;
 		//save the left expression as the name of the variable
 		//save the right expression as the input value
 		String[] stringsInLine = getDecStr(line);
 		String typeOfVar = stringsInLine[0];
 		String nameOfVar = stringsInLine[1];
-	
+
 		//if the variable exists, put it into varTemp, else, put null into varTemp.
 		varTemp = this.varExist(nameOfVar);
 		//if the variable doesn't exist:
@@ -239,9 +202,9 @@ public abstract class Scope implements ScopeMediator{
 		}
 		throw new Exception();	
 	}
-	
+
 	private void bothLine(String line) {
-		
+
 		Variable varTemp;
 		//save the left expression as the name of the variable
 		//save the right expression as the input value
@@ -249,7 +212,7 @@ public abstract class Scope implements ScopeMediator{
 		String[] stringsInLine = getBothStr(linetemp);
 		String decLine = stringsInLine[0];
 		String assLine = stringsInLine[1];
-		
+
 		try {
 			this.declarationLine(decLine);
 			this.assignmentLine(assLine);	
@@ -257,7 +220,7 @@ public abstract class Scope implements ScopeMediator{
 		catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
-		
+
 	}
 
 	private static String[] getAssigmentStr(String line) {
@@ -268,7 +231,7 @@ public abstract class Scope implements ScopeMediator{
 		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
 		return stringsInLine;
 	}
-	
+
 	private static String[] getDecStr(String line) {
 		//1 - index of name of var
 		String linetemp = line.trim();
@@ -276,9 +239,9 @@ public abstract class Scope implements ScopeMediator{
 		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
 		return stringsInLine;
 	}
-	
+
 	private static String[] getBothStr(String line) {
-		
+
 		String declarationLine =  getAssigmentStr(line)[0];
 		String[] declaration = getDecStr(declarationLine);
 		String inputValue = getAssigmentStr(line)[1];
@@ -286,37 +249,84 @@ public abstract class Scope implements ScopeMediator{
 		String assLine = declaration[1]+"="+inputValue;
 		String[] both = {decLine, assLine};
 		return both;
-		
+
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////scopes
 
-
-	private Variable varExist(String nameOfVar) {
+	//public void lineAnalizerSc(String line) {
+	public void lineAnalizerSc (ArrayList<String> lines,int start, int finish){
 		
-		Scope tempScope = this; 
+		String firstline=lines.get(start);
+		ArrayList<String> subScopeLines=(ArrayList<String>) (lines.subList(start, finish));
 		
-		for (Variable varOfScope:tempScope.getVariables()) {
-			if (varOfScope.getName().equals(nameOfVar)) {
-				return varOfScope;
+		
+		//method
+		if (firstline.matches(RegexConfig.)){
+			
+			if (fatherScope!=null){
+				throw new InvalidScopeException(start);
 			}
+			
+			innerScopes.add( new MethodScope(subScopeLines,this));
 		}
-		return null;
-	}
-	
-	private Variable varExistInAll(String nameOfVar) {
-		
-		Scope tempScope = this;
-		Variable tempVar;
-		while(tempScope != null) {
-			tempVar = tempScope.varExist(nameOfVar);
-			if (tempVar != null) {
-				return tempVar;
+		//while
+		else if (firstline.matches(RegexConfig.)){
+			if (fatherScope==null){
+				throw new InvalidScopeException(start);
 			}
-			tempScope = tempScope.getFatherScope();
+			
+			FileParser.checkExpression(new BooleanType(), getInsideBrackets(firstline), this);
+			innerScopes.add( new WhileScope(subScopeLines,this));
 		}
-		return null;
+		//if
+		else if (firstline.matches(RegexConfig.)){
+			if (fatherScope==null){
+				throw new InvalidScopeException(start);
+			}
+			
+			FileParser.checkExpression(new BooleanType(), getInsideBrackets(firstline), this);
+			innerScopes.add( new IfScope(subScopeLines,this));
+		}
+		
+		throw new BadLineSyntaxException(start, firstline);
+		
+	//TODO check if scope declaration valid inside the specific scope.
+}
+
+	private static String getInsideBrackets(String line){
+		return line=line.substring(line.indexOf("("),line.lastIndexOf(")")).trim();
 	}
-	
-	
+
+
+
+
+private Variable varExist(String nameOfVar) {
+
+	Scope tempScope = this; 
+
+	for (Variable varOfScope:tempScope.getVariables()) {
+		if (varOfScope.getName().equals(nameOfVar)) {
+			return varOfScope;
+		}
+	}
+	return null;
+}
+
+private Variable varExistInAll(String nameOfVar) {
+
+	Scope tempScope = this;
+	Variable tempVar;
+	while(tempScope != null) {
+		tempVar = tempScope.varExist(nameOfVar);
+		if (tempVar != null) {
+			return tempVar;
+		}
+		tempScope = tempScope.getFatherScope();
+	}
+	return null;
+}
+
+
 
 }
