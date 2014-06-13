@@ -14,6 +14,7 @@ public class IntType extends Type {
 
 	@Override
 	public boolean isExpressionMatch(String check) {
+		
 		return check.matches(RegexConfig.INPUT_INT);
 	}
 
