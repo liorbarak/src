@@ -20,15 +20,15 @@ enum lineTypes {SCOPE, VARIABLE};
 
 
 public abstract class Scope implements ScopeMediator{
-	String stringRepresentation;
+	//String stringRepresentation;
 	Scope fatherScope;
 	ArrayList<String> relevantLines;
 	int startIndex;
 	int endIndex;
 	ArrayList<Scope> innerScopes;
 	ArrayList<Variable> innerVariables;
-	ArrayList<Scopetypes> validScopes;
-	ArrayList<Integer> validVarOperations;
+//	ArrayList<Scopetypes> validScopes;
+//	ArrayList<Integer> validVarOperations;
 
 
 	//no constructor at the moment
@@ -81,22 +81,22 @@ public abstract class Scope implements ScopeMediator{
 
 
 
-	/**
-	 * checks if this is a legal kind of scope that could be initialized in the
-	 * current scope.
-	 * example- class scope can only contain method scopes
-	 * example2-method scope can only contain if/while
-	 * @param tempScope
-	 * @return
-	 */
-	private boolean isScopeValid(Scope tempScope) {
-		return validScopes.contains(tempScope.toString());	//does this even work? needs checking
-	}
+//	/**
+//	 * checks if this is a legal kind of scope that could be initialized in the
+//	 * current scope.
+//	 * example- class scope can only contain method scopes
+//	 * example2-method scope can only contain if/while
+//	 * @param tempScope
+//	 * @return
+//	 */
+//	private boolean isScopeValid(Scope tempScope) {
+//		return validScopes.contains(tempScope.toString());	//does this even work? needs checking
+//	}
 
 
-	public String toString(){
-		return stringRepresentation;
-	}
+//	public String toString(){
+//		return stringRepresentation;
+//	}
 
 
 	public ArrayList<Variable> getVariables(){
@@ -308,7 +308,7 @@ public abstract class Scope implements ScopeMediator{
 			}
 			
 			FileParser.checkExpression(new BooleanType(), getInsideBrackets(firstline), this);
-			innerScopes.add( new WhileScope(subScopeLines,this));
+			innerScopes.add( new WhileScope(subScopeLines,start,finish,this));
 		}
 		//if
 		else if (firstline.matches(RegexConfig.)){
@@ -317,7 +317,7 @@ public abstract class Scope implements ScopeMediator{
 			}
 			
 			FileParser.checkExpression(new BooleanType(), getInsideBrackets(firstline), this);
-			innerScopes.add( new IfScope(subScopeLines,this));
+			innerScopes.add( new IfScope(subScopeLines,start,finish,this));
 		}
 		
 		throw new BadLineSyntaxException(start, firstline);
@@ -357,7 +357,8 @@ public abstract class Scope implements ScopeMediator{
 			inputVars.add(new Variable(TypeAndName[0], TypeAndName[1]));
 		}
 		
-		innerScopes.add(new MethodScope (lines,start,finish,Type.createType(returnType),methodName,inputVars, this)   );
+		innerScopes.add(new MethodScope (lines,start,finish,
+				Type.createType(returnType),methodName,inputVars, this)   );
 		
 	}
 

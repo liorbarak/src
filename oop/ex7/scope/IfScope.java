@@ -6,13 +6,13 @@ public class IfScope extends Scope {
 
 	
 	
-	public IfScope(ArrayList<String> lines, Scope father){
-		super(lines, father);
-		stringRepresentation=Scopetypes.IF.name();
+	public IfScope(ArrayList<String> lines,int begin,int finish, Scope father){
+		super(lines,begin,finish, father);
+		//stringRepresentation=Scopetypes.IF.name();
 		
 		
-		validScopes.add(Scopetypes.WHILE);
-		validScopes.add(Scopetypes.IF);
+//		validScopes.add(Scopetypes.WHILE);
+//		validScopes.add(Scopetypes.IF);
 	}
 	
 	
