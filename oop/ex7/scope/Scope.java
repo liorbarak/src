@@ -12,6 +12,7 @@ import oop.ex7.type.badEndOfLineException;
 
 
 enum Scopetypes {CLASS,METHOD,IF,WHILE};
+enum lineTypes {SCOPE, VARIABLE};
 
 
 public abstract class Scope implements ScopeMediator{
@@ -40,10 +41,11 @@ public abstract class Scope implements ScopeMediator{
 		for(int i=0;i<relevantLines.size();i++){
 			lineType=FileParser.scopeOrVariable(relevantLines.get(i),i);//throws if not valid scope or var declaration
 
-			if (lineType==1){
+			if (lineType==lineTypes.SCOPE.ordinal()){
 				int closer = FileParser.findLastCloser(relevantLines,i);
 				tempScope = ScopeFactory.createScope(relevantLines,i,closer, this);
-
+				
+				//if scope is legal in that specific scope. for example, if/while in scope class is invalid.
 				if (!isScopeValid(tempScope)){
 					throw new InvalidScopeException(tempScope);//TODO create unique exception
 				}
@@ -99,7 +101,13 @@ public abstract class Scope implements ScopeMediator{
 		}
 
 
+	public void lineAnalizerOp(String line) {
+		return; //TODO variable operations
+	}
 	
+	public void lineAnalizerSc(String line) {
+		//TODO check if scope declaration valid inside the specific scope.
+	}
 	public String toString(){
 		return stringRepresentation;
 	}

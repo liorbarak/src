@@ -109,6 +109,10 @@ public abstract class  Type {
 			throw new Exception();//throw exception because not a valid type string
 		
 	}
+	
+	public static boolean sameType(Type one, Type two){
+		return one.getClass().equals(two.getClass());
+	}
 		
 //		switch(check){
 //		case DifferentTypes.INT.toString():

@@ -19,7 +19,8 @@ public abstract class VariableFactory {
 	public enum lineType {
 		DECLARATION (validTypes+"[ ]+"+GENERAL_NAME+"[ ]*;[ ]*"),
 		ASSIGNMENT (GENERAL_NAME+"[ ]*=[ ]*"+VALID_EXP+"[ ]*;[ ]*"), 
-		BOTH ();
+		BOTH (),
+		RETURN ();
 		
 		private static final String regex;
 		
@@ -86,6 +87,8 @@ public abstract class VariableFactory {
 		if (checkLine(line) == lineType.ASSIGNMENT.ordinal()) {
 			return assignmentLine(line, currScope);
 		}
+		
+		if (checkLine(line) == lineType.RETURN.ordinal())
 		
 		if (checkLine(line) == lineType.DECLARATION.ordinal()) {
 			return declarationLine(line, currScope);

@@ -34,7 +34,7 @@ public class testingTal {
 													INPUT_BOOLEAN+")";
 	
 	
-	public String METHOD_CALL = GENERAL_NAME+"\\((|("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")\\)";
+	public static final String METHOD_CALL = GENERAL_NAME+"\\((|("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")\\)";
 	public static final String VALID_METHOD_CALL = GENERAL_NAME+"\\((|("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")|(\\)";
 	
 
@@ -43,13 +43,24 @@ public class testingTal {
 	public static final String test1 = "( )*("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+VALID_METHOD_CALL+")( )*";
 	 
 	
+	public static boolean check(Type one, Type two){
+		return one.getClass().equals(two.getClass());
+	}
+	
 	public static void main(String[] args) {
+//
+//		String testStr = "a_a";
+//		Pattern p = Pattern.compile(GENERAL_NAME);
+//		System.out.println(testStr);
+//		Matcher m = p.matcher(testStr);
+//		System.out.println(m.matches());
 
-		String testStr = "a_a";
-		Pattern p = Pattern.compile(GENERAL_NAME);
-		System.out.println(testStr);
-		Matcher m = p.matcher(testStr);
-		System.out.println(m.matches());
+		IntType in1 = new IntType();
+		IntType in2 = new IntType();
+		BooleanType test = new BooleanType();
+		
+		System.out.println(check(in1, in2));
+		System.out.println(check(in1, test));
 		
 	} 
 		
