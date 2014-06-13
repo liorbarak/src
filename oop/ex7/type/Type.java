@@ -11,14 +11,8 @@ package oop.ex7.type;
  */
 public abstract class  Type {
 	
-//	public static final String INT = "int";
-//	public static final String DOUBLE = "double";
-//	public static final String STRING = "String";
-//	public static final String BOOLEAN = "boolean";
-//	public static final String CHAR = "char";
-//	public static final String VOID = "void";
 
-	
+	//use constants from regexconfig file
 	enum DifferentTypes{
 		INT("int"),
 	    DOUBLE ("double"),
@@ -39,32 +33,7 @@ public abstract class  Type {
 	}
 	
 	
-	//	@Override
-	//	/**
-	//	 * This method overrides the toString of Object class. 
-	//	 * @return The string representation of the Type: "String", "int", "char", 
-	//	 * exc.
-	//	 */
-	//	public String toString();
-	//	
-	//	/**
-	//	 * This method checks if the code contains a correct variable declaration.
-	//	 * for example, if the code is: "int a;", the method will check if the word
-	//	 * int is correct, and in this case the method should do nothing. for
-	//	 * example, if the code is: "inti a;", the varibale declaration is 
-	//	 * incorrect (inti instead of int) and the method should throw an Exception
-	//	 */
-	//	public void checkType(String strToCheck) throws BadVarDeclarationException;
-	//	
-	//	/**
-	//	 * This method checks if the input expression in the code matches the 
-	//	 * variable type. For example, if the code has the line: "int a = 3;", the
-	//	 * input expression is the number "3", and in this case the method should
-	//	 * do nothing. if the code contains the line: "int a = "str";, the method
-	//	 * should throw a BadInputException and inform the user about the error. 
-	//	 * @throw BadInputException
-	//	 * @return
-	//	 */
+
 
 	/**
 	 * checks if a String expression is of the correct type for a specific type
@@ -80,6 +49,8 @@ public abstract class  Type {
 	 */
 	public abstract String getRegex();
 	
+	
+	//change to switch case
 	public static Type createType(String check) throws Exception{//TODO create specific exception
 		
 		
@@ -114,24 +85,6 @@ public abstract class  Type {
 		return this.getClass().equals(target.getClass());
 	}
 		
-//		switch(check){
-//		case DifferentTypes.INT.toString():
-//			return new IntType();
-//		case DifferentTypes.DOUBLE.toString():
-//			return new DoubleType();
-//		case DifferentTypes.STRING.toString() :
-//			return new StringType();
-//		case DifferentTypes.BOOLEAN.toString() :
-//			return new BooleanType();
-//		case DifferentTypes.CHAR.toString() :
-//			return new CharType();
-//		case DifferentTypes.VOID.toString() :
-//			return new VoidType();
-//		default:
-//			throw new Exception();//throw exception because not a valid type string
-//			break;
-//		}
-//		return null;
-//	}
+
 
 }

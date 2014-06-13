@@ -9,6 +9,14 @@ package oop.ex7.main;
  */
 public class RegexConfig {
 
+//	public static final String INT = "int";
+//	public static final String DOUBLE = "double";
+//	public static final String STRING = "String";
+//	public static final String BOOLEAN = "boolean";
+//	public static final String CHAR = "char";
+//	public static final String VOID = "void";
+	
+	
 	//not necessarily needed. 
 	public enum lineType {
 		DECLARATION (validTypes+"[ ]+"+GENERAL_NAME+"[ ]*;[ ]*"),
