@@ -37,6 +37,8 @@ public abstract class Scope implements ScopeMediator{
 		relevantLines=lines;
 		startIndex=begin;
 		endIndex=end;
+		innerScopes = new ArrayList<Scope>();
+		innerVariables = new ArrayList<Variable>();
 	}
 
 	public  void compileScope() throws InvalidScopeException, EndOfFileException, badEndOfLineException,Exception  {
@@ -136,14 +138,17 @@ public abstract class Scope implements ScopeMediator{
 		//assign
 		else if (line.matches(RegexConfig.lineType.ASSIGNMENT.getRegex())){
 			assignmentLine(line);
+			return;
 		}
 		//initialize
 		else if (line.matches(RegexConfig.lineType.DECLARATION.getRegex())){
 			declarationLine(line);
+			return;
 		}
 		//both
 		else if (line.matches(RegexConfig.lineType.BOTH.getRegex())){
 			bothLine(line);
+			return;
 		}
 
 		//TODO create specific error. happens if doesnt match any of the known operations
@@ -181,11 +186,10 @@ public abstract class Scope implements ScopeMediator{
 		}
 
 		//check if the right expression is of the same type.
-		if (varTemp.getType().checkExpression(inputValue)) {
-			varTemp.setInitialized(true);
-			return;
-		}
-		throw new Exception(); //TODO
+		FileParser.checkExpression(varTemp.getType(), inputValue, this);
+		varTemp.setInitialized(true);
+		return;
+		
 	}
 
 	private void declarationLine(String line) throws Exception {
@@ -202,6 +206,7 @@ public abstract class Scope implements ScopeMediator{
 		//if the variable doesn't exist:
 		if (varTemp == null) {
 			this.innerVariables.add(new Variable(typeOfVar, nameOfVar));
+			return;
 		}
 		throw new Exception();	
 	}

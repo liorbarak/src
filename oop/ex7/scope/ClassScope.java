@@ -8,7 +8,7 @@ import oop.ex7.main.FileParser;
 public class ClassScope extends Scope {
 
 	public ClassScope(ArrayList<String> lines){
-		super(lines,0,lines.size()-1, null);
+		super(lines,0,lines.size(), null);
 //		stringRepresentation=Scopetypes.CLASS.name();
 //		
 //		validScopes.add(Scopetypes.METHOD);

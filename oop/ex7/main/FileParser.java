@@ -62,16 +62,17 @@ public class FileParser {
 		Scanner myScan= new Scanner(origin);
 		String currentLine;
 		int lineNumber=0;
-		currentLine=myScan.nextLine();
-
-		while (currentLine!=null){
-			scopeOrVariable(currentLine,lineNumber);
-
+//		currentLine=myScan.nextLine();
+		
+		while (myScan.hasNext()){
+//			fileLines.add(currentLine);
+//			scopeOrVariable(currentLine,lineNumber);
+			currentLine=myScan.nextLine();
 			if(!isLineCommentOrBlank(currentLine)) {//if it is commented simply continue and dont add to list
 				fileLines.add(currentLine);
 			}
 
-			currentLine=myScan.nextLine();
+//			currentLine=myScan.nextLine();
 			lineNumber++;
 		}
 
@@ -86,8 +87,8 @@ public class FileParser {
 	 * @return
 	 */
 	private static boolean isLineCommentOrBlank(String currentLine) {
-		// TODO Auto-generated method stub
-		return false;
+		return currentLine.matches(RegexConfig.BLANK_LINE) || currentLine.matches(RegexConfig.COMMENT); 
+//		return false;
 	}
 
 
@@ -120,8 +121,7 @@ public class FileParser {
 	public static void checkExpression(Type typeToCompare, String expression, ScopeMediator med) throws Exception {
 		
 		if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
-			Type expType = Type.createType(expression);
-			if (!typeToCompare.sameType(expType)) {
+			if (!typeToCompare.isExpressionMatch(expression)) {
 				throw new Exception();
 			}
 			return;

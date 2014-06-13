@@ -26,6 +26,7 @@ public class MethodScope extends Scope {
 			Scope father){
 		
 		super(lines,start,finish, father);
+		this.inputVars = new ArrayList<Variable>(); 
 		//stringRepresentation=Scopetypes.METHOD.name();
 
 //		validScopes.add(Scopetypes.WHILE);
