@@ -10,6 +10,7 @@ import oop.ex7.scope.MethodScope;
 import oop.ex7.scope.Scope;
 import oop.ex7.scope.ScopeMediator;
 import oop.ex7.type.Type;
+import oop.ex7.type.badEndOfLineException;
 
 
 /**
@@ -164,7 +165,7 @@ public class FileParser {
 		}
 	}
 
-	private expTypes analyze(String expression) throws Exception {
+	private static expTypes analyze(String expression) throws Exception {
 		
 		if(expression.matches(SOME_TYPE_VALUE)) {
 			return expTypes.SOME_TYPE_INPUT;

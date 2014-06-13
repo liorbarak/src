@@ -33,7 +33,7 @@ public class testingTal {
 //	public static final String VALID_GENERAL_EXP = "(("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")|("+VALID_METHOD_CALL+"))( )*;( )*";
 	
 	
-	public static final String METHOD_CALL = "( )*"+GENERAL_NAME+"\\(( )*(([^ ]( )*)(,)?)*( )*\\)( )*;";
+	public static final String METHOD_CALL = "( )*"+GENERAL_NAME+"\\(( )*((( )*[^ ]( )*)|(( )*[^ ]( )*,)+[^ ]( )*)\\)( )*;";
 
 	public void check() {
 		int a = 5;
@@ -42,7 +42,7 @@ public class testingTal {
 	
 	public static void main(String[] args) {
 	
-		String methodCall = "foooo(a  a);";
+		String methodCall = "foooo(a   ,asf);";
 		System.out.println(methodCall.matches(METHOD_CALL));
 	} 
 		
