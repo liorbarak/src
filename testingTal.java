@@ -6,7 +6,7 @@ public class testingTal {
 	
 
 	public static final String validTypes = "( )*(int|double|String|char|boolean)( )*";
-	public static final String GENERAL_NAME = "( )*[^\\d][^_ ][^ ]*( )*";
+	public static final String GENERAL_NAME = "( )*([_][^ ]+|[^\\d_][^ ]*)( )*";
 	public static final String UNINITIALIZED = ";";
 	
 	
@@ -33,16 +33,19 @@ public class testingTal {
 													INPUT_STRING+"|"+
 													INPUT_BOOLEAN+")";
 	
-	public static final String VALID_METHOD_CALL = GENERAL_NAME+"\\("+GENERAL_NAME+"\\)";
+	
+	public String METHOD_CALL = GENERAL_NAME+"\\((|("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")\\)";
+	public static final String VALID_METHOD_CALL = GENERAL_NAME+"\\((|("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")|(\\)";
+	
 
-//	public static final String DOBLE = 
-	public static final String VALID_EXP = "(("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")|("+VALID_METHOD_CALL+"))( )*;( )*";
-	public static final String test1 = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+VALID_METHOD_CALL+")";
-	public static final String test2 = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+")";
-	char _ = 'a';
+	public static final String VALID_GENERAL_EXP = "(("+GENERAL_NAME+")|("+SOME_TYPE_VALUE+")|("+VALID_METHOD_CALL+"))( )*;( )*";
+	
+	public static final String test1 = "( )*("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+VALID_METHOD_CALL+")( )*";
+	 
+	
 	public static void main(String[] args) {
 
-		String testStr = "a_6";
+		String testStr = "a_a";
 		Pattern p = Pattern.compile(GENERAL_NAME);
 		System.out.println(testStr);
 		Matcher m = p.matcher(testStr);
