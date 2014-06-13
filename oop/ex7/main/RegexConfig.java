@@ -84,11 +84,16 @@ public class RegexConfig {
 
 	public static final String VALID_IF_CALL ="( )*if( )*[(]( )*"+VALID_EXP+"( )*[)]( )*[{]( )*";
 	public static final String VALID_WHILE_CALL="( )*while( )*[(]( )*"+VALID_EXP+"( )*[)]( )*[{]( )*";
-	public static final String TYPE_PLUS_VAR = "( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*"; 
-	public static final String VALID_METHOD_DECLARE="( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*[(]"+(TYPE_PLUS_VAR+",")+"*"+TYPE_PLUS_VAR+"[)]( )*[{]( )*";
+//	public static final String TYPE_PLUS_VAR = "( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*"; 
+//	public static final String VALID_METHOD_DECLARE="( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*[(]"+(TYPE_PLUS_VAR+",")+"*"+TYPE_PLUS_VAR+"[)]( )*[{]( )*";
 
-//	public static final String
-//	public static final String
+	
+	public static final String TYPE_PLUS_VAR = "( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*"; 
+	public static final String VALID_METHOD_DECLARE="( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*[(]"+"("+TYPE_PLUS_VAR+","+")"+"*"+TYPE_PLUS_VAR+"[)]( )*[{]( )*";
+	public static final String VALID_OPERATOR = "[+-/*]";
+	
+	
+
 
 
 	public static void main(String[] args) {
