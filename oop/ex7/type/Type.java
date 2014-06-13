@@ -56,21 +56,21 @@ public abstract class  Type {
 	public static Type createType(String check) throws Exception{//TODO create specific exception
 		
 		
-		if (check.matches(RegexConfig.INPUT_INT)){
+		if (check.matches(RegexConfig.TYPE_INT)){
 			return new IntType();
 		}
 		
-		if (check.matches(RegexConfig.INPUT_DOUBLE)){
+		if (check.matches(RegexConfig.TYPE_DOUBLE)){
 			return new DoubleType();
 		}
-		if (check.matches(RegexConfig.INPUT_STRING)){ 
+		if (check.matches(RegexConfig.TYPE_STRING)){ 
 			return new StringType();
 		}
-		if (check.matches(RegexConfig.INPUT_BOOLEAN)){ 
+		if (check.matches(RegexConfig.TYPE_BOOLEAN)){ 
 			return new BooleanType();
 		}	
 		
-		if (check.matches(RegexConfig.INPUT_CHAR)){ 
+		if (check.matches(RegexConfig.TYPE_CHAR)){ 
 			return new CharType();
 		}
 		
