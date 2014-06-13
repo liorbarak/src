@@ -11,7 +11,7 @@ public class IntType extends Type {
 	public static final String INPUT_INT = "=( )*(-)?[\\d]+( )*;";
 
 	@Override
-	public boolean checkExpression(String check) {
+	public boolean isExpressionMatch(String check) {
 		return check.matches(INPUT_INT);
 	}
 

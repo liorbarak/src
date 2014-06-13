@@ -7,7 +7,7 @@ public class DoubleType extends Type {
 	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|=( )*(-)?[\\d]+.[\\d]+( )*;)";
 	
 	@Override
-	public boolean checkExpression(String check) {
+	public boolean isExpressionMatch(String check) {
 		return check.matches(INPUT_DOUBLE);
 		
 	}

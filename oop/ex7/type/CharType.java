@@ -7,7 +7,7 @@ public class CharType extends Type {
 	
 	
 	@Override
-	public boolean checkExpression(String check) {
+	public boolean isExpressionMatch(String check) {
 		return check.matches(INPUT_CHAR);
 	}
 

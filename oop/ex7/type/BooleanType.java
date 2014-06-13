@@ -5,7 +5,7 @@ public class BooleanType extends Type {
 	public static final String INPUT_BOOLEAN = "=( )*(true|false)( )*;";
 	
 	@Override
-	public boolean checkExpression(String check) {
+	public boolean isExpressionMatch(String check) {
 		return check.matches(INPUT_BOOLEAN);
 	}
 

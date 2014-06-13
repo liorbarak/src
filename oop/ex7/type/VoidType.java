@@ -3,7 +3,7 @@ package oop.ex7.type;
 public class VoidType extends Type {
 
 	@Override
-	public boolean checkExpression(String check) {
+	public boolean isExpressionMatch(String check) {
 		// TODO Auto-generated method stub
 		//throws exception. should not be called
 		return false;
