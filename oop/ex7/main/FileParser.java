@@ -110,7 +110,7 @@ public class FileParser {
 		if(tempString.endsWith("{")){//change to const
 			return 1;
 		}
-		else if (tempString.endsWith(";")){//change to tonst
+		else if (tempString.endsWith(";")){//change to const
 			return 2;
 		}
 		throw new BadEndOfLineException(lineNumber,lineText);
@@ -119,7 +119,7 @@ public class FileParser {
 	
 	
 	
-	public static void checkExpression(Type typeToCompare, String expression, ScopeMediator med) throws Exception {
+	public static void checkExpression(Type typeToCompare, String expression, ScopeMediator med) throws BadTypeException {
 		
 		if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
 			if (!typeToCompare.isExpressionMatch(expression)) {

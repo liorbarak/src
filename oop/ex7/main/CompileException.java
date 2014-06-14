@@ -8,6 +8,7 @@ public class CompileException extends Exception{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private final String ERROR_MESSAGE = "compile error. line number: ";
 	
 	protected Integer lineNumber=null;
