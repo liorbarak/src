@@ -52,7 +52,6 @@ public class FileParser {
 		return fileLines;
 	}
 
-
 	/*
 	 * checks if line starts with '//'
 	 * @param currentLine
@@ -66,11 +65,11 @@ public class FileParser {
 	//return 2-variable
 	public static int scopeOrVariable(String lineText,int lineNumber) throws BadEndOfLineException{
 		String tempString=lineText.trim();
-		if(tempString.endsWith("{")){//change to const
+		if(tempString.matches(RegexConfig.ENDS_WITH_OPEN_BRACKET)) {
 			return 1;
 		}
 
-		else if (tempString.matches(RegexConfig.ENDS_WITH_SEMICOLON)){//change to const
+		else if (tempString.matches(RegexConfig.ENDS_WITH_SEMICOLON)) {
 			return 2;
 		}
 		throw new BadEndOfLineException(lineNumber,lineText);
@@ -148,10 +147,10 @@ public class FileParser {
 			String tempString=relevantLines.get(index);
 			tempString=tempString.trim();
 
-			if (tempString.endsWith("}")){
+			if (tempString.matches(RegexConfig.ENDS_WITH_CLOSED_BRACKET)){
 				bracketCounter--;
 			}
-			else if(tempString.endsWith("{")){
+			else if(tempString.matches(RegexConfig.ENDS_WITH_OPEN_BRACKET)){
 				bracketCounter++;
 			}
 
