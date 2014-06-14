@@ -31,7 +31,7 @@ public class Sjavac {
 			System.out.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
 
 			//for debug
-			System.out.println(e.getStackTrace());
+			System.out.println(e.getStackTrace().toString());
 			System.out.println(e.toString());
 			//for debug
 
@@ -42,7 +42,7 @@ public class Sjavac {
 
 
 			//for debug
-			System.out.println(e1.getStackTrace());
+			System.out.println(e1.getStackTrace().toString());
 			System.out.println(e1.toString());
 			//for debug
 
@@ -51,7 +51,7 @@ public class Sjavac {
 			System.out.println("general error. not one of ours");
 
 			//for debug
-			System.out.println(e2.getStackTrace());
+			System.out.println(e2.getStackTrace().toString());
 			System.out.println(e2.toString());
 			//for debug
 
