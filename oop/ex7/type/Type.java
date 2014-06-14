@@ -15,24 +15,24 @@ public abstract class  Type {
 	
 
 	//use constants from regexconfig file
-	enum DifferentTypes{
-		INT("int"),
-	    DOUBLE ("double"),
-	    STRING ("String"),
-	    BOOLEAN ("boolean"),
-	    CHAR ("char"), 
-	    VOID ("void");
-	    
-	    public final String innerString;
-		
-		DifferentTypes(String a){
-			innerString=a;
-		}
-		@Override
-		public String toString() {
-			return innerString;
-		}
-	}
+//	enum DifferentTypes{
+//		INT("int"),
+//	    DOUBLE ("double"),
+//	    STRING ("String"),
+//	    BOOLEAN ("boolean"),
+//	    CHAR ("char"), 
+//	    VOID ("void");
+//	    
+//	    public final String innerString;
+//		
+//		DifferentTypes(String a){
+//			innerString=a;
+//		}
+//		@Override
+//		public String toString() {
+//			return innerString;
+//		}
+//	}
 	
 	
 

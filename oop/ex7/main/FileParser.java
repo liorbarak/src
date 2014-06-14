@@ -9,8 +9,9 @@ import java.util.Scanner;
 import oop.ex7.scope.MethodScope;
 import oop.ex7.scope.Scope;
 import oop.ex7.scope.ScopeMediator;
+import oop.ex7.type.BadTypeException;
 import oop.ex7.type.Type;
-import oop.ex7.type.badEndOfLineException;
+import oop.ex7.type.BadEndOfLineException;
 
 
 /**
@@ -54,25 +55,23 @@ public class FileParser {
 	 * @return
 	 * @throws FileNotFoundException 
 	 * @throws BadLineSyntaxException 
-	 * @throws badEndOfLineException 
+	 * @throws BadEndOfLineException 
 	 */
-	public static ArrayList<String>  getlinesList(File origin) throws FileNotFoundException, BadLineSyntaxException, badEndOfLineException{
+	public static ArrayList<String>  getlinesList(File origin) throws FileNotFoundException, BadLineSyntaxException, BadEndOfLineException{
 		
 		ArrayList<String> fileLines = new ArrayList<String>();
 		Scanner myScan= new Scanner(origin);
 		String currentLine;
 		int lineNumber=0;
-//		currentLine=myScan.nextLine();
+
 		
 		while (myScan.hasNext()){
-//			fileLines.add(currentLine);
-//			scopeOrVariable(currentLine,lineNumber);
+
 			currentLine=myScan.nextLine();
 			if(!isLineCommentOrBlank(currentLine)) {//if it is commented simply continue and dont add to list
 				fileLines.add(currentLine);
 			}
 
-//			currentLine=myScan.nextLine();
 			lineNumber++;
 		}
 
@@ -88,7 +87,6 @@ public class FileParser {
 	 */
 	private static boolean isLineCommentOrBlank(String currentLine) {
 		return currentLine.matches(RegexConfig.BLANK_LINE) || currentLine.matches(RegexConfig.COMMENT); 
-//		return false;
 	}
 
 
@@ -107,22 +105,25 @@ public class FileParser {
 	
 	//return 1-scope
 	//return 2-variable
-	public static int scopeOrVariable(String lineText,int lineNumber) throws badEndOfLineException{
+	public static int scopeOrVariable(String lineText,int lineNumber) throws BadEndOfLineException{
 		String tempString=lineText.trim();
-		if(tempString.endsWith("{")){
+		if(tempString.endsWith("{")){//change to const
 			return 1;
 		}
-		else if (tempString.endsWith(";")){
+		else if (tempString.endsWith(";")){//change to tonst
 			return 2;
 		}
-		throw new badEndOfLineException(lineNumber);
+		throw new BadEndOfLineException(lineNumber,lineText);
 	}
+	
+	
+	
 	
 	public static void checkExpression(Type typeToCompare, String expression, ScopeMediator med) throws Exception {
 		
 		if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
 			if (!typeToCompare.isExpressionMatch(expression)) {
-				throw new Exception();
+				throw new BadTypeException(expression);
 			}
 			return;
 		}
@@ -135,7 +136,7 @@ public class FileParser {
 				for(Variable var:tempScope.getVariables()) {
 					if (var.getName().equals(expression)) {
 						if(!typeToCompare.sameType(var.getType())) {
-							throw new Exception();
+							throw new BadTypeException(expression);
 						}
 						return;
 					}
@@ -156,7 +157,7 @@ public class FileParser {
 				MethodScope tempMethodScope = (MethodScope) method;
 				if (tempMethodScope.compareMethod(expression, med)) {
 					if(!typeToCompare.sameType(tempMethodScope.getReturnType())) {
-						throw new Exception();
+						throw new BadTypeException(expression);
 					}
 					return;	
 				}
@@ -177,7 +178,7 @@ public class FileParser {
 		if (expression.matches(METHOD_CALL)) {
 			return expTypes.METHOD;
 		}
-		throw new Exception();
+		throw new BadLineSyntaxException(null,expression);
 	}
 	
 	public static int  findLastCloser(ArrayList<String> relevantLines, int i) throws EndOfFileException{
