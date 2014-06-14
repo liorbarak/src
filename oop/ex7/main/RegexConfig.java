@@ -8,16 +8,6 @@ package oop.ex7.main;
  *
  */
 public class RegexConfig {
-
-	//	public static final String INT = "int";
-	//	public static final String DOUBLE = "double";
-	//	public static final String STRING = "String";
-	//	public static final String BOOLEAN = "boolean";
-	//	public static final String CHAR = "char";
-	//	public static final String VOID = "void";
-
-
-	
 	
 	public static final String VALID_TYPES = "( )*(int|double|String|char|boolean)( )*";
 	public static final String VALID_TYPES_METHOD = "( )*(int|double|String|char|boolean|void)( )*";
