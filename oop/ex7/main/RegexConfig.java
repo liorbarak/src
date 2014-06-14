@@ -73,6 +73,7 @@ public class RegexConfig {
 	
 	public static final String TYPE_PLUS_VAR = "( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*"; 
 	public static final String VALID_METHOD_DECLARE = "( )*"+VALID_TYPES_METHOD+"( )+"+GENERAL_NAME+"( )*[(]"+"(( )*("+TYPE_PLUS_VAR+")?( )*|(("+TYPE_PLUS_VAR+",)+"+TYPE_PLUS_VAR+"))[)]( )*[{]( )*";
+	public static final String ARR_TYPE = null;
 	
 	public static final String OPERATOR_EXP = VALID_EXP+VALID_OPERATOR+VALID_EXP;;
 	

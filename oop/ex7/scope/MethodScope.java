@@ -27,22 +27,26 @@ public class MethodScope extends Scope {
 	//innerScopes.add(new MethodScope (lines,start,finish,Type.createType(returnType),methodName,inputVars, this)   );
 	public MethodScope(ArrayList<String> lines, int start,int finish,
 			Type returnType, String methodName, ArrayList<Variable> inputVars,
-			Scope father) throws VarExistException{
+			Scope father){
 
 		super(lines,start,finish, father);
-		this.inputVars = new ArrayList<Variable>();
-		this.innerVariables = new ArrayList<Variable>();
+		this.inputVars = new ArrayList<Variable>(); 
+		//stringRepresentation=Scopetypes.METHOD.name();
+
+		//		validScopes.add(Scopetypes.WHILE);
+		//		validScopes.add(Scopetypes.IF);
 		this.returnType=returnType;
 		this.nameOfMethod=methodName;
 
-		for (Variable var:inputVars) {
-			if (varExist(var.getName()) != null) {
-				throw new VarExistException(var.getName());
-			}
-			this.inputVars.add(var);
-			this.innerVariables.add(var);
+		//handleinput vars
+		for(Variable var:inputVars){
+			var.setInitialized(true);
+			inputVars.add(var);
+			innerVariables.add(var);
 
 		}
+
+
 	}
 
 
@@ -63,6 +67,31 @@ public class MethodScope extends Scope {
 		}
 		return true;
 	}
+
+
+
+	@Override
+	public ArrayList<Variable> getVariables() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public ArrayList<Scope> getScopes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public Scope getFatherScope() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 	public Type getReturnType() {
