@@ -78,7 +78,8 @@ public class FileParser {
 	
 	
 	
-	public static void checkExpression(Type typeToCompare, String expression, ScopeMediator med) throws BadTypeException {
+	public static void checkExpression(Type typeToCompare, String expression, 
+		ScopeMediator med) throws BadLineSyntaxException, BadTypeException {
 		
 		if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
 			if (!typeToCompare.isExpressionMatch(expression)) {
@@ -124,7 +125,7 @@ public class FileParser {
 		}
 	}
 
-	private static expTypes analyze(String expression) throws Exception {
+	private static expTypes analyze(String expression) throws BadLineSyntaxException {
 		
 		if(expression.matches(RegexConfig.SOME_TYPE_VALUE)) {
 			return expTypes.SOME_TYPE_INPUT;

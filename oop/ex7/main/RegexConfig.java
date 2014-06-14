@@ -59,7 +59,7 @@ public class RegexConfig {
 	public static final String ENDS_WITH_CLOSED_BRACKET = "$( )*}( )*";
 	
 	public static final String METHOD_CALL = "( )*"+GENERAL_NAME+"( )*\\(( )*[\\d]*[\\D]*( )*\\)( )*;?";
-
+	
 	public static final String VALID_EXP = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")";
 	public static final String BLANK_LINE = "( )*";
 	public static final String COMMENT = "$( )*//";
@@ -87,7 +87,5 @@ public class RegexConfig {
 			return regex;
 		}
 	}
-
-	
 	
 }

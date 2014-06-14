@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-
 import oop.ex7.scope.*;
 
 
@@ -16,7 +15,6 @@ public class Sjavac {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
 
 		try{
 			File origin = new File(args[0]);//todo handle throws
