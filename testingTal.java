@@ -17,7 +17,7 @@ public class testingTal {
 	
 	public static final String TYPE_DOUBLE = "( )*double( )*";
 	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|( )*(-)?[\\d]+.([\\d]+)?( )*)";
-//	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|( )*(-)?[\\d]+.[\\d]+( )*)";
+
 	
 	
 	public static final String TYPE_STRING = "( )*String( )*";

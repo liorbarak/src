@@ -21,32 +21,6 @@ import oop.ex7.type.BadEndOfLineException;
  */
 public class FileParser {
 
-	public static final String GENERAL_NAME = "( )*([_][^ ]+|[^\\d_][^ ]*)( )*";
-	public static final String TYPE_INT = "( )*int( )*";
-	public static final String INPUT_INT = "( )*(-)?[\\d]+( )*";
-	
-	public static final String TYPE_DOUBLE = "( )*double( )*";
-	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|( )*(-)?[\\d]+.([\\d]+)?( )*)";
-	
-	
-	public static final String TYPE_STRING = "( )*String( )*";
-	public static final String INPUT_STRING = "( )*\"[^\"]+\"( )*";
-	
-	public static final String TYPE_BOOLEAN = "( )*boolean( )*";
-	public static final String INPUT_BOOLEAN = "( )*(true|false)( )*";
-	
-	public static final String TYPE_CHAR = "( )*char( )*";
-	public static final String INPUT_CHAR = "( )*'[^']'( )*";
-	
-	public static final String SOME_TYPE_VALUE = "("+INPUT_INT+"|"+
-													INPUT_DOUBLE+"|"+
-													INPUT_CHAR+"|"+
-													INPUT_STRING+"|"+
-													INPUT_BOOLEAN+")";
-	
-	public static final String METHOD_CALL = "( )*"+GENERAL_NAME+"\\([\\d]*[\\D]*\\)( )*;";
-	
-	
 	public enum expTypes {SOME_TYPE_INPUT, VAR, METHOD} 
 	
 	/**
@@ -63,7 +37,6 @@ public class FileParser {
 		Scanner myScan= new Scanner(origin);
 		String currentLine;
 		int lineNumber=0;
-
 		
 		while (myScan.hasNext()){
 
@@ -88,21 +61,7 @@ public class FileParser {
 	private static boolean isLineCommentOrBlank(String currentLine) {
 		return currentLine.matches(RegexConfig.BLANK_LINE) || currentLine.matches(RegexConfig.COMMENT); 
 	}
-
-
-//	/*
-//	 * if line is illegal throws exception
-//	 */
-//	private static void checkLineLegal(int lineNum ,String lineText) throws BadLineSyntaxException  {
-//
-//		if(){//TODO is bad input
-//			throw new BadLineSyntaxException(lineNum,lineText);
-//		}
-//
-//
-//	}
-	
-	
+		
 	//return 1-scope
 	//return 2-variable
 	public static int scopeOrVariable(String lineText,int lineNumber) throws BadEndOfLineException{
@@ -110,7 +69,7 @@ public class FileParser {
 		if(tempString.endsWith("{")){//change to const
 			return 1;
 		}
-		else if (tempString.endsWith(";")){//change to tonst
+		else if (tempString.matches(RegexConfig.ENDS_WITH_SEMICOLON)){//change to tonst
 			return 2;
 		}
 		throw new BadEndOfLineException(lineNumber,lineText);
@@ -167,15 +126,15 @@ public class FileParser {
 
 	private static expTypes analyze(String expression) throws Exception {
 		
-		if(expression.matches(SOME_TYPE_VALUE)) {
+		if(expression.matches(RegexConfig.SOME_TYPE_VALUE)) {
 			return expTypes.SOME_TYPE_INPUT;
 		}
 		
-		if(expression.matches(GENERAL_NAME)) {
+		if(expression.matches(RegexConfig.GENERAL_NAME)) {
 			return expTypes.VAR;
 		}
 		
-		if (expression.matches(METHOD_CALL)) {
+		if (expression.matches(RegexConfig.METHOD_CALL)) {
 			return expTypes.METHOD;
 		}
 		throw new BadLineSyntaxException(null,expression);
