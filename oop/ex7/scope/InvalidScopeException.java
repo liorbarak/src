@@ -1,6 +1,6 @@
 package oop.ex7.scope;
 
-import java.io.ObjectInputStream.GetField;
+
 
 import oop.ex7.main.CompileException;
 

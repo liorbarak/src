@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import oop.ex7.main.FileParser;
 import oop.ex7.main.Variable;
+import oop.ex7.type.BadTypeException;
 import oop.ex7.type.Type;
 
 public class MethodScope extends Scope {
@@ -24,50 +25,46 @@ public class MethodScope extends Scope {
 	public MethodScope(ArrayList<String> lines, int start,int finish,
 			Type returnType, String methodName, ArrayList<Variable> inputVars,
 			Scope father){
-		
+
 		super(lines,start,finish, father);
 		this.inputVars = new ArrayList<Variable>(); 
 		//stringRepresentation=Scopetypes.METHOD.name();
 
-//		validScopes.add(Scopetypes.WHILE);
-//		validScopes.add(Scopetypes.IF);
+		//		validScopes.add(Scopetypes.WHILE);
+		//		validScopes.add(Scopetypes.IF);
 		this.returnType=returnType;
 		this.nameOfMethod=methodName;
-		
+
 		//handleinput vars
 		for(Variable var:inputVars){
 			var.setInitialized(true);
 			inputVars.add(var);
 			innerVariables.add(var);
-			
+
 		}
-		
-		
+
+
 	}
 
 
 
-	public boolean compareMethod(String line, ScopeMediator med) {
-		
+	public boolean compareMethod(String line, ScopeMediator med) throws BadTypeException {
+
 		String callName = getMethodCallNameFromExp(line);
 		if (!this.getNameOfMethod().equals(callName)) {
 			return false;
 		}
-		
+
 		String[] varsCall = getMethodVarsFromCallExp(line);
-		
+
 		for (int i = 0; i < this.innerVariables.size(); i++) {
-			try {
-				FileParser.checkExpression(this.innerVariables.get(i).getType(), varsCall[i], med);
-			}
-			catch(Exception ex) {
-				System.out.println(ex.getMessage());
-				System.exit(-1);
-			}
+
+			FileParser.checkExpression(this.innerVariables.get(i).getType(), varsCall[i], med);
+
 		}
 		return true;
 	}
-			
+
 
 
 	@Override
@@ -116,18 +113,14 @@ public class MethodScope extends Scope {
 		this.nameOfMethod = nameOfMethod;
 	}
 
-	
-	public boolean handleReturn(String returnExpression){
-		try {
-			FileParser.checkExpression(this.returnType,returnExpression,this);
-		}
-		catch(Exception ex) {
-			ex.getMessage();
-			System.exit(-1);
-		}
+
+	public boolean handleReturn(String returnExpression) throws BadTypeException{
+
+		FileParser.checkExpression(this.returnType,returnExpression,this);
+
 		return true;
 	}
-	
+
 	private static String getMethodCallNameFromExp(String call) {
 		return call.substring(0, call.indexOf("(")).trim();
 	}
@@ -137,7 +130,7 @@ public class MethodScope extends Scope {
 		//Need to check valid expression structure
 		String[] stringVars=variablesCall.split(",");
 		String[] expVars = new String[stringVars.length];
-		
+
 		for(int i = 0; i< stringVars.length; i++) {
 			expVars[i] = stringVars[i].trim();
 		}

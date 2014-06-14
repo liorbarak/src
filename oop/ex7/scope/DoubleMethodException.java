@@ -2,7 +2,7 @@ package oop.ex7.scope;
 
 import oop.ex7.main.CompileException;
 
-public class DoubleMethodDecleration extends CompileException{
+public class DoubleMethodException extends CompileException{
 
 	/**
 	 * 
@@ -11,7 +11,7 @@ public class DoubleMethodDecleration extends CompileException{
 	private String text;
 	private static final String ERROR_MSG= "two methods declared with the same name. line: ";
 	
-	public DoubleMethodDecleration(int lineNum,String line){
+	public DoubleMethodException(int lineNum,String line){
 		super(lineNum);
 		text=line;
 	}

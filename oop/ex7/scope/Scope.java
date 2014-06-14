@@ -22,15 +22,14 @@ enum lineTypes {SCOPE, VARIABLE};
 
 
 public abstract class Scope implements ScopeMediator{
-	//String stringRepresentation;
+
 	Scope fatherScope;
 	ArrayList<String> relevantLines;
 	int startIndex;
 	int endIndex;
 	ArrayList<Scope> innerScopes;
 	ArrayList<Variable> innerVariables;
-//	ArrayList<Scopetypes> validScopes;
-//	ArrayList<Integer> validVarOperations;
+
 
 
 	//no constructor at the moment
@@ -47,8 +46,8 @@ public abstract class Scope implements ScopeMediator{
 
 		ArrayList<Integer> opIndexArray=new ArrayList<Integer>();
 		int lineType;
-		Variable tempVar;
-		Scope tempScope;
+//		Variable tempVar;
+//		Scope tempScope;
 
 		for(int i=0;i<relevantLines.size();i++){
 			lineType=FileParser.scopeOrVariable(relevantLines.get(i),i);//throws if not valid scope or var declaration
@@ -107,7 +106,7 @@ public abstract class Scope implements ScopeMediator{
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////operations
-	public void lineAnalizerOp(String line) throws Exception {
+	public void lineAnalizerOp(String line) throws BadReturnException, VarExistException, BadTypeException, BadLineSyntaxException  {
 		//4 cases- return, assign,initialize, both
 
 		//return
@@ -335,7 +334,7 @@ public abstract class Scope implements ScopeMediator{
 		for (Scope i:innerScopes){
 			MethodScope method=(MethodScope) i;
 			if (!method.getNameOfMethod().equals(methodName)){
-				throw new DoubleMethodDecleration(start,lines.get(start));
+				throw new DoubleMethodException(start,lines.get(start));
 			}
 		}
 		
