@@ -22,7 +22,7 @@ import oop.ex7.type.VarNotExistException;
  */
 public class FileParser {
 
-	public enum expTypes {SOME_TYPE_INPUT, VAR, METHOD} 
+	public enum expTypes {SOME_TYPE_INPUT, VAR, METHOD, OPERATORS} 
 	
 	/**
 	 * parses original file 
@@ -128,6 +128,13 @@ public class FileParser {
 				}
 			}
 		}
+		
+		if (analyze(expression).equals(expTypes.OPERATORS)) {
+			String[] expressions = expression.split(RegexConfig.VALID_OPERATOR);
+			for (String exp:expressions) {
+				checkExpression(typeToCompare, exp, med);
+			}
+		}
 	}
 
 	private static expTypes analyze(String expression) throws BadLineSyntaxException {
@@ -142,6 +149,9 @@ public class FileParser {
 		
 		if (expression.matches(RegexConfig.METHOD_CALL)) {
 			return expTypes.METHOD;
+		}
+		if (expression.matches(RegexConfig.OPERATOR_EXP)) {
+			return expTypes.OPERATORS;
 		}
 		throw new BadLineSyntaxException(expression);
 	}

@@ -20,7 +20,7 @@ public class RegexConfig {
 	 *  For example: 34 - matches int type, true - matches boolean type. 
 	 */
 	public static final String INPUT_INT = "( )*(-)?[\\d]+( )*";
-	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|( )*(-)?[\\d]+.([\\d]+)?( )*)";
+	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|( )*(-)?[\\d]+(\\.)([\\d]+)?( )*)";
 	public static final String INPUT_STRING = "( )*\"[^\"]*\"( )*";
 	public static final String INPUT_BOOLEAN = "( )*(true|false)( )*";
 	public static final String INPUT_CHAR = "( )*'[^']'( )*";
@@ -55,7 +55,7 @@ public class RegexConfig {
 	 * mentioned in the exercise instructions
 	 */
 	
-	public static final String VALID_OPERATOR = "[+-\\/\\*]";
+	public static final String VALID_OPERATOR = "( )*[+-/*]( )*";
 	public static final String GENERAL_NAME = "( )*([_][^ ]+|[^\\d_\\+-\\/\\*][^ ,]*)( )*";
 	
 	public static final String ENDS_WITH_SEMICOLON = "(.*;[ ]*)$";
@@ -73,6 +73,8 @@ public class RegexConfig {
 	
 	public static final String TYPE_PLUS_VAR = "( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*"; 
 	public static final String VALID_METHOD_DECLARE = "( )*"+VALID_TYPES_METHOD+"( )+"+GENERAL_NAME+"( )*[(]"+"(( )*("+TYPE_PLUS_VAR+")?( )*|(("+TYPE_PLUS_VAR+",)+"+TYPE_PLUS_VAR+"))[)]( )*[{]( )*";
+	
+	public static final String OPERATOR_EXP = VALID_EXP+VALID_OPERATOR+VALID_EXP;;
 	
 	
 	public enum lineType {

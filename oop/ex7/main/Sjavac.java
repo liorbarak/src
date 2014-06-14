@@ -18,7 +18,7 @@ public class Sjavac {
 
 		try{
 			File origin = new File(args[0]);//todo handle throws
-//			origin = new File("/Users/taldovrat/Downloads/tests/test114.sjava");//todo handle throws
+//			origin = new File("/Users/taldovrat/Downloads/tests/test140.sjava");//todo handle throws
 			ArrayList<String> fileLines= FileParser.getlinesList(origin);
 //			for(String line:fileLines) {
 //				System.out.println(line);
