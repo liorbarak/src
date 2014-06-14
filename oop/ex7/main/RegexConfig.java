@@ -15,6 +15,7 @@ public class RegexConfig {
 	public static final String TYPE_STRING = "( )*String( )*";
 	public static final String TYPE_BOOLEAN = "( )*boolean( )*";
 	public static final String TYPE_CHAR = "( )*char( )*";
+	public static final String TYPE_VOID = "( )*void( )*";
 	/** Input Expression that matches a value of a specific type.
 	 *  For example: 34 - matches int type, true - matches boolean type. 
 	 */
@@ -23,6 +24,7 @@ public class RegexConfig {
 	public static final String INPUT_STRING = "( )*\"[^\"]*\"( )*";
 	public static final String INPUT_BOOLEAN = "( )*(true|false)( )*";
 	public static final String INPUT_CHAR = "( )*'[^']'( )*";
+	public static final String INPUT_VOID = "( )*";
 
 	/** 
 	 * Represent some type input value - matches all the different types of
@@ -54,7 +56,7 @@ public class RegexConfig {
 	 */
 	
 	public static final String VALID_OPERATOR = "[+-\\/\\*]";
-	public static final String GENERAL_NAME = "( )*([_][^ ]+|[^\\d_\\+-\\/\\*][^ ]*)( )*";
+	public static final String GENERAL_NAME = "( )*([_][^ ]+|[^\\d_\\+-\\/\\*][^ ,]*)( )*";
 	
 	public static final String ENDS_WITH_SEMICOLON = "(.*;[ ]*)$";
 	public static final String ENDS_WITH_OPEN_BRACKET = "(.*\\{[ ]*)$";
@@ -70,7 +72,7 @@ public class RegexConfig {
 	public static final String VALID_WHILE_CALL="( )*while( )*[(]( )*"+VALID_EXP+"( )*[)]( )*[{]( )*";
 	
 	public static final String TYPE_PLUS_VAR = "( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*"; 
-	public static final String VALID_METHOD_DECLARE="( )*"+VALID_TYPES_METHOD+"( )+"+GENERAL_NAME+"( )*[(]"+"("+TYPE_PLUS_VAR+","+")"+"*"+TYPE_PLUS_VAR+"[)]( )*[{]( )*";
+	public static final String VALID_METHOD_DECLARE = "( )*"+VALID_TYPES_METHOD+"( )+"+GENERAL_NAME+"( )*[(]"+"(( )*("+TYPE_PLUS_VAR+")?( )*|(("+TYPE_PLUS_VAR+",)+"+TYPE_PLUS_VAR+"))[)]( )*[{]( )*";
 	
 	
 	public enum lineType {

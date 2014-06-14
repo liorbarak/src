@@ -13,6 +13,7 @@ import oop.ex7.type.BooleanType;
 import oop.ex7.type.Type;
 import oop.ex7.type.VarExistException;
 import oop.ex7.type.BadEndOfLineException;
+import oop.ex7.type.VarNotExistException;
 
 
 
@@ -49,7 +50,7 @@ public abstract class Scope implements ScopeMediator{
 		//		Variable tempVar;
 		//		Scope tempScope;
 
-		for(int i=0;i<relevantLines.size();i++){
+		for(int i=this.startIndex+1;i<this.endIndex-1;i++){
 			lineType=FileParser.scopeOrVariable(relevantLines.get(i),i);//throws if not valid scope or var declaration
 
 			if (lineType==lineTypes.SCOPE.ordinal()){
@@ -148,7 +149,7 @@ public abstract class Scope implements ScopeMediator{
 
 
 
-	private void assignmentLine(String line) throws VarExistException, BadTypeException, BadLineSyntaxException {
+	private void assignmentLine(String line) throws VarExistException, BadTypeException, BadLineSyntaxException, VarNotExistException {
 
 		Variable varTemp;
 
@@ -238,7 +239,7 @@ public abstract class Scope implements ScopeMediator{
 	}
 
 
-	private Variable varExist(String nameOfVar) {
+	public Variable varExist(String nameOfVar) {
 
 		Scope tempScope = this; 
 
@@ -271,7 +272,7 @@ public abstract class Scope implements ScopeMediator{
 	public void lineAnalizerSc (ArrayList<String> lines,int start, int finish) throws CompileException  {
 
 		String firstline=lines.get(start);
-		ArrayList<String> subScopeLines=(ArrayList<String>) (lines.subList(start, finish));
+//		ArrayList<String> subScopeLines=(ArrayList<String>) (lines.subList(start, finish));
 
 
 		//method
@@ -282,6 +283,7 @@ public abstract class Scope implements ScopeMediator{
 			}
 
 			methodInput(lines, start, finish);
+			return;
 		}
 		//while
 		else if (firstline.matches(RegexConfig.VALID_WHILE_CALL)){
@@ -290,7 +292,8 @@ public abstract class Scope implements ScopeMediator{
 			}
 
 			FileParser.checkExpression(new BooleanType(), getInsideBrackets(firstline), this);
-			innerScopes.add( new WhileScope(subScopeLines,start,finish,this));
+			innerScopes.add( new WhileScope(lines,start,finish,this));
+			return;
 		}
 		//if
 		else if (firstline.matches(RegexConfig.VALID_IF_CALL)){
@@ -299,7 +302,8 @@ public abstract class Scope implements ScopeMediator{
 			}
 
 			FileParser.checkExpression(new BooleanType(), getInsideBrackets(firstline), this);
-			innerScopes.add( new IfScope(subScopeLines,start,finish,this));
+			innerScopes.add( new IfScope(lines,start,finish,this));
+			return;
 		}
 
 		throw new BadLineSyntaxException(firstline);
@@ -311,7 +315,7 @@ public abstract class Scope implements ScopeMediator{
 
 
 	private static String getInsideBrackets(String line){
-		return line=line.substring(line.indexOf("("),line.lastIndexOf(")")).trim();
+		return line=line.trim().substring(line.indexOf("(")+1,line.lastIndexOf(")")).trim();
 	}
 
 
@@ -322,12 +326,12 @@ public abstract class Scope implements ScopeMediator{
 	 * 
 	 */
 	private void methodInput (ArrayList<String> lines,int start, int finish) throws CompileException {
-		String tempLine=lines.get(start);
+		String tempLine=lines.get(start).trim();
 		ArrayList<Variable> inputVars=new ArrayList<Variable>();
 
 		String returnType=tempLine.substring(0, tempLine.indexOf(" "));
-		String methodName=tempLine.substring(tempLine.indexOf(" "), tempLine.indexOf("("));
-		String[] insideBrackets=getInsideBrackets(tempLine).split(",");
+		String methodName=tempLine.substring(tempLine.indexOf(" "), tempLine.indexOf("(")).trim();
+		//String[] insideBrackets=getInsideBrackets(tempLine).split(",");
 
 		for (Scope i:innerScopes){
 			MethodScope method=(MethodScope) i;
@@ -335,12 +339,18 @@ public abstract class Scope implements ScopeMediator{
 				throw new DoubleMethodException(start,lines.get(start));
 			}
 		}
+		String insideBracketsExp=getInsideBrackets(tempLine);
+		if (!insideBracketsExp.matches(RegexConfig.BLANK_LINE)) {
+			String[] insideBrackets=getInsideBrackets(tempLine).split(",");
+			for (String i:insideBrackets){
+				String[] TypeAndName = i.trim().split(" ");
+				Variable tempVar = new Variable(TypeAndName[0], TypeAndName[1]);
+				tempVar.setInitialized(true);
+				inputVars.add(tempVar);
+			}
 
-		for (String i:insideBrackets){
-			String[] TypeAndName = i.split(" ");
-			inputVars.add(new Variable(TypeAndName[0], TypeAndName[1]));
-		}
-
+		}		
+		
 		innerScopes.add(new MethodScope (lines,start,finish,
 				Type.createType(returnType),methodName,inputVars, this));
 

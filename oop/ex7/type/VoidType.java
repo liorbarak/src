@@ -1,19 +1,20 @@
 package oop.ex7.type;
 
+import oop.ex7.main.RegexConfig;
+
 public class VoidType extends Type {
 
 	@Override
 	public boolean isExpressionMatch(String check) {
-		// TODO Auto-generated method stub
-		//throws exception. should not be called
+		if (check.matches(RegexConfig.INPUT_VOID)) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public String getRegex() {
-		// TODO Auto-generated method stub
-		//throws exception. shouldnt be called
-		return null;
+		return RegexConfig.INPUT_VOID;
 	}
 
 }

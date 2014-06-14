@@ -18,10 +18,11 @@ public class Sjavac {
 
 		try{
 			File origin = new File(args[0]);//todo handle throws
+//			origin = new File("/Users/taldovrat/Downloads/tests/test114.sjava");//todo handle throws
 			ArrayList<String> fileLines= FileParser.getlinesList(origin);
-			for(String line:fileLines) {
-				System.out.println(line);
-			}
+//			for(String line:fileLines) {
+//				System.out.println(line);
+//			}
 			ClassScope mainClass= new ClassScope(fileLines);
 			mainClass.compileScope();
 
@@ -32,7 +33,7 @@ public class Sjavac {
 
 			//for debug
 //			System.out.println(e.toString());
-//			e.printStackTrace();
+			e.printStackTrace();
 			//for debug
 
 			return;
@@ -43,17 +44,17 @@ public class Sjavac {
 
 			//for debug
 //			System.out.println(e1.toString());
-//			e1.printStackTrace();
+			e1.printStackTrace();
 			//for debug
 			return;
 
 		}
 		catch(Exception e2){	//TODO change type of exception
-			System.out.println("general error. not one of ours");
+//			System.out.println("general error. not one of ours");
 
 			//for debug
 //			System.out.println(e2.toString());
-//			e2.printStackTrace();
+			e2.printStackTrace();
 			//for debug
 
 			return;

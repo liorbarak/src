@@ -12,6 +12,7 @@ import oop.ex7.type.BadTypeException;
 import oop.ex7.type.Type;
 import oop.ex7.type.BadEndOfLineException;
 import oop.ex7.type.VarExistException;
+import oop.ex7.type.VarNotExistException;
 
 
 /**
@@ -61,16 +62,16 @@ public class FileParser {
 		return currentLine.matches(RegexConfig.BLANK_LINE) || currentLine.matches(RegexConfig.COMMENT); 
 	}
 		
-	//return 1-scope
-	//return 2-variable
+	//return 0-scope
+	//return 1-variable
 	public static int scopeOrVariable(String lineText,int lineNumber) throws BadEndOfLineException{
 		String tempString=lineText.trim();
 		if(tempString.matches(RegexConfig.ENDS_WITH_OPEN_BRACKET)) {
-			return 1;
+			return 0;
 		}
 
 		else if (tempString.matches(RegexConfig.ENDS_WITH_SEMICOLON)) {
-			return 2;
+			return 1;
 		}
 		throw new BadEndOfLineException(lineNumber,lineText);
 	}
@@ -79,7 +80,7 @@ public class FileParser {
 	
 	
 	public static void checkExpression(Type typeToCompare, String expression, 
-		ScopeMediator med) throws BadLineSyntaxException, BadTypeException, VarExistException {
+		ScopeMediator med) throws BadLineSyntaxException, BadTypeException, VarExistException, VarNotExistException {
 		
 		if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
 			if (!typeToCompare.isExpressionMatch(expression)) {
@@ -97,6 +98,9 @@ public class FileParser {
 					if (var.getName().equals(expression)) {
 						if(!typeToCompare.sameType(var.getType())) {
 							throw new BadTypeException(expression);
+						}
+						if(!var.isInitialized()) {
+							throw new VarNotExistException(expression+" - Uninitialized"); //TODO
 						}
 						return;
 					}

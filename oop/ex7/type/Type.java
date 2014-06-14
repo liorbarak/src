@@ -53,12 +53,12 @@ public abstract class  Type {
 			return new CharType();
 		}
 		
-//		if (check.matches(RegexConfig.INPUT_VOID)){ { {// TODO must handle what happens if something is void
-//			return new VoidType();
-//		}	
+		if (check.matches(RegexConfig.TYPE_VOID)){ // TODO must handle what happens if something is void
+			return new VoidType();
+		}	
 //		
 		
-			throw new CompileException();//throw exception because not a valid type string//TODO make more specific
+		throw new CompileException();//throw exception because not a valid type string//TODO make more specific
 		
 	}
 	
