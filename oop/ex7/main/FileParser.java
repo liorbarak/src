@@ -11,6 +11,7 @@ import oop.ex7.scope.ScopeMediator;
 import oop.ex7.type.BadTypeException;
 import oop.ex7.type.Type;
 import oop.ex7.type.BadEndOfLineException;
+import oop.ex7.type.VarExistException;
 
 
 /**
@@ -78,7 +79,7 @@ public class FileParser {
 	
 	
 	public static void checkExpression(Type typeToCompare, String expression, 
-		ScopeMediator med) throws BadLineSyntaxException, BadTypeException {
+		ScopeMediator med) throws BadLineSyntaxException, BadTypeException, VarExistException {
 		
 		if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
 			if (!typeToCompare.isExpressionMatch(expression)) {
@@ -102,6 +103,7 @@ public class FileParser {
 				}
 				tempScope = tempScope.getFatherScope();
 			}
+			throw new VarExistException(expression);
 		}
 		
 		if (analyze(expression).equals(expTypes.METHOD)) {

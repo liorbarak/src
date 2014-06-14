@@ -31,8 +31,8 @@ public class Sjavac {
 			System.out.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
 
 			//for debug
-			System.out.println(e.getStackTrace().toString());
-			System.out.println(e.toString());
+//			System.out.println(e.toString());
+//			e.printStackTrace();
 			//for debug
 
 			return;
@@ -42,17 +42,18 @@ public class Sjavac {
 
 
 			//for debug
-			System.out.println(e1.getStackTrace().toString());
-			System.out.println(e1.toString());
+//			System.out.println(e1.toString());
+//			e1.printStackTrace();
 			//for debug
+			return;
 
 		}
 		catch(Exception e2){	//TODO change type of exception
 			System.out.println("general error. not one of ours");
 
 			//for debug
-			System.out.println(e2.getStackTrace().toString());
-			System.out.println(e2.toString());
+//			System.out.println(e2.toString());
+//			e2.printStackTrace();
 			//for debug
 
 			return;
@@ -63,9 +64,4 @@ public class Sjavac {
 		//if i got this far in the program it means compilation found no errors. print 0
 		System.out.println(returnValues.NO_ERRORS.ordinal());
 	}
-
-
-
-
-
 }

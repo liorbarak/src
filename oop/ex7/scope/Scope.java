@@ -202,7 +202,6 @@ public abstract class Scope implements ScopeMediator{
 		String decLine = stringsInLine[0];
 		String assLine = stringsInLine[1];
 
-
 		this.declarationLine(decLine);
 		this.assignmentLine(assLine);	
 

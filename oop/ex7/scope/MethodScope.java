@@ -7,6 +7,7 @@ import oop.ex7.main.FileParser;
 import oop.ex7.main.Variable;
 import oop.ex7.type.BadTypeException;
 import oop.ex7.type.Type;
+import oop.ex7.type.VarExistException;
 
 public class MethodScope extends Scope {
 
@@ -49,7 +50,7 @@ public class MethodScope extends Scope {
 
 
 
-	public boolean compareMethod(String line, ScopeMediator med) throws BadTypeException, BadLineSyntaxException {
+	public boolean compareMethod(String line, ScopeMediator med) throws BadTypeException, BadLineSyntaxException, VarExistException {
 
 		String callName = getMethodCallNameFromExp(line);
 		if (!this.getNameOfMethod().equals(callName)) {
@@ -115,7 +116,7 @@ public class MethodScope extends Scope {
 	}
 
 
-	public boolean handleReturn(String returnExpression) throws BadTypeException, BadLineSyntaxException{
+	public boolean handleReturn(String returnExpression) throws BadTypeException, BadLineSyntaxException, VarExistException{
 
 		FileParser.checkExpression(this.returnType,returnExpression,this);
 

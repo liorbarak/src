@@ -52,11 +52,13 @@ public class RegexConfig {
 	 * A legal Variable/Method name according to the naming conventions 
 	 * mentioned in the exercise instructions
 	 */
-	public static final String GENERAL_NAME = "( )*([_][^ ]+|[^\\d_][^ ]*)( )*";
 	
-	public static final String ENDS_WITH_SEMICOLON = "([ ]*;[ ]*)$";
-	public static final String ENDS_WITH_OPEN_BRACKET = "([ ]*\\{[ ]*)$";
-	public static final String ENDS_WITH_CLOSED_BRACKET = "([ ]*\\}[ ]*)$";
+	public static final String VALID_OPERATOR = "[+-\\/\\*]";
+	public static final String GENERAL_NAME = "( )*([_][^ ]+|[^\\d_\\+-\\/\\*][^ ]*)( )*";
+	
+	public static final String ENDS_WITH_SEMICOLON = "(.*;[ ]*)$";
+	public static final String ENDS_WITH_OPEN_BRACKET = "(.*\\{[ ]*)$";
+	public static final String ENDS_WITH_CLOSED_BRACKET = "(.*\\}[ ]*)$";
 	
 	public static final String METHOD_CALL = "( )*"+GENERAL_NAME+"( )*\\(( )*[\\d]*[\\D]*( )*\\)( )*;?";
 	
@@ -69,7 +71,7 @@ public class RegexConfig {
 	
 	public static final String TYPE_PLUS_VAR = "( )*"+VALID_TYPES+"( )+"+GENERAL_NAME+"( )*"; 
 	public static final String VALID_METHOD_DECLARE="( )*"+VALID_TYPES_METHOD+"( )+"+GENERAL_NAME+"( )*[(]"+"("+TYPE_PLUS_VAR+","+")"+"*"+TYPE_PLUS_VAR+"[)]( )*[{]( )*";
-	public static final String VALID_OPERATOR = "[+-/*]";
+	
 	
 	public enum lineType {
 		
