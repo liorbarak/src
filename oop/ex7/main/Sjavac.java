@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import javax.print.DocFlavor.INPUT_STREAM;
 
 import oop.ex7.scope.*;
 
