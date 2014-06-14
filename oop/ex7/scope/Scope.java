@@ -10,7 +10,7 @@ import oop.ex7.main.Variable;
 import oop.ex7.type.BooleanType;
 import oop.ex7.type.Type;
 import oop.ex7.type.VarExistException;
-import oop.ex7.type.badEndOfLineException;
+import oop.ex7.type.BadEndOfLineException;
 
 
 
@@ -41,7 +41,7 @@ public abstract class Scope implements ScopeMediator{
 		innerVariables = new ArrayList<Variable>();
 	}
 
-	public  void compileScope() throws InvalidScopeException, EndOfFileException, badEndOfLineException,Exception  {
+	public  void compileScope() throws InvalidScopeException, EndOfFileException, BadEndOfLineException,Exception  {
 
 		ArrayList<Integer> opIndexArray=new ArrayList<Integer>();
 		int lineType;

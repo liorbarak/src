@@ -1,12 +1,14 @@
 package oop.ex7.type;
 
+import oop.ex7.main.CompileException;
+
 /**
  * This class represents an Exception of type BadInputException. This class is
  * thrown when a non-matching input expression is inserted.
  * @author taldovrat
  *
  */
-public class BadInputException extends Exception{
+public class BadInputException extends CompileException{
 
 	/**
 	 * 
@@ -24,13 +26,7 @@ public class BadInputException extends Exception{
 	
 	@Override
 	public String getLocalizedMessage() {
-		return ERROR_MESSAGE+this.varType.toString();
+		return ERROR_MESSAGE+varType.toString();
 	}
 	
-	//for testing
-	public static void main(String[] args) {
-		
-//		Exception a = new Exception();
-	
-	}
 }
