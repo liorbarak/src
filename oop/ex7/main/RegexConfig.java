@@ -55,7 +55,7 @@ public class RegexConfig {
 	 * mentioned in the exercise instructions
 	 */
 	
-	public static final String VALID_OPERATOR = "( )*[+-/*]( )*";
+	public static final String VALID_OPERATOR = "( )*[\\+\\/\\-\\*]( )*";
 	public static final String GENERAL_NAME = "( )*([_][^ ]+|[^\\d_\\+-\\/\\*][^ ,]*)( )*";
 	
 	public static final String ENDS_WITH_SEMICOLON = "(.*;[ ]*)$";

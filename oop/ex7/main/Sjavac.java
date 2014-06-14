@@ -17,12 +17,10 @@ public class Sjavac {
 	public static void main(String[] args) {
 
 		try{
-			File origin = new File(args[0]);//todo handle throws
-//			origin = new File("/Users/taldovrat/Downloads/tests/test140.sjava");//todo handle throws
+			File origin = new File(args[0]);
+			origin = new File("/Users/taldovrat/Downloads/tests/test145.sjava");
 			ArrayList<String> fileLines= FileParser.getlinesList(origin);
-//			for(String line:fileLines) {
-//				System.out.println(line);
-//			}
+			
 			ClassScope mainClass= new ClassScope(fileLines);
 			mainClass.compileScope();
 

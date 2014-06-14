@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import oop.ex7.scope.MethodScope;
 import oop.ex7.scope.Scope;
@@ -130,8 +132,9 @@ public class FileParser {
 		}
 		
 		if (analyze(expression).equals(expTypes.OPERATORS)) {
-			String[] expressions = expression.split(RegexConfig.VALID_OPERATOR);
+			String[] expressions = getExpressions(expression);
 			for (String exp:expressions) {
+//				System.out.println(exp);
 				checkExpression(typeToCompare, exp, med);
 			}
 		}
@@ -178,5 +181,25 @@ public class FileParser {
 		throw new EndOfFileException();
 	}
 
+	
+	public static String[] getExpressions(String expression) {
+		String[] strArr = new String[expression.length()];
+		for (int i = 0; i<expression.length(); i++) {
+			strArr[i] = expression.substring(i, i+1);
+		}
+		ArrayList<Integer> operIndexArr = new ArrayList<Integer>(); 
+		for (int j = 0; j<strArr.length; j++) {
+			if (strArr[j].matches(RegexConfig.VALID_OPERATOR)) {
+				operIndexArr.add(j);
+			}
+		}
+		if(operIndexArr.size()<2) {
+			return expression.split(RegexConfig.VALID_OPERATOR);
+		}
+		String leftExp = expression.substring(operIndexArr.get(0), operIndexArr.get(1));
+		String rightExp = expression.substring(operIndexArr.get(1)+1);
+		String[] expressions = {leftExp, rightExp};
+		return expressions;
+	}
 
 }
