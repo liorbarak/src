@@ -1,9 +1,4 @@
-import java.beans.Expression;
-import java.util.ArrayList;
-
-import oop.ex7.type.BadEndOfLineException;
-
-
+import org.junit.*;
 public class testing_LIOR {
 
 
@@ -32,6 +27,9 @@ public class testing_LIOR {
 	 * @param args
 	 */
 
+	
+	public static final String GENERAL_NAME1 = "( )*([_][^ ]+|[^\\d_][^ ]*)( )*";
+	public static final String ENDS_WITH_SEMICOLON = "(.*;[ ]*)$";
 
 	public static void main(String[] args) {
 
@@ -39,17 +37,17 @@ public class testing_LIOR {
 		//String test="String bli_id (String a, char b, boolean zxcv) {";
 		//String test="int abc (int a, int b, char zxcv) {";
 		//String test="char a   String b";
-		String test= "*+";
+		String test= "-5";
 
-		System.out.println(test.matches(VALID_OPERATOR));
+		System.out.println(test.matches(GENERAL_NAME));
 
 		
 		
-		Integer av;
-		System.out.println(vars.CHAR);
-
-		BadEndOfLineException aaa=new BadEndOfLineException(1, "bla");
-		System.out.println(aaa.getLocalizedMessage());
+//		Integer av;
+//		System.out.println(vars.CHAR);
+//
+//		BadEndOfLineException aaa=new BadEndOfLineException(1, "bla");
+//		System.out.println(aaa.getLocalizedMessage());
 
 	}
 
