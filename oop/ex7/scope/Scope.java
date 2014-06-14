@@ -3,10 +3,12 @@ package oop.ex7.scope;
 import java.util.ArrayList;
 
 import oop.ex7.main.BadLineSyntaxException;
+import oop.ex7.main.CompileException;
 import oop.ex7.main.EndOfFileException;
 import oop.ex7.main.FileParser;
 import oop.ex7.main.RegexConfig;
 import oop.ex7.main.Variable;
+import oop.ex7.type.BadTypeException;
 import oop.ex7.type.BooleanType;
 import oop.ex7.type.Type;
 import oop.ex7.type.VarExistException;
@@ -52,13 +54,11 @@ public abstract class Scope implements ScopeMediator{
 			lineType=FileParser.scopeOrVariable(relevantLines.get(i),i);//throws if not valid scope or var declaration
 
 			if (lineType==lineTypes.SCOPE.ordinal()){
+				
 				int closer = FileParser.findLastCloser(relevantLines,i);
-				//replace to lineAnalizerSc
-				//tempScope = ScopeFactory.createScope(relevantLines,i,closer, this);
 				
 				lineAnalizerSc(relevantLines,i,closer);
 				
-				//innerScopes.add(tempScope);
 				i=closer;
 			}
 			else{
@@ -82,23 +82,6 @@ public abstract class Scope implements ScopeMediator{
 
 
 
-
-//	/**
-//	 * checks if this is a legal kind of scope that could be initialized in the
-//	 * current scope.
-//	 * example- class scope can only contain method scopes
-//	 * example2-method scope can only contain if/while
-//	 * @param tempScope
-//	 * @return
-//	 */
-//	private boolean isScopeValid(Scope tempScope) {
-//		return validScopes.contains(tempScope.toString());	//does this even work? needs checking
-//	}
-
-
-//	public String toString(){
-//		return stringRepresentation;
-//	}
 
 
 	public ArrayList<Variable> getVariables(){
@@ -131,7 +114,7 @@ public abstract class Scope implements ScopeMediator{
 		if (line.matches(RegexConfig.lineType.RETURN.getRegex())){
 			String returnExpression=line.substring(line.indexOf(" "), line.indexOf(";")).trim();
 			if(!handleReturn(returnExpression)){
-				throw new Exception();//return in case of incorrect location
+				throw new BadReturnException(line);//return in case of incorrect location
 			}
 		}
 
@@ -152,7 +135,7 @@ public abstract class Scope implements ScopeMediator{
 		}
 
 		//TODO create specific error. happens if doesnt match any of the known operations
-		throw new Exception();
+		throw new BadLineSyntaxException(line);
 
 	}
 
@@ -167,7 +150,7 @@ public abstract class Scope implements ScopeMediator{
 
 
 
-	private void assignmentLine(String line) throws Exception {
+	private void assignmentLine(String line) throws VarExistException, BadTypeException {
 
 		Variable varTemp;
 
@@ -182,7 +165,7 @@ public abstract class Scope implements ScopeMediator{
 
 		//if the variable doesn't exist:
 		if (varTemp == null) {
-			throw new VarExistException();
+			throw new VarExistException(line);
 		}
 
 		//check if the right expression is of the same type.
@@ -192,7 +175,7 @@ public abstract class Scope implements ScopeMediator{
 		
 	}
 
-	private void declarationLine(String line) throws Exception {
+	private void declarationLine(String line)  throws VarExistException {
 
 		Variable varTemp;
 		//save the left expression as the name of the variable
@@ -208,12 +191,12 @@ public abstract class Scope implements ScopeMediator{
 			this.innerVariables.add(new Variable(typeOfVar, nameOfVar));
 			return;
 		}
-		throw new Exception();	
+		throw new VarExistException(line);	
 	}
 
-	private void bothLine(String line) {
+	private void bothLine(String line) throws VarExistException, BadTypeException {
 
-		Variable varTemp;
+		//Variable varTemp;
 		//save the left expression as the name of the variable
 		//save the right expression as the input value
 		String linetemp = line.trim();
@@ -221,13 +204,10 @@ public abstract class Scope implements ScopeMediator{
 		String decLine = stringsInLine[0];
 		String assLine = stringsInLine[1];
 
-		try {
+
 			this.declarationLine(decLine);
 			this.assignmentLine(assLine);	
-		}
-		catch(Exception ex) {
-			System.out.println(ex.getMessage());
-		}
+
 
 	}
 
@@ -291,7 +271,7 @@ public abstract class Scope implements ScopeMediator{
 	///////////////////////////////////////////////////////////////////////////////////////////scopes
 
 	//public void lineAnalizerSc(String line) {
-	public void lineAnalizerSc (ArrayList<String> lines,int start, int finish) throws Exception{
+	public void lineAnalizerSc (ArrayList<String> lines,int start, int finish) throws CompileException  {
 		
 		String firstline=lines.get(start);
 		ArrayList<String> subScopeLines=(ArrayList<String>) (lines.subList(start, finish));
@@ -325,7 +305,7 @@ public abstract class Scope implements ScopeMediator{
 			innerScopes.add( new IfScope(subScopeLines,start,finish,this));
 		}
 		
-		throw new BadLineSyntaxException(start, firstline);
+		throw new BadLineSyntaxException(firstline);
 		
 }
 
@@ -344,7 +324,7 @@ public abstract class Scope implements ScopeMediator{
 	 * creates a new methodscope while checking all its variables
 	 * 
 	 */
-	private void methodInput (ArrayList<String> lines,int start, int finish) throws Exception{//make more specific
+	private void methodInput (ArrayList<String> lines,int start, int finish) throws CompileException {
 		String tempLine=lines.get(start);
 		ArrayList<Variable> inputVars=new ArrayList<Variable>();
 		
@@ -352,17 +332,20 @@ public abstract class Scope implements ScopeMediator{
 		String methodName=tempLine.substring(tempLine.indexOf(" "), tempLine.indexOf("("));
 		String[] insideBrackets=getInsideBrackets(tempLine).split(",");
 		 
+		for (Scope i:innerScopes){
+			MethodScope method=(MethodScope) i;
+			if (!method.getNameOfMethod().equals(methodName)){
+				throw new DoubleMethodDecleration(start,lines.get(start));
+			}
+		}
 		
 		for (String i:insideBrackets){
 			String[] TypeAndName = i.split(" ");
-			if (!TypeAndName[1].matches(RegexConfig.GENERAL_NAME)){
-				throw new Exception();
-			}
 			inputVars.add(new Variable(TypeAndName[0], TypeAndName[1]));
 		}
 		
 		innerScopes.add(new MethodScope (lines,start,finish,
-				Type.createType(returnType),methodName,inputVars, this)   );
+				Type.createType(returnType),methodName,inputVars, this));
 		
 	}
 

@@ -1,5 +1,6 @@
 package oop.ex7.type;
 
+import oop.ex7.main.CompileException;
 import oop.ex7.main.RegexConfig;
 
 
@@ -12,28 +13,6 @@ import oop.ex7.main.RegexConfig;
  *
  */
 public abstract class  Type {
-	
-
-	//use constants from regexconfig file
-//	enum DifferentTypes{
-//		INT("int"),
-//	    DOUBLE ("double"),
-//	    STRING ("String"),
-//	    BOOLEAN ("boolean"),
-//	    CHAR ("char"), 
-//	    VOID ("void");
-//	    
-//	    public final String innerString;
-//		
-//		DifferentTypes(String a){
-//			innerString=a;
-//		}
-//		@Override
-//		public String toString() {
-//			return innerString;
-//		}
-//	}
-	
 	
 
 
@@ -53,7 +32,7 @@ public abstract class  Type {
 	
 	
 	//change to switch case
-	public static Type createType(String check) throws Exception{//TODO create specific exception
+	public static Type createType(String check) throws CompileException{//TODO create specific exception
 		
 		
 		if (check.matches(RegexConfig.TYPE_INT)){
@@ -79,7 +58,7 @@ public abstract class  Type {
 //		}	
 //		
 		
-			throw new Exception();//throw exception because not a valid type string
+			throw new CompileException();//throw exception because not a valid type string//TODO make more specific
 		
 	}
 	

@@ -17,8 +17,8 @@ public class BadLineSyntaxException extends CompileException {
 	//private int lineNumber;
 	private String lineText;
 	
-	public BadLineSyntaxException(Integer num,String lineText){
-		super(num);
+	public BadLineSyntaxException(String lineText){
+		//super(num);
 		//lineNumber=num;
 		this.lineText=lineText;
 	}
