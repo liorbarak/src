@@ -41,19 +41,19 @@ public class RegexConfig {
 	}
 
 	public static final String TYPE_INT = "( )*int( )*";
-	public static final String INPUT_INT = "=( )*(-)?[\\d]+( )*;";
+	public static final String INPUT_INT = "( )*(-)?[\\d]+( )*";
 
 	public static final String TYPE_DOUBLE = "( )*double( )*";
-	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|=( )*(-)?[\\d]+.[\\d]+( )*;)";
+	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|( )*(-)?[\\d]+.([\\d]+)?( )*)";
 
 	public static final String TYPE_STRING = "( )*String( )*";
-	public static final String INPUT_STRING = "=( )*\"[^\"]*\"( )*;";
+	public static final String INPUT_STRING = "( )*\"[^\"]*\"( )*";
 
 	public static final String TYPE_BOOLEAN = "( )*boolean( )*";
-	public static final String INPUT_BOOLEAN = "=( )*(true|false)( )*;";
+	public static final String INPUT_BOOLEAN = "( )*(true|false)( )*";
 
 	public static final String TYPE_CHAR = "( )*char( )*";
-	public static final String INPUT_CHAR = "=( )*'[^']?'( )*;";
+	public static final String INPUT_CHAR = "( )*'[^']?'( )*";
 
 	public static final String SOME_TYPE_VALUE = "("+INPUT_INT+"|"+
 			INPUT_DOUBLE+"|"+

@@ -17,6 +17,7 @@ public class testingTal {
 	
 	public static final String TYPE_DOUBLE = "( )*double( )*";
 	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|( )*(-)?[\\d]+.([\\d]+)?( )*)";
+//	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|( )*(-)?[\\d]+.[\\d]+( )*)";
 	
 	
 	public static final String TYPE_STRING = "( )*String( )*";
@@ -48,29 +49,9 @@ public class testingTal {
 	}
 	
 	public static void main(String[] args) {
-		String line = "    foo   (  a c  ,   b  );";
-		String callName=line.substring(0, line.indexOf("(")).trim();
-		String variablesCall=line.substring(line.indexOf("(")+1,line.indexOf(")")).trim();
-		//Need to check valid expression structure
-		String[] stringVars=variablesCall.split(",");
-		String[] expVars = new String[stringVars.length];
-		
-		for(int i = 0; i< stringVars.length; i++) {
-			expVars[i] = stringVars[i].trim();
-			
-		}
-		for (String str:expVars) {
-			if (str.contains(" ")) {
-				System.out.println("Var not valid!");
-				return;
-			}
-		}
-		if ()
-		System.out.println(callName);
-		System.out.println(variablesCall);
-		for(String str:expVars) {
-			System.out.println(str);
-		}
+		String check = "-5.3";
+		System.out.println(check.matches(INPUT_DOUBLE));
+	
 	} 
 		
 //			
