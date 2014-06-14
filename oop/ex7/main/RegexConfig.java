@@ -54,9 +54,9 @@ public class RegexConfig {
 	 */
 	public static final String GENERAL_NAME = "( )*([_][^ ]+|[^\\d_][^ ]*)( )*";
 	
-	public static final String ENDS_WITH_SEMICOLON = "$( )*;( )*";
-	public static final String ENDS_WITH_OPEN_BRACKET = "$( )*{( )*";
-	public static final String ENDS_WITH_CLOSED_BRACKET = "$( )*}( )*";
+	public static final String ENDS_WITH_SEMICOLON = "([ ]*;[ ]*)$";
+	public static final String ENDS_WITH_OPEN_BRACKET = "([ ]*\\{[ ]*)$";
+	public static final String ENDS_WITH_CLOSED_BRACKET = "([ ]*\\}[ ]*)$";
 	
 	public static final String METHOD_CALL = "( )*"+GENERAL_NAME+"( )*\\(( )*[\\d]*[\\D]*( )*\\)( )*;?";
 	

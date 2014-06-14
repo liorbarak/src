@@ -1,6 +1,5 @@
 package oop.ex7.main;
 
-import java.awt.geom.GeneralPath;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -138,7 +137,7 @@ public class FileParser {
 		if (expression.matches(RegexConfig.METHOD_CALL)) {
 			return expTypes.METHOD;
 		}
-		throw new BadLineSyntaxException(null,expression);
+		throw new BadLineSyntaxException(expression);
 	}
 	
 	public static int  findLastCloser(ArrayList<String> relevantLines, int i) throws EndOfFileException{
