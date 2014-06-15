@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.*;
 
+import javax.print.DocFlavor.READER;
+
 import oop.ex7.main.CompileException;
+import oop.ex7.main.FileParser;
 import oop.ex7.main.RegexConfig;
+import oop.ex7.scope.Scope;
 import oop.ex7.type.*;
 public class testingTal {
 	
@@ -131,9 +135,27 @@ public class testingTal {
 	
 	public static void main(String[] args) throws FileNotFoundException, CompileException {
 	
-		String line = "	return 1;";
-		System.out.println(line.matches(RegexConfig.lineType.RETURN.getRegex()));
+		String line = "int[] a = {3,4,5};";
+		String lineTemp = line.trim();
+		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES);
+		Matcher m = p.matcher(lineTemp);
+		m.find();
+		String typeOfExps = lineTemp.substring(m.start(), m.end());
+		String[] exps = Scope.getAssigmentStr(lineTemp)[1].split("\\,");
+		System.out.println(typeOfExps);
+		for (String str:exps) {
+			System.out.println(str);
+		}
+	
+//		for (String exp:exps) {
+//			FileParser.checkExpression(typeOfExps, exp, );
+//		}
 		
+		
+//		System.out.println(a.indexOf("["));
+////		System.out.println(expToCheck);
+
+
 	} 
 		
 }

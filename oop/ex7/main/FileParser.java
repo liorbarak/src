@@ -10,7 +10,9 @@ import java.util.regex.Pattern;
 import oop.ex7.scope.MethodScope;
 import oop.ex7.scope.Scope;
 import oop.ex7.scope.ScopeMediator;
+import oop.ex7.type.ArrayType;
 import oop.ex7.type.BadTypeException;
+import oop.ex7.type.IntType;
 import oop.ex7.type.Type;
 import oop.ex7.type.BadEndOfLineException;
 import oop.ex7.type.VarExistException;
@@ -24,7 +26,7 @@ import oop.ex7.type.VarNotExistException;
  */
 public class FileParser {
 
-	public enum expTypes {SOME_TYPE_INPUT, VAR, METHOD, OPERATORS} 
+	public enum expTypes {SOME_TYPE_INPUT, VAR, METHOD, OPERATORS, ARR_VAR} 
 	
 	/**
 	 * parses original file 
@@ -134,8 +136,54 @@ public class FileParser {
 		if (analyze(expression).equals(expTypes.OPERATORS)) {
 			String[] expressions = getExpressions(typeToCompare, expression);
 			for (String exp:expressions) {
-//				System.out.println(exp);
 				checkExpression(typeToCompare, exp, med);
+			}
+		}
+		
+		if (analyze(expression).equals(expTypes.ARR_VAR)) {
+			
+			Pattern p = Pattern.compile(RegexConfig.GENERAL_NAME);
+			Matcher m = p.matcher(expression);
+			m.find();
+			String nameOfArr = expression.substring(m.start(), m.end());
+			
+			ScopeMediator tempScope = med;
+			
+			while (tempScope != null) {
+				for(Variable var:tempScope.getVariables()) {
+					if (var.getName().equals(expression)) {
+						if(!new ArrayType().sameType(var.getType())) {
+							throw new BadTypeException(expression);
+						}
+						ArrayType varTempArrType = (ArrayType) var.getType();
+						if(!typeToCompare.sameType(varTempArrType.getInnerType())) {
+							throw new BadTypeException(expression);
+						}
+						if(!var.isInitialized()) {
+							throw new VarNotExistException(expression+" - Uninitialized"); //TODO
+						}
+						checkInnerArrVarPos(expression, med);
+						return;
+					}
+				}
+				tempScope = tempScope.getFatherScope();
+			}
+			throw new VarExistException(expression);
+		
+		}
+	}
+
+	public static void checkInnerArrVarPos(String expression, ScopeMediator med) throws CompileException {
+		
+		String[] stringsInLine = Scope.getAssigmentStr(expression);		
+		String nameOfVar = stringsInLine[0];
+		String expToCheck = nameOfVar.substring(expression.indexOf("[")+1, expression.lastIndexOf("]")).trim();
+		
+		FileParser.checkExpression(new IntType(), expToCheck, med);
+		if (expToCheck.matches(RegexConfig.INPUT_INT)) {
+			int intExp = Integer.parseInt(expToCheck);
+			if (intExp < 0) {
+				throw new CompileException(); //TODO change exception type
 			}
 		}
 	}
@@ -155,6 +203,10 @@ public class FileParser {
 		}
 		if (expression.matches(RegexConfig.OPERATOR_EXP)) {
 			return expTypes.OPERATORS;
+		}
+		
+		if (expression.matches(RegexConfig.ARR_VAR)) {
+			return expTypes.ARR_VAR;
 		}
 		throw new BadLineSyntaxException(expression);
 	}
@@ -205,4 +257,5 @@ public class FileParser {
 		return expressions;
 	}
 
+	
 }

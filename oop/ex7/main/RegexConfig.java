@@ -56,7 +56,7 @@ public class RegexConfig {
 	 */
 	
 	public static final String VALID_OPERATOR = "[ \t]*[\\+\\/\\-\\*][ \t]*";
-	public static final String GENERAL_NAME = "[ \t]*([_][^ ]+|[^\\d_\\+-\\/\\*][^ ,]*)[ \t]*";
+	public static final String GENERAL_NAME = "[ \t]*([_][^ \\[\\];]+|[^\\d_\\+-\\/\\*\\[\\];][^ ,\\[\\];]*)[ \t]*";
 	
 	public static final String ENDS_WITH_SEMICOLON = "(.*;[ \t]*)$";
 	public static final String ENDS_WITH_OPEN_BRACKET = "(.*\\{[ \t]*)$";
@@ -80,18 +80,23 @@ public class RegexConfig {
 	
 	
 	//array shits
-	public static String ARRAY_INPUT="[ \t]*[{]("+VALID_EXP+",)*("+VALID_EXP+")?[}][ \t]*";//right of equals-only brackets {}
+	public static String ARRAY_INIT="[ \t]*[{]("+VALID_EXP+",)*("+VALID_EXP+")?[}][ \t]*";//right of equals-only brackets {}
 	public static String ARRAY_DECLARE= VALID_TYPES+"(\\[\\])[ \t]+"+GENERAL_NAME+"[ \t]*";//left of equals 
 	public static String ARRAY_DECLARE_WITH_SEMICOLON=ARRAY_DECLARE+";[ \t]*";//just declare
-	public static String ARRAY_DECLARE_AND_ASSIGN= ARRAY_DECLARE+"[ \t]*=[ \t]*"+ARRAY_INPUT+"[ \t]*;[ \t]*" ;//complete "int[]	 q={1,4,a};"
+	public static String ARRAY_DECLARE_AND_ASSIGN= ARRAY_DECLARE+"[ \t]*=[ \t]*"+ARRAY_INIT+"[ \t]*;[ \t]*" ;//complete "int[]	 q={1,4,a};"
+	public static final String TYPE_ARRAY = VALID_TYPES+"\\[\\][ \t]*";
+	public static final String ARR_VAR = GENERAL_NAME+"\\["+VALID_EXP+"\\][ \t]*;[ \t]*";
 
 	
 	public enum lineType {
 		
-		DECLARATION ("[ \t]*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ \t]*;[ \t]*"),
+		DECLARATION ("([ \t]*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ \t]*;[ \t]*|"+ARRAY_DECLARE_WITH_SEMICOLON+")"),
 		ASSIGNMENT ("[ \t]*"+GENERAL_NAME+"[ \t]*=[ \t]*"+VALID_EXP+"[ \t]*;[ \t]*"), 
+		ASSIGNMENT_ARRAY ("[ \t]*"+GENERAL_NAME+"[ \t]*\\["+VALID_EXP+"\\][ \t]*=[ \t]*"+VALID_EXP+"[ \t]*;[ \t]*"),
 		BOTH ("[ \t]*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ \t]*=[ \t]*"+VALID_EXP+"[ \t]*;[ \t]*"),
-		RETURN ("[ \t]*return( )+"+VALID_EXP+"[ \t]*;[ \t]*");
+		BOTH_ARRAY (ARRAY_DECLARE_AND_ASSIGN),
+		RETURN ("([ \t]*return( )+"+VALID_EXP+"[ \t]*;[ \t]*|[ \t]*return[ \t]*;[ \t]*)"); 
+		
 
 		private String regex;
 
