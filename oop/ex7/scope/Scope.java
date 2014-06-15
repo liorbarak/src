@@ -134,7 +134,7 @@ public abstract class Scope implements ScopeMediator{
 			return;
 		}
 		//initialize
-		else if (line.matches(RegexConfig.lineType.DECLARATION.getRegex())){
+		else if (line.matches(RegexConfig.lineType.DECLARATION.getRegex()) || line.matches(RegexConfig.ARRAY_DECLARE)){
 			declarationLine(line);
 			return;
 		}
