@@ -8,8 +8,10 @@ import oop.ex7.main.EndOfFileException;
 import oop.ex7.main.FileParser;
 import oop.ex7.main.RegexConfig;
 import oop.ex7.main.Variable;
+import oop.ex7.type.ArrayType;
 import oop.ex7.type.BadTypeException;
 import oop.ex7.type.BooleanType;
+import oop.ex7.type.IntType;
 import oop.ex7.type.Type;
 import oop.ex7.type.VarExistException;
 import oop.ex7.type.BadEndOfLineException;
@@ -124,11 +126,21 @@ public abstract class Scope implements ScopeMediator{
 			assignmentLine(line);
 			return;
 		}
+		//assign array
+		else if (line.matches(RegexConfig.lineType.ASSIGNMENT_ARRAY.getRegex())){
+			assignmentLineArr(line);
+			return;
+		}
 		//initialize
 		else if (line.matches(RegexConfig.lineType.DECLARATION.getRegex())){
 			declarationLine(line);
 			return;
 		}
+		//initialize array
+				else if (line.matches(RegexConfig.lineType.DECLARATION_ARR.getRegex())){
+					declarationLine(line);
+					return;
+				}
 		//both
 		else if (line.matches(RegexConfig.lineType.BOTH.getRegex())){
 			bothLine(line);
@@ -154,7 +166,41 @@ public abstract class Scope implements ScopeMediator{
 	}
 
 
+	private void assignmentLineArr(String line) throws CompileException {
 
+		Variable varTemp;
+
+		String[] stringsInLine = Scope.getAssigmentStr(line);		
+		String nameOfVar = stringsInLine[0];
+		String inputValue = stringsInLine[1];
+		String nameOfArr = nameOfVar.split("\\[")[0].trim();
+		String expToCheck = nameOfVar.substring(line.indexOf("[")+1, line.lastIndexOf("]")).trim();
+
+		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
+		varTemp = this.varExistInAll(nameOfArr);
+		
+		//if the variable doesn't exist:
+		if (varTemp == null || varTemp.getType().sameType(new ArrayType())) {
+			throw new VarExistException(line);
+		}
+		//check if the expression of the index in the array call is valid:
+		FileParser.checkExpression(new IntType(), expToCheck, this);
+		if (expToCheck.matches(RegexConfig.INPUT_INT)) {
+			int intExp = Integer.parseInt(expToCheck);
+			if (intExp < 0) {
+				throw new CompileException(); //TODO change exception type
+			}
+		}
+		
+		//check if the right expression is of the same type.
+		FileParser.checkExpression(varTemp.getType(), inputValue, this);
+		varTemp.setInitialized(true);
+		return;
+
+	}
+
+	
+	
 
 	private void assignmentLine(String line) throws CompileException {
 
@@ -166,8 +212,6 @@ public abstract class Scope implements ScopeMediator{
 
 		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
 		varTemp = this.varExistInAll(nameOfVar);
-
-
 
 		//if the variable doesn't exist:
 		if (varTemp == null) {
@@ -216,7 +260,7 @@ public abstract class Scope implements ScopeMediator{
 
 	}
 
-	private static String[] getAssigmentStr(String line) {
+	public static String[] getAssigmentStr(String line) {
 		//1 - index of input value
 		String linetemp = line.trim();
 		String[] stringsInLine = linetemp.split("=");
@@ -233,7 +277,7 @@ public abstract class Scope implements ScopeMediator{
 		return stringsInLine;
 	}
 
-	private static String[] getBothStr(String line) {
+	public static String[] getBothStr(String line) {
 
 		String declarationLine =  getAssigmentStr(line)[0];
 		String[] declaration = getDecStr(declarationLine);

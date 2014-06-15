@@ -90,8 +90,10 @@ public class RegexConfig {
 		
 		DECLARATION ("[ \t]*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ \t]*;[ \t]*"),
 		ASSIGNMENT ("[ \t]*"+GENERAL_NAME+"[ \t]*=[ \t]*"+VALID_EXP+"[ \t]*;[ \t]*"), 
+		ASSIGNMENT_ARRAY ("[ \t]*"+GENERAL_NAME+"[ \t]*\\["+VALID_EXP+"\\][ \t]*=[ \t]*"+VALID_EXP+"[ \t]*;[ \t]*"),
 		BOTH ("[ \t]*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ \t]*=[ \t]*"+VALID_EXP+"[ \t]*;[ \t]*"),
-		RETURN ("[ \t]*return( )+"+VALID_EXP+"[ \t]*;[ \t]*");
+		RETURN ("([ \t]*return( )+"+VALID_EXP+"[ \t]*;[ \t]*|[ \t]*return[ \t]*;[ \t]*)"); 
+		
 
 		private String regex;
 

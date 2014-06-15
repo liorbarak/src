@@ -10,6 +10,9 @@ public class ArrayType extends Type {
 	 */
 	private Type innerType;
 	
+	public ArrayType() {
+	}
+	
 	public ArrayType(Type primitiveType){
 		innerType=primitiveType;
 	}

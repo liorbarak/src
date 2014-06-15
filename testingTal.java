@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.*;
 
+import javax.print.DocFlavor.READER;
+
 import oop.ex7.main.CompileException;
 import oop.ex7.main.RegexConfig;
+import oop.ex7.scope.Scope;
 import oop.ex7.type.*;
 public class testingTal {
 	
@@ -131,9 +134,22 @@ public class testingTal {
 	
 	public static void main(String[] args) throws FileNotFoundException, CompileException {
 	
-		String line = "	return 1;";
-		System.out.println(line.matches(RegexConfig.lineType.RETURN.getRegex()));
-		
+		String line = "a   [dsd] = 5;";
+//		String[] stringsInLine = Scope.getAssigmentStr(a);		
+//		String nameOfVar = stringsInLine[0];
+//		String inputValue = stringsInLine[1];
+//		String nameOfArr = a.split("\\[")[0].trim();
+//		String expToCheck;
+//		expToCheck = a.substring(a.indexOf("[")+1, a.lastIndexOf("]")).trim();
+//		System.out.println(nameOfArr);
+//		System.out.println(expToCheck);
+//		System.out.println(a.indexOf("["));
+////		System.out.println(expToCheck);
+
+		String[] both = Scope.getBothStr(line);
+		for (String str:both) {
+			System.out.println(str);
+		}
 	} 
 		
 }
