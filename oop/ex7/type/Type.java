@@ -13,7 +13,7 @@ import oop.ex7.main.RegexConfig;
  *
  */
 public abstract class  Type {
-	
+
 
 
 	/**
@@ -29,16 +29,16 @@ public abstract class  Type {
 	 * @return true if type is ok
 	 */
 	public abstract String getRegex();
-	
-	
+
+
 	//change to switch case
 	public static Type createType(String check) throws CompileException{//TODO create specific exception
-		
-		
+
+
 		if (check.matches(RegexConfig.TYPE_INT)){
 			return new IntType();
 		}
-		
+
 		if (check.matches(RegexConfig.TYPE_DOUBLE)){
 			return new DoubleType();
 		}
@@ -48,34 +48,34 @@ public abstract class  Type {
 		if (check.matches(RegexConfig.TYPE_BOOLEAN)){ 
 			return new BooleanType();
 		}	
-		
+
 		if (check.matches(RegexConfig.TYPE_CHAR)){ 
 			return new CharType();
 		}
-		
+
 		if (check.matches(RegexConfig.TYPE_VOID)){
 			return new VoidType();
 		}	
-		
 
-		if (check.matches(RegexConfig.ARR_TYPE)) {
-			return new ArrayType(createType(check.replaceAll("[ \t]*[[ \t]*][ \t]*", "")));//find sometype
 
-//tried to expand this. hope it works			
-//		if (check.matches(RegexConfig.TYPE_ARRAY)) {
-//			return new ArrayType(check.replaceAll("[]", ""));//find sometype
+		//		if (check.matches(RegexConfig.ARR_TYPE)) {
+		//			return new ArrayType(createType(check.replaceAll("[ \t]*[[ \t]*][ \t]*", "")));//find sometype
+
+		//tried to expand this. hope it works			
+		if (check.matches(RegexConfig.TYPE_ARRAY)) {
+			return new ArrayType(check.replaceAll("[]", ""));//find sometype
 
 
 		}
-		
+
 		throw new CompileException();//throw exception because not a valid type string//TODO make more specific
-		
+
 	}
-	
+
 	public boolean sameType(Type target){
 		return this.getClass().equals(target.getClass());
 	}
-		
+
 
 
 }
