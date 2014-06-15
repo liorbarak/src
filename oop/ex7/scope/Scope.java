@@ -274,11 +274,18 @@ public abstract class Scope implements ScopeMediator{
 
 	private void bothLineArr(String line) throws CompileException {
 		
+		String fullAss = getAssigmentStr(line)[0].trim();
+		String fullType = getAssigmentStr(fullAss)[0];
+		String nameOfVar = getAssigmentStr(fullAss)[1];
 		String lineTemp = line.trim();
 		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES);
 		Matcher m = p.matcher(lineTemp);
 		m.find();
 		String typeOfExps = lineTemp.substring(m.start(), m.end());
+		
+		if (line.matches(RegexConfig.ARRAY_DECLARE_BLANK)) {
+			this.innerVariables.add(new Variable(fullType, ))
+		}
 		String[] exps = getAssigmentStr(lineTemp)[1].split("\\,");
 		//TODO lior added
 		//checks if the expression we get on the right side of the = is '{}'

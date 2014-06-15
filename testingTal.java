@@ -135,18 +135,23 @@ public class testingTal {
 	
 	public static void main(String[] args) throws FileNotFoundException, CompileException {
 	
-		String line = "int[] a = {3,4,5};";
+		String line = "int[] a = {};";
+		String fullAss = Scope.getAssigmentStr(line)[0].trim();
+		String fullType = Scope.getDecStr(fullAss)[0];
+		String nameOfVar = Scope.getDecStr(fullAss)[1];
 		String lineTemp = line.trim();
 		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES);
 		Matcher m = p.matcher(lineTemp);
 		m.find();
 		String typeOfExps = lineTemp.substring(m.start(), m.end());
-		String[] exps = Scope.getAssigmentStr(lineTemp)[1].split("\\,");
-		System.out.println(typeOfExps);
-		for (String str:exps) {
-			System.out.println(str);
-		}
-	
+		System.out.println(fullAss);
+		System.out.println(fullType);
+		System.out.println(nameOfVar);
+//		System.out.println(exps);
+//		for (String str:exps) {
+//			System.out.println(str);
+//		}
+//	
 //		for (String exp:exps) {
 //			FileParser.checkExpression(typeOfExps, exp, );
 //		}
