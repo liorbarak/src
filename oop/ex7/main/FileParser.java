@@ -82,7 +82,7 @@ public class FileParser {
 	
 	
 	public static void checkExpression(Type typeToCompare, String expression, 
-		ScopeMediator med) throws BadLineSyntaxException, BadTypeException, VarExistException, VarNotExistException {
+		ScopeMediator med) throws CompileException {
 		
 		if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
 			if (!typeToCompare.isExpressionMatch(expression)) {
@@ -132,7 +132,7 @@ public class FileParser {
 		}
 		
 		if (analyze(expression).equals(expTypes.OPERATORS)) {
-			String[] expressions = getExpressions(expression);
+			String[] expressions = getExpressions(typeToCompare, expression);
 			for (String exp:expressions) {
 //				System.out.println(exp);
 				checkExpression(typeToCompare, exp, med);
@@ -182,22 +182,25 @@ public class FileParser {
 	}
 
 	
-	public static String[] getExpressions(String expression) {
-		String[] strArr = new String[expression.length()];
-		for (int i = 0; i<expression.length(); i++) {
-			strArr[i] = expression.substring(i, i+1);
+	public static String[] getExpressions(Type type, String expression) throws CompileException {
+		
+		Pattern p = Pattern.compile(type.getRegex());
+		Matcher m = p.matcher(expression);
+		String leftExp;
+		String rightExp;
+		if (m.find()) {
+			leftExp = expression.substring(m.start(), m.end());
 		}
-		ArrayList<Integer> operIndexArr = new ArrayList<Integer>(); 
-		for (int j = 0; j<strArr.length; j++) {
-			if (strArr[j].matches(RegexConfig.VALID_OPERATOR)) {
-				operIndexArr.add(j);
-			}
+		else {
+			throw new CompileException(); //TODO change exception type
 		}
-		if(operIndexArr.size()<2) {
-			return expression.split(RegexConfig.VALID_OPERATOR);
+		if (m.find()) {
+			rightExp = expression.substring(m.start(), m.end());
 		}
-		String leftExp = expression.substring(operIndexArr.get(0), operIndexArr.get(1));
-		String rightExp = expression.substring(operIndexArr.get(1)+1);
+		else {
+			throw new CompileException(); //TODO change exception type
+		}
+		
 		String[] expressions = {leftExp, rightExp};
 		return expressions;
 	}

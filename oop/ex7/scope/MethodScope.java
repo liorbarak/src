@@ -3,6 +3,7 @@ package oop.ex7.scope;
 import java.util.ArrayList;
 
 import oop.ex7.main.BadLineSyntaxException;
+import oop.ex7.main.CompileException;
 import oop.ex7.main.FileParser;
 import oop.ex7.main.Variable;
 import oop.ex7.type.BadTypeException;
@@ -51,7 +52,7 @@ public class MethodScope extends Scope {
 
 
 
-	public boolean compareMethod(String line, ScopeMediator med) throws BadTypeException, BadLineSyntaxException, VarExistException, VarNotExistException {
+	public boolean compareMethod(String line, ScopeMediator med) throws CompileException {
 
 		String callName = getMethodCallNameFromExp(line);
 		if (!this.getNameOfMethod().equals(callName)) {
@@ -117,7 +118,7 @@ public class MethodScope extends Scope {
 	}
 
 
-	public boolean handleReturn(String returnExpression) throws BadTypeException, BadLineSyntaxException, VarExistException, VarNotExistException{
+	public boolean handleReturn(String returnExpression) throws CompileException{
 
 		FileParser.checkExpression(this.returnType,returnExpression,this);
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.*;
 
+import oop.ex7.main.CompileException;
 import oop.ex7.main.RegexConfig;
 import oop.ex7.type.*;
 public class testingTal {
@@ -77,106 +78,61 @@ public class testingTal {
 	
 	public static final String OPERATOR_EXP = VALID_EXP+VALID_OPERATOR+VALID_EXP;;
 	
-	public static String[] getExpressions(String expression) {
-		String[] strArr = new String[expression.length()];
-		for (int i = 0; i<expression.length(); i++) {
-			strArr[i] = expression.substring(i, i+1);
-			
+	public static String[] getExpressions(Type type, String expression) throws CompileException {
+
+		Pattern p = Pattern.compile(type.getRegex());
+		Matcher m = p.matcher(expression);
+		String leftExp;
+		String rightExp;
+		if (m.find()) {
+			leftExp = expression.substring(m.start(), m.end());
 		}
-		ArrayList<Integer> operIndexArr = new ArrayList<Integer>(); 
-		for (int j = 0; j<strArr.length; j++) {
-			if (strArr[j].matches(VALID_OPERATOR)) {
-//				System.out.println(j);
-				operIndexArr.add(j);
-			}
+		else {
+			throw new CompileException();
+		}
+		if (m.find()) {
+			rightExp = expression.substring(m.start(), m.end());
+		}
+		else {
+			throw new CompileException();
 		}
 		
-		if(operIndexArr.size()<2) {
-			return expression.split(VALID_OPERATOR);
-		}
-		System.out.println("test");
-		String leftExp = expression.substring(operIndexArr.get(0), operIndexArr.get(1));
-		String rightExp = expression.substring(operIndexArr.get(1)+1);
 		String[] expressions = {leftExp, rightExp};
 		return expressions;
-	}
-
-	
-	public static String getOper(Character ch) {
 		
-		switch(ch) {
-		case('-'): return "-";
-		case('+'): return "+";
-		case('/'): return "/";
-		case('*'): return "*";
-		default: return null;
-		}
-	}
-
-	
-	public static void main(String[] args) throws FileNotFoundException {
-	
-//		String tempRegex = "( )*(-)?[\\d]+(\\.)([\\d]+)?( )*";
-		
-//		String test = "9.2-3.4";
-//		String[] expressions = getExpressions(test);
-//		for (String s:expressions){
-//			System.out.println(s);
+		//		String[] strArr = new String[expression.length()];
+//		for (int i = 0; i<expression.length(); i++) {
+//			strArr[i] = expression.substring(i, i+1);
+//			
 //		}
-//		String dot = ".";
-//		System.out.println(dot.matches(VALID_OPERATOR));
-//		 
-		
-		
-//		System.out.println(-9+-3);
-//		ArrayList<String> operArr = new ArrayList<String>();
-//		char[] test1 = test.toCharArray();
-//		for (char ch:test1) {
-//			String oper = getOper(ch);
-//			if (oper != null) {
-//				operArr.add(oper);
+//		ArrayList<Integer> operIndexArr = new ArrayList<Integer>(); 
+//		for (int j = 0; j<strArr.length; j++) {
+//			if (strArr[j].matches(VALID_OPERATOR)) {
+////				System.out.println(j);
+//				operIndexArr.add(j);
 //			}
 //		}
-//		System.out.println(operArr.size());
-//		Pattern p = Pattern.compile(RegexConfig.VALID_OPERATOR);
-//		Matcher m = p.matcher(test);
-////		int numOfGroups = m.groupCount();
-//		m.find();
-//		m.find();
-//		int indexOfOper1 = m.start();
-//		int indexOfOper2 = m.end();
 //		
-//		System.out.println(indexOfOper1);
-//		System.out.println(indexOfOper2);
-////		System.out.println(numOfGroups);
-//		System.out.println(test.matches(VALID_OPERATOR));
-//		
-		
-		File _19 = new File("/Users/taldovrat/Desktop/19.txt");
-		File _25 = new File("/Users/taldovrat/Desktop/25.txt");
-		Scanner pdf19 = new Scanner(_19);
-		Scanner pdf25 = new Scanner(_25);
-		
-		
-		ArrayList<String> pdf19lines = new ArrayList<String>();
-		while (pdf19.hasNext()) {
-			pdf19lines.add(pdf19.next());
-		}
-		ArrayList<String> pdf25lines = new ArrayList<String>();
-		while (pdf25.hasNext()) {
-			pdf25lines.add(pdf25.next());
-		}
-		
-		String line = "ds";
-		for (int i = 0;i<pdf19lines.size(); i++) {
-			if (!pdf19lines.get(i).equals(pdf25lines.get(i))) {
-				
-				line = pdf19lines.get(i);
-			}
-		}
-		
-		System.out.println(line);
-		
+//		if(operIndexArr.size()<2) {
+//			return expression.split(VALID_OPERATOR);
+//		}
+//		System.out.println("test");
+//		String leftExp = expression.substring(operIndexArr.get(0), operIndexArr.get(1));
+//		String rightExp = expression.substring(operIndexArr.get(1)+1);
+//		String[] expressions = {leftExp, rightExp};
+//		return expressions;
+	}
+
+	
+	public static int getOper() {
+		return 1;
+	}
+
+	
+	public static void main(String[] args) throws FileNotFoundException, CompileException {
+	
+		String line = "	return 1;";
+		System.out.println(line.matches(RegexConfig.lineType.RETURN.getRegex()));
 		
 	} 
 		

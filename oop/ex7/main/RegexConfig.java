@@ -20,7 +20,7 @@ public class RegexConfig {
 	 *  For example: 34 - matches int type, true - matches boolean type. 
 	 */
 	public static final String INPUT_INT = "( )*(-)?[\\d]+( )*";
-	public static final String INPUT_DOUBLE = "("+INPUT_INT+"|( )*(-)?[\\d]+(\\.)([\\d]+)?( )*)";
+	public static final String INPUT_DOUBLE = "(( )*(-)?[\\d]+(\\.)([\\d]+)?( )*|"+INPUT_INT+")";
 	public static final String INPUT_STRING = "( )*\"[^\"]*\"( )*";
 	public static final String INPUT_BOOLEAN = "( )*(true|false)( )*";
 	public static final String INPUT_CHAR = "( )*'[^']'( )*";
@@ -83,7 +83,7 @@ public class RegexConfig {
 		DECLARATION ("( )*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ ]*;[ ]*"),
 		ASSIGNMENT ("( )*"+GENERAL_NAME+"[ ]*=[ ]*"+VALID_EXP+"[ ]*;[ ]*"), 
 		BOTH ("( )*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ ]*=[ ]*"+VALID_EXP+"[ ]*;[ ]*"),
-		RETURN ("( )*return( )*"+VALID_EXP+"( )*;( )*");
+		RETURN ("[ \t]*return( )+"+VALID_EXP+"( )*;( )*");
 
 		private String regex;
 
@@ -91,7 +91,7 @@ public class RegexConfig {
 			this.regex = regex;
 		}
 		public String getRegex() {
-			return regex;
+			return this.regex;
 		}
 	}
 	

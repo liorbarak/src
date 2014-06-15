@@ -50,7 +50,7 @@ public abstract class Scope implements ScopeMediator{
 		//		Variable tempVar;
 		//		Scope tempScope;
 
-		for(int i=this.startIndex+1;i<this.endIndex-1;i++){
+		for(int i=this.startIndex+1;i<this.endIndex;i++){
 			lineType=FileParser.scopeOrVariable(relevantLines.get(i),i);//throws if not valid scope or var declaration
 
 			if (lineType==lineTypes.SCOPE.ordinal()){
@@ -116,6 +116,7 @@ public abstract class Scope implements ScopeMediator{
 			if(!handleReturn(returnExpression)){
 				throw new BadReturnException(line);//return in case of incorrect location
 			}
+			return;
 		}
 
 		//assign
@@ -138,9 +139,15 @@ public abstract class Scope implements ScopeMediator{
 
 	}
 
-	private boolean handleReturn(String returnExpression){
+	private boolean handleReturn(String returnExpression) throws CompileException{
 		if (fatherScope==null){
 			return false;
+		}
+		if (fatherScope.fatherScope == null) {
+			
+			MethodScope method = (MethodScope) this;
+			FileParser.checkExpression(method.getReturnType(), returnExpression, method);
+			return true;
 		}
 
 		return fatherScope.handleReturn(returnExpression);
@@ -149,7 +156,7 @@ public abstract class Scope implements ScopeMediator{
 
 
 
-	private void assignmentLine(String line) throws VarExistException, BadTypeException, BadLineSyntaxException, VarNotExistException {
+	private void assignmentLine(String line) throws CompileException {
 
 		Variable varTemp;
 
@@ -355,10 +362,5 @@ public abstract class Scope implements ScopeMediator{
 				Type.createType(returnType),methodName,inputVars, this));
 
 	}
-
-
-
-
-
 
 }
