@@ -24,27 +24,32 @@ public class testing_LIOR {
 			INPUT_BOOLEAN+")";	
 
 	
+	public static final String VALID_TYPES = "[ \t]*(int|double|String|char|boolean)[ \t]*";
+	public static final String VALID_EXP = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")";
+	
+	
+	public static String ARRAY_INPUT="[ \t]*[{]("+VALID_EXP+",)*("+VALID_EXP+")?[}][ \t]*";//without ;
+	public static String ARRAY_DECLARE= VALID_TYPES+"(\\[\\])[ \t]+"+GENERAL_NAME+"[ \t]*";//
+	public static String ARRAY_REALY_DECLARE=ARRAY_DECLARE+";[ \t]*";//
+	public static String ARRAY_DECLARE_AND_ASSIGN= ARRAY_DECLARE+"[ \t]*=[ \t]*"+ARRAY_INPUT+"[ \t]*;[ \t]*" ;//complete "int[]	 q={1,4,a};"
 
 	
-	public static final String VALID_EXP = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")";
-	public static String ARRAY_INPUT="[{]("+VALID_EXP+",)*("+VALID_EXP+")?[}]";
-
-	public static String RETURN_VAL =("( )*return( )*"+VALID_EXP+"( )*;( )*");
+//public static String ARRAY_ASSIGN=GENERAL_NAME+"\\["+VALID_EXP + ;
 
 	
 	public static void main(String[] args) {
 
-		boolean b= true;
-		int[] a= {1,3,5};
-		a[b]=4;
-		
+//		boolean b= true;
+		// {1,3,5};
+		int[] q ;
+
 		//return new ArrayType(createType(check.replaceAll("[]", "")));
 		
-		String test= "return1;";
+		String test= "int[]	 q={1,4,a};";
 		//System.out.println(test.replaceAll("( )*\\[\\]", ""));
 		
 		
-		System.out.println(test.matches(RETURN_VAL));
+		System.out.println(test.matches(ARRAY_DECLARE_AND_ASSIGN));
 		
 
 	}

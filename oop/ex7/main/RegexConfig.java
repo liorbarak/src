@@ -78,6 +78,14 @@ public class RegexConfig {
 	public static final String OPERATOR_EXP = VALID_EXP+VALID_OPERATOR+VALID_EXP;;
 	
 	
+	
+	//array shits
+	public static String ARRAY_INPUT="[ \t]*[{]("+VALID_EXP+",)*("+VALID_EXP+")?[}][ \t]*";//right of equals-only brackets {}
+	public static String ARRAY_DECLARE= VALID_TYPES+"(\\[\\])[ \t]+"+GENERAL_NAME+"[ \t]*";//left of equals 
+	public static String ARRAY_DECLARE_WITH_SEMICOLON=ARRAY_DECLARE+";[ \t]*";//just declare
+	public static String ARRAY_DECLARE_AND_ASSIGN= ARRAY_DECLARE+"[ \t]*=[ \t]*"+ARRAY_INPUT+"[ \t]*;[ \t]*" ;//complete "int[]	 q={1,4,a};"
+
+	
 	public enum lineType {
 		
 		DECLARATION ("[ \t]*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ \t]*;[ \t]*"),
