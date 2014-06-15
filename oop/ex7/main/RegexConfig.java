@@ -56,7 +56,7 @@ public class RegexConfig {
 	 */
 	
 	public static final String VALID_OPERATOR = "[ \t]*[\\+\\/\\-\\*][ \t]*";
-	public static final String GENERAL_NAME = "[ \t]*([_][^ \\[\\];]+|[^\\d_\\+-\\/\\*\\[\\];][^ ,\\[\\];]*)[ \t]*";
+	public static final String GENERAL_NAME = "[ \t]*([_][^ \\(\\){}\\[\\];]+|[^\\d_\\+-\\/\\*\\[\\]; ][^ ,\\[\\];]*)[ \t]*";
 	
 	public static final String ENDS_WITH_SEMICOLON = "(.*;[ \t]*)$";
 	public static final String ENDS_WITH_OPEN_BRACKET = "(.*\\{[ \t]*)$";
@@ -64,7 +64,10 @@ public class RegexConfig {
 	
 	public static final String METHOD_CALL = "[ \t]*"+GENERAL_NAME+"[ \t]*\\([ \t]*[\\d]*[\\D]*[ \t]*\\)[ \t]*;?";
 	
-	public static final String VALID_EXP = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")";
+	
+	
+	public static final String OPERATOR_EXP ="("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")"+VALID_OPERATOR+"("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")";
+	public static final String VALID_EXP = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+"|"+OPERATOR_EXP+")";
 	public static final String BLANK_LINE = "[ \t]*";
 	public static final String COMMENT = "$[ \t]*//";
 
@@ -75,12 +78,12 @@ public class RegexConfig {
 	public static final String VALID_METHOD_DECLARE = "[ \t]*"+VALID_TYPES_METHOD+"( )+"+GENERAL_NAME+"[ \t]*[(]"+"([ \t]*("+TYPE_PLUS_VAR+")?[ \t]*|(("+TYPE_PLUS_VAR+",)+"+TYPE_PLUS_VAR+"))[)][ \t]*[{][ \t]*";
 	public static final String ARR_TYPE = VALID_TYPES+"\\[\\][ \t]*";
 	
-	public static final String OPERATOR_EXP = VALID_EXP+VALID_OPERATOR+VALID_EXP;;
+	
 	
 	
 	
 	//array shits
-	public static String ARRAY_INIT="[ \t]*[{]("+VALID_EXP+",)*("+VALID_EXP+")?[}][ \t]*";//right of equals-only brackets {}
+	public static String ARRAY_INIT="[ \t]*[{](("+VALID_EXP+",[ \t]*)*("+VALID_EXP+")[ \t]|"+VALID_EXP+"?)*[}][ \t]*";//right of equals-only brackets {}
 	public static String ARRAY_DECLARE= VALID_TYPES+"(\\[\\])[ \t]+"+GENERAL_NAME+"[ \t]*";//left of equals 
 	public static String ARRAY_DECLARE_WITH_SEMICOLON=ARRAY_DECLARE+";[ \t]*";//just declare
 	public static String ARRAY_DECLARE_AND_ASSIGN= ARRAY_DECLARE+"[ \t]*=[ \t]*"+ARRAY_INIT+"[ \t]*;[ \t]*" ;//complete "int[]	 q={1,4,a};"
@@ -114,7 +117,7 @@ public class RegexConfig {
 	
 	public static void main(String[] args) {
 		
-		DEBUGRegex(ARRAY_DECLARE_BLANK,"int  [] a =   {	 };	 ")		;
+		DEBUGRegex(ARRAY_INIT,"{,}")		;
 		
 	}
 	
