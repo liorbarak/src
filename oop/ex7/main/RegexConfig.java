@@ -108,4 +108,19 @@ public class RegexConfig {
 		}
 	}
 	
+	//TODO remove before sending
+	//used for testing
+	
+	public static void main(String[] args) {
+		
+		DEBUGRegex(ARRAY_DECLARE_AND_ASSIGN,"int[] a = {};")		;
+		
+	}
+	
+	
+	public static void DEBUGRegex(String regex,String expressionToCheck){
+		System.out.println(expressionToCheck.matches(regex));
+		System.out.println("regex: "+regex);
+		System.out.println("String: "+expressionToCheck);
+	}
 }

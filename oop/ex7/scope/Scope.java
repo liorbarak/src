@@ -280,6 +280,13 @@ public abstract class Scope implements ScopeMediator{
 		m.find();
 		String typeOfExps = lineTemp.substring(m.start(), m.end());
 		String[] exps = getAssigmentStr(lineTemp)[1].split("\\,");
+		//TODO lior added
+		//checks if the expression we get on the right side of the = is '{}'
+		if (exps[0].matches(RegexConfig.BLANK_LINE)){
+			return;
+		}
+		//TODO lior added
+		
 		for (String exp:exps) {
 			FileParser.checkExpression(Type.createType(typeOfExps), exp, this);
 		}
