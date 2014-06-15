@@ -87,6 +87,7 @@ public class RegexConfig {
 	public static final String TYPE_ARRAY = VALID_TYPES+"\\[\\][ \t]*";
 	public static final String ARR_VAR = GENERAL_NAME+"\\["+VALID_EXP+"\\][ \t]*;[ \t]*";
 
+	public static final String ARRAY_DECLARE_BLANK=ARRAY_DECLARE+"[ \t]*=[ \t]*[{][ \t]*[}][ \t]*;[ \t]*";
 	
 	public enum lineType {
 		
@@ -113,7 +114,7 @@ public class RegexConfig {
 	
 	public static void main(String[] args) {
 		
-		DEBUGRegex(ARRAY_DECLARE_AND_ASSIGN,"int[] a = {};")		;
+		DEBUGRegex(ARRAY_DECLARE_BLANK,"int  [] a =   {	 };	 ")		;
 		
 	}
 	
