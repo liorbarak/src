@@ -73,7 +73,7 @@ public class RegexConfig {
 	
 	public static final String TYPE_PLUS_VAR = "[ \t]*"+VALID_TYPES+"( )+"+GENERAL_NAME+"[ \t]*"; 
 	public static final String VALID_METHOD_DECLARE = "[ \t]*"+VALID_TYPES_METHOD+"( )+"+GENERAL_NAME+"[ \t]*[(]"+"([ \t]*("+TYPE_PLUS_VAR+")?[ \t]*|(("+TYPE_PLUS_VAR+",)+"+TYPE_PLUS_VAR+"))[)][ \t]*[{][ \t]*";
-	public static final String ARR_TYPE = null;
+	public static final String ARR_TYPE = VALID_TYPES+"\\[\\][ \t]*";
 	
 	public static final String OPERATOR_EXP = VALID_EXP+VALID_OPERATOR+VALID_EXP;;
 	
@@ -108,4 +108,19 @@ public class RegexConfig {
 		}
 	}
 	
+	//TODO remove before sending
+	//used for testing
+	
+	public static void main(String[] args) {
+		
+		DEBUGRegex(ARRAY_DECLARE_AND_ASSIGN,"int[] a = {};")		;
+		
+	}
+	
+	
+	public static void DEBUGRegex(String regex,String expressionToCheck){
+		System.out.println(expressionToCheck.matches(regex));
+		System.out.println("regex: "+regex);
+		System.out.println("String: "+expressionToCheck);
+	}
 }
