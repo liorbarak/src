@@ -29,16 +29,19 @@ public class testing_LIOR {
 	public static final String VALID_EXP = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")";
 	public static String ARRAY_INPUT="[{]("+VALID_EXP+",)*("+VALID_EXP+")?[}]";
 
+	public static String RETURN_VAL =("( )*return( )*"+VALID_EXP+"( )*;( )*");
+
+	
 	public static void main(String[] args) {
 
 		
 		//return new ArrayType(createType(check.replaceAll("[]", "")));
 		
-		String test= "{4,6,7}";
+		String test= "return1;";
 		//System.out.println(test.replaceAll("( )*\\[\\]", ""));
 		
 		
-		System.out.println(test.matches(ARRAY_INPUT));
+		System.out.println(test.matches(RETURN_VAL));
 		
 
 	}

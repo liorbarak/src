@@ -5,8 +5,11 @@ import oop.ex7.main.RegexConfig;
 public class ArrayType extends Type {
 
 	
-	
-	Type innerType;
+	/*
+	 * array holds an inner type. 
+	 * 
+	 */
+	private Type innerType;
 	
 	public ArrayType(Type primitiveType){
 		innerType=primitiveType;
@@ -15,12 +18,14 @@ public class ArrayType extends Type {
 	
 	@Override
 	public boolean isExpressionMatch(String check) {
-		return check.matches(RegexConfig.ARR_TYPE);
+		//return check.matches(RegexConfig.ARR_TYPE);
+		return innerType.isExpressionMatch(check);
 	}
 
 	@Override
 	public String getRegex() {
-		return RegexConfig.ARR_TYPE;
+		//return RegexConfig.ARR_TYPE;
+		return innerType.getRegex();
 	}
 
 	

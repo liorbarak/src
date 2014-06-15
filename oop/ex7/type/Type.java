@@ -58,7 +58,8 @@ public abstract class  Type {
 		}	
 		
 		if (check.matches(RegexConfig.ARR_TYPE)) {
-			return new ArrayType(createType(check.replaceAll("[]", "")));
+			return new ArrayType(createType(check.replaceAll("[]", "")));//find sometype
+
 		}
 		
 		throw new CompileException();//throw exception because not a valid type string//TODO make more specific
