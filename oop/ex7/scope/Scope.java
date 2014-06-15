@@ -124,30 +124,30 @@ public abstract class Scope implements ScopeMediator{
 		}
 
 		//assign
-		else if (line.matches(RegexConfig.lineType.ASSIGNMENT.getRegex())){
+		else if (line.matches(RegexConfig.lineType.ASSIGNMENT.getRegex()) || line.matches(RegexConfig.lineType.ASSIGNMENT_ARRAY.getRegex())){
 			assignmentLine(line);
 			return;
 		}
-		//assign array
-		else if (line.matches(RegexConfig.lineType.ASSIGNMENT_ARRAY.getRegex())){
-			assignmentLineArr(line);
-			return;
-		}
+//		//assign array
+//		else if (line.matches(RegexConfig.lineType.ASSIGNMENT_ARRAY.getRegex())){
+//			assignmentLineArr(line);
+//			return;
+//		}
 		//initialize
 		else if (line.matches(RegexConfig.lineType.DECLARATION.getRegex()) || line.matches(RegexConfig.ARRAY_DECLARE)){
 			declarationLine(line);
 			return;
 		}
 		//both
-		else if (line.matches(RegexConfig.lineType.BOTH.getRegex())){
+		else if (line.matches(RegexConfig.lineType.BOTH.getRegex()) ||line.matches(RegexConfig.lineType.BOTH_ARRAY.getRegex())){
 			bothLine(line);
 			return;
 		}
-
-		else if (line.matches(RegexConfig.lineType.BOTH_ARRAY.getRegex())){
-			bothLineArr(line);
-			return;
-		}
+//
+//		else if (line.matches(RegexConfig.lineType.BOTH_ARRAY.getRegex())){
+//			bothLineArr(line);
+//			return;
+//		}
 		throw new BadLineSyntaxException(line);
 
 	}
@@ -167,40 +167,40 @@ public abstract class Scope implements ScopeMediator{
 		return fatherScope.handleReturn(returnExpression);
 	}
 
-
-	private void assignmentLineArr(String line) throws CompileException {
-
-		Variable varTemp;
-
-		String[] stringsInLine = Scope.getAssigmentStr(line);		
-		String nameOfVar = stringsInLine[0];
-		String inputValue = stringsInLine[1];
-		String nameOfArr = nameOfVar.split("\\[")[0].trim();
-//		String expToCheck = nameOfVar.substring(line.indexOf("[")+1, line.lastIndexOf("]")).trim();
-
-		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
-		varTemp = this.varExistInAll(nameOfArr);
-		
-		//if the variable doesn't exist:
-		if (varTemp == null || varTemp.getType().sameType(new ArrayType())) {
-			throw new VarExistException(line);
-		}
-		//check if the expression of the index in the array call is valid:
-//		FileParser.checkExpression(new IntType(), expToCheck, this);
-//		if (expToCheck.matches(RegexConfig.INPUT_INT)) {
-//			int intExp = Integer.parseInt(expToCheck);
-//			if (intExp < 0) {
-//				throw new CompileException(); //TODO change exception type
-//			}
+//
+//	private void assignmentLineArr(String line) throws CompileException {
+//
+//		Variable varTemp;
+//
+//		String[] stringsInLine = Scope.getAssigmentStr(line);		
+//		String nameOfVar = stringsInLine[0];
+//		String inputValue = stringsInLine[1];
+//		String nameOfArr = nameOfVar.split("\\[")[0].trim();
+////		String expToCheck = nameOfVar.substring(line.indexOf("[")+1, line.lastIndexOf("]")).trim();
+//
+//		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
+//		varTemp = this.varExistInAll(nameOfArr);
+//		
+//		//if the variable doesn't exist:
+//		if (varTemp == null || varTemp.getType().sameType(new ArrayType())) {
+//			throw new VarExistException(line);
 //		}
-		FileParser.checkInnerArrVarPos(line, this);
-		
-		//check if the right expression is of the same type.
-		FileParser.checkExpression(varTemp.getType(), inputValue, this);
-		varTemp.setInitialized(true);
-		return;
-
-	}
+//		//check if the expression of the index in the array call is valid:
+////		FileParser.checkExpression(new IntType(), expToCheck, this);
+////		if (expToCheck.matches(RegexConfig.INPUT_INT)) {
+////			int intExp = Integer.parseInt(expToCheck);
+////			if (intExp < 0) {
+////				throw new CompileException(); //TODO change exception type
+////			}
+////		}
+//		FileParser.checkInnerArrVarPos(line, this);
+//		
+//		//check if the right expression is of the same type.
+//		FileParser.checkExpression(varTemp.getType(), inputValue, this);
+//		varTemp.setInitialized(true);
+//		return;
+//
+//	}
 
 	private void assignmentLine(String line) throws CompileException {
 
@@ -273,39 +273,41 @@ public abstract class Scope implements ScopeMediator{
 		String[] stringsInLine = getBothStr(linetemp);
 		String decLine = stringsInLine[0];
 		String assLine = stringsInLine[1];
-
+//		System.out.println(decLine);
+//		System.out.println(assLine);
+		
 		this.declarationLine(decLine);
 		this.assignmentLine(assLine);	
 
 	}
-
-	private void bothLineArr(String line) throws CompileException {
-		
-		String fullAss = getAssigmentStr(line)[0].trim();
-		String fullType = getAssigmentStr(fullAss)[0];
-		String nameOfVar = getAssigmentStr(fullAss)[1];
-		String lineTemp = line.trim();
-		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES);
-		Matcher m = p.matcher(lineTemp);
-		m.find();
-		String typeOfExps = lineTemp.substring(m.start(), m.end());
-		
-		if (line.matches(RegexConfig.ARRAY_DECLARE_BLANK)) {
-			this.innerVariables.add(new Variable(fullType, nameOfVar));
-		}
-		String[] exps = getAssigmentStr(lineTemp)[1].split("\\,");
-		//TODO lior added
-		//checks if the expression we get on the right side of the = is '{}'
-		if (exps[0].matches(RegexConfig.BLANK_LINE)){
-			return;
-		}
-		//TODO lior added
-		
-		for (String exp:exps) {
-			FileParser.checkExpression(Type.createType(typeOfExps), exp, this);
-		}
-		
-	}
+//
+//	private void bothLineArr(String line) throws CompileException {
+//		
+//		String fullAss = getAssigmentStr(line)[0].trim();
+//		String fullType = getAssigmentStr(fullAss)[0];
+//		String nameOfVar = getAssigmentStr(fullAss)[1];
+//		String lineTemp = line.trim();
+//		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES);
+//		Matcher m = p.matcher(lineTemp);
+//		m.find();
+//		String typeOfExps = lineTemp.substring(m.start(), m.end());
+//		
+//		if (line.matches(RegexConfig.ARRAY_DECLARE_BLANK)) {
+//			this.innerVariables.add(new Variable(fullType, nameOfVar));
+//		}
+//		String[] exps = getAssigmentStr(lineTemp)[1].split("\\,");
+//		//TODO lior added
+//		//checks if the expression we get on the right side of the = is '{}'
+//		if (exps[0].matches(RegexConfig.BLANK_LINE)){
+//			return;
+//		}
+//		//TODO lior added
+//		
+//		for (String exp:exps) {
+//			FileParser.checkExpression(Type.createType(typeOfExps), exp, this);
+//		}
+//		
+//	}
 	
 	public static String[] getAssigmentStr(String line) {
 		//1 - index of input value

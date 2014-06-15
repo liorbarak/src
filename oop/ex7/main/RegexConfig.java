@@ -68,6 +68,8 @@ public class RegexConfig {
 	
 	public static final String OPERATOR_EXP ="("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")"+VALID_OPERATOR+"("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")";
 	public static final String VALID_EXP = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+"|"+OPERATOR_EXP+")";
+	public static final String VALID_EXP_WITH_ARRAY = "("+VALID_EXP+"|[ \t]*[{][ \t]*[}]|[ \t]*[{][ \t]*["+VALID_EXP+",]+[ \t]*"+VALID_EXP+"[}])";
+	//public static final String VALID_EXP3 = "("+VALID_EXP2+"|[{][}])";
 	public static final String BLANK_LINE = "[ \t]*";
 	public static final String COMMENT = "$[ \t]*//";
 
@@ -117,7 +119,7 @@ public class RegexConfig {
 	
 	public static void main(String[] args) {
 		
-		DEBUGRegex(ARRAY_INIT,"{,}")		;
+		DEBUGRegex(VALID_EXP_WITH_ARRAY,"{}")		;
 		
 	}
 	
