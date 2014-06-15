@@ -56,7 +56,8 @@ public class Sjavac {
 
 		}
 		catch(Exception e2){	//TODO change type of exception
-			System.out.println("general error. not one of ours");
+			//Doesn't print anything. should not happen
+			//System.out.println("general error. not one of ours");
 			e2.printStackTrace(System.err);
 			
 			//for debug
