@@ -10,6 +10,7 @@ import javax.print.DocFlavor.READER;
 import oop.ex7.main.CompileException;
 import oop.ex7.main.FileParser;
 import oop.ex7.main.RegexConfig;
+import oop.ex7.main.Variable;
 import oop.ex7.scope.Scope;
 import oop.ex7.type.*;
 public class testingTal {
@@ -135,18 +136,13 @@ public class testingTal {
 	
 	public static void main(String[] args) throws FileNotFoundException, CompileException {
 	
-		String line = "int[] a = {};";
-		String fullAss = Scope.getAssigmentStr(line)[0].trim();
-		String fullType = Scope.getDecStr(fullAss)[0];
-		String nameOfVar = Scope.getDecStr(fullAss)[1];
-		String lineTemp = line.trim();
-		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES);
-		Matcher m = p.matcher(lineTemp);
-		m.find();
-		String typeOfExps = lineTemp.substring(m.start(), m.end());
-		System.out.println(fullAss);
-		System.out.println(fullType);
+		String line = "a = {12,32,4};";
+
+		String[] stringsInLine = Scope.getAssigmentStr(line);		
+		String nameOfVar = stringsInLine[0];
+		String inputValue = stringsInLine[1];
 		System.out.println(nameOfVar);
+		System.out.println(inputValue);
 //		System.out.println(exps);
 //		for (String str:exps) {
 //			System.out.println(str);

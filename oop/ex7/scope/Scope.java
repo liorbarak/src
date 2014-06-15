@@ -218,6 +218,13 @@ public abstract class Scope implements ScopeMediator{
 			throw new VarExistException(line);
 		}
 
+		if (varTemp.getType().sameType(new ArrayType())) {
+			String[] inputValues = inputValue.split(",");
+			for (String exp:inputValues) {
+				FileParser.checkExpression(varTemp.getType(), exp, this);
+			}
+			return;
+		}
 		//check if the right expression is of the same type.
 		FileParser.checkExpression(varTemp.getType(), inputValue, this);
 		varTemp.setInitialized(true);
@@ -284,7 +291,7 @@ public abstract class Scope implements ScopeMediator{
 		String typeOfExps = lineTemp.substring(m.start(), m.end());
 		
 		if (line.matches(RegexConfig.ARRAY_DECLARE_BLANK)) {
-			this.innerVariables.add(new Variable(fullType, ))
+			this.innerVariables.add(new Variable(fullType, nameOfVar));
 		}
 		String[] exps = getAssigmentStr(lineTemp)[1].split("\\,");
 		//TODO lior added

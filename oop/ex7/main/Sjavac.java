@@ -26,14 +26,14 @@ public class Sjavac {
 //			origin = new File("C://Users//Lior//Desktop//ex7stuff//tests//test253.sjava");
 //			origin = new File("/Users/taldovrat/Downloads/tests/test060.sjava");
 			ArrayList<String> fileLines= FileParser.getlinesList(origin);
-			
+//			System.out.println(origin.isDirectory());
 			ClassScope mainClass= new ClassScope(fileLines);
 			mainClass.compileScope();
 
 		}
 		catch(EndOfFileException |FileNotFoundException e){
 			
-			//System.out.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
+			System.out.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
 
 			
 			//for debug
@@ -56,7 +56,7 @@ public class Sjavac {
 
 		}
 		catch(Exception e2){	//TODO change type of exception
-			System.out.println("general error. not one of ours");
+//			System.out.println("general error. not one of ours");
 			e2.printStackTrace(System.err);
 			
 			//for debug

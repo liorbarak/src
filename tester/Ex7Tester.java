@@ -17,11 +17,12 @@ public class Ex7Tester {
 	 */
 	private static final String TEST_INPUT_DIR = 
 			//"/cs/course/2013/oop/scripts/ex7/tests/"; 
-			//"/Users/taldovrat/git/ex7/tests";	
-			"C://Users//Lior//Desktop//ex7stuff//tests//";	//liors comp
-	//private static final String TEST_SOL_DIR = "/Users/taldovrat/git/ex7/sjavac_tests.txt";
+			"/Users/taldovrat/git/ex7/tests/";	
+//			"C://Users//Lior//Desktop//ex7stuff//tests//";	//liors comp
+	private static final String TEST_SOL_DIR = "/Users/taldovrat/git/ex7/sjavac_tests.txt";
+	
 	//private static final String TEST_SOL_DIR = "/cs/course/2013/oop/scripts/ex7/sjavac_tests.txt";
-	private static final String TEST_SOL_DIR ="C://Users//Lior//Desktop//ex7stuff//sjavac_tests.txt" 	;//liors comp
+//	private static final String TEST_SOL_DIR ="C://Users//Lior//Desktop//ex7stuff//sjavac_tests.txt" 	;//liors comp
 	
 	private String retVal;
 	private String numOfTest;
@@ -32,7 +33,8 @@ public class Ex7Tester {
 	 * @throws FileNotFoundException 
 	 */
 	public Ex7Tester(String fileName) throws FileNotFoundException {
-		
+		File file = new File(TEST_INPUT_DIR);
+		System.out.println(file.isDirectory());
 		String[] parts = fileName.split(" ");
 		numOfTest = parts[0].substring(4,7);
 		desc = parts[2];
@@ -63,8 +65,10 @@ public class Ex7Tester {
 		 // if no more lines the readLine() returns null
 		 while ((line = br.readLine()) != null) {
 			 if (!line.equals(""))
+				 
 				 tests.add(new String[] {line.toString()});
 		 }
+		 
 		return tests;
 	}
 
