@@ -17,6 +17,7 @@ public class Sjavac {
 	public static void main(String[] args) {
 
 		try{
+			
 			File origin = new File(args[0]);
 //			origin = new File("/Users/taldovrat/Downloads/tests/test101.sjava");
 			ArrayList<String> fileLines= FileParser.getlinesList(origin);
@@ -26,12 +27,13 @@ public class Sjavac {
 
 		}
 		catch(EndOfFileException |FileNotFoundException e){
-			//print to err?
-			System.out.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
+			
+			//System.out.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
 
+			
 			//for debug
-//			System.out.println(e.toString());
-			e.printStackTrace();
+			System.out.println(e.toString());
+			e.printStackTrace(System.err);
 			//for debug
 
 			return;
@@ -41,8 +43,9 @@ public class Sjavac {
 
 
 			//for debug
-//			System.out.println(e1.toString());
-			e1.printStackTrace();
+			System.out.println(e1.toString());
+
+			e1.printStackTrace(System.err);
 			//for debug
 			return;
 
@@ -52,7 +55,7 @@ public class Sjavac {
 
 			//for debug
 //			System.out.println(e2.toString());
-			e2.printStackTrace();
+			//e2.printStackTrace();
 			//for debug
 
 			return;

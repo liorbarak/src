@@ -1,4 +1,4 @@
-
+package tester;
 public class FailedTestException extends Exception {
 	public FailedTestException(String message) {
 		super(message);

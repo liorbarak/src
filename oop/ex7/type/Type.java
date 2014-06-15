@@ -58,7 +58,7 @@ public abstract class  Type {
 		}	
 		
 		if (check.matches(RegexConfig.ARR_TYPE)) {
-			return new ArrayType(createType(check.replaceAll("[]", "")));//find sometype
+			return new ArrayType(createType(check.replaceAll("[ \t]*[[ \t]*][ \t]*", "")));//find sometype
 
 		}
 		

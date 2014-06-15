@@ -1,3 +1,6 @@
+import java.io.File;
+import java.util.Scanner;
+
 import oop.ex7.type.ArrayType;
 
 import org.junit.*;
@@ -34,24 +37,44 @@ public class testing_LIOR {
 	public static String ARRAY_DECLARE_AND_ASSIGN= ARRAY_DECLARE+"[ \t]*=[ \t]*"+ARRAY_INPUT+"[ \t]*;[ \t]*" ;//complete "int[]	 q={1,4,a};"
 
 	
+	public static final String ARR_TYPE = VALID_TYPES+"\\[\\][ \t]*";
+	
+	
 //public static String ARRAY_ASSIGN=GENERAL_NAME+"\\["+VALID_EXP + ;
 
 	
 	public static void main(String[] args) {
-
-//		boolean b= true;
+		
+//		try{
+//		String location= "C://Users//Lior//Desktop//ex7stuff//sjavac_tests.txt";//location of tester
+//		File myFile= new File(location);
+//		Scanner scan=new Scanner(myFile);
+//		while (scan.hasNext()){
+//			System.out.println(scan.nextLine());
+//		}
+//		
+//		}
+//		catch(Exception e){
+//			System.out.println("exception u idiot");
+//		}
+		
+		System.out.println("askdhasd");
+		System.err.println("bla");
+		boolean b= true;
 		// {1,3,5};
 		int[] q ;
 
 		//return new ArrayType(createType(check.replaceAll("[]", "")));
 		
-		String test= "int[]	 q={1,4,a};";
+		String test= "int[]  " ;
 		//System.out.println(test.replaceAll("( )*\\[\\]", ""));
 		
 		
-		System.out.println(test.matches(ARRAY_DECLARE_AND_ASSIGN));
+		System.out.println(test.matches(ARR_TYPE));
 		
 
+		
+		
 	}
 
 	
