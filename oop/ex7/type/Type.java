@@ -57,8 +57,8 @@ public abstract class  Type {
 			return new VoidType();
 		}	
 		
-		if (check.matches(RegexConfig.ARR_TYPE)) {
-			return new ArrayType(createType(check.replaceAll("[]", "")));//find sometype
+		if (check.matches(RegexConfig.TYPE_ARRAY)) {
+			return new ArrayType(check.replaceAll("[]", ""));//find sometype
 
 		}
 		

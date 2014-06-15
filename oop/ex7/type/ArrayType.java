@@ -1,5 +1,7 @@
 package oop.ex7.type;
 
+import oop.ex7.main.CompileException;
+
 
 public class ArrayType extends Type {
 
@@ -13,8 +15,8 @@ public class ArrayType extends Type {
 	public ArrayType() {
 	}
 	
-	public ArrayType(Type primitiveType){
-		innerType=primitiveType;
+	public ArrayType(String primitiveType) throws CompileException{
+		innerType = Type.createType(primitiveType);
 	}
 	
 	
@@ -30,5 +32,8 @@ public class ArrayType extends Type {
 		return innerType.getRegex();
 	}
 
+	public Type getInnerType() {
+		return innerType;
+	}
 	
 }

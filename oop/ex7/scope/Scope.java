@@ -1,6 +1,8 @@
 package oop.ex7.scope;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import oop.ex7.main.BadLineSyntaxException;
 import oop.ex7.main.CompileException;
@@ -136,20 +138,20 @@ public abstract class Scope implements ScopeMediator{
 			declarationLine(line);
 			return;
 		}
-		//initialize array
-				else if (line.matches(RegexConfig.lineType.DECLARATION_ARR.getRegex())){
-					declarationLine(line);
-					return;
-				}
 		//both
 		else if (line.matches(RegexConfig.lineType.BOTH.getRegex())){
 			bothLine(line);
 			return;
 		}
 
+		else if (line.matches(RegexConfig.lineType.BOTH_ARRAY.getRegex())){
+			bothLineArr(line);
+			return;
+		}
 		throw new BadLineSyntaxException(line);
 
 	}
+
 
 	private boolean handleReturn(String returnExpression) throws CompileException{
 		if (fatherScope==null){
@@ -174,7 +176,7 @@ public abstract class Scope implements ScopeMediator{
 		String nameOfVar = stringsInLine[0];
 		String inputValue = stringsInLine[1];
 		String nameOfArr = nameOfVar.split("\\[")[0].trim();
-		String expToCheck = nameOfVar.substring(line.indexOf("[")+1, line.lastIndexOf("]")).trim();
+//		String expToCheck = nameOfVar.substring(line.indexOf("[")+1, line.lastIndexOf("]")).trim();
 
 		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
 		varTemp = this.varExistInAll(nameOfArr);
@@ -184,13 +186,14 @@ public abstract class Scope implements ScopeMediator{
 			throw new VarExistException(line);
 		}
 		//check if the expression of the index in the array call is valid:
-		FileParser.checkExpression(new IntType(), expToCheck, this);
-		if (expToCheck.matches(RegexConfig.INPUT_INT)) {
-			int intExp = Integer.parseInt(expToCheck);
-			if (intExp < 0) {
-				throw new CompileException(); //TODO change exception type
-			}
-		}
+//		FileParser.checkExpression(new IntType(), expToCheck, this);
+//		if (expToCheck.matches(RegexConfig.INPUT_INT)) {
+//			int intExp = Integer.parseInt(expToCheck);
+//			if (intExp < 0) {
+//				throw new CompileException(); //TODO change exception type
+//			}
+//		}
+		FileParser.checkInnerArrVarPos(line, this);
 		
 		//check if the right expression is of the same type.
 		FileParser.checkExpression(varTemp.getType(), inputValue, this);
@@ -198,9 +201,6 @@ public abstract class Scope implements ScopeMediator{
 		return;
 
 	}
-
-	
-	
 
 	private void assignmentLine(String line) throws CompileException {
 
@@ -230,20 +230,33 @@ public abstract class Scope implements ScopeMediator{
 		Variable varTemp;
 		//save the left expression as the name of the variable
 		//save the right expression as the input value
-		String[] stringsInLine = getDecStr(line);
-		String typeOfVar = stringsInLine[0];
-		String nameOfVar = stringsInLine[1];
-
+		String fullType = getDecStr(line)[0];
+		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES);
+		Matcher m = p.matcher(line);
+		m.find();
+		String typeOfVar = line.substring(m.start(), m.end());
+		int lastEnd = m.end();
+		p = Pattern.compile(RegexConfig.GENERAL_NAME);
+		m = p.matcher(line);
+		m.find(lastEnd);
+		String nameOfVar = line.substring(m.start(), m.end()).trim();
+		
 		//if the variable exists, put it into varTemp, else, put null into varTemp.
 		varTemp = this.varExist(nameOfVar);
 		//if the variable doesn't exist:
 		if (varTemp == null) {
-			this.innerVariables.add(new Variable(typeOfVar, nameOfVar));
+			if (line.matches(RegexConfig.ARRAY_DECLARE_WITH_SEMICOLON)) {
+				this.innerVariables.add(new Variable(fullType, nameOfVar));
+			}
+			else {
+				this.innerVariables.add(new Variable(typeOfVar, nameOfVar));
+			}
+			
 			return;
 		}
 		throw new VarExistException(line);	
 	}
-
+	
 	private void bothLine(String line) throws CompileException {
 
 		//Variable varTemp;
@@ -257,19 +270,32 @@ public abstract class Scope implements ScopeMediator{
 		this.declarationLine(decLine);
 		this.assignmentLine(assLine);	
 
-
 	}
 
+	private void bothLineArr(String line) throws CompileException {
+		
+		String lineTemp = line.trim();
+		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES);
+		Matcher m = p.matcher(lineTemp);
+		m.find();
+		String typeOfExps = lineTemp.substring(m.start(), m.end());
+		String[] exps = getAssigmentStr(lineTemp)[1].split("\\,");
+		for (String exp:exps) {
+			FileParser.checkExpression(Type.createType(typeOfExps), exp, this);
+		}
+		
+	}
+	
 	public static String[] getAssigmentStr(String line) {
 		//1 - index of input value
 		String linetemp = line.trim();
 		String[] stringsInLine = linetemp.split("=");
 		stringsInLine[1] = stringsInLine[1].trim();
-		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
+		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?\\{?\\}?", "");
 		return stringsInLine;
 	}
 
-	private static String[] getDecStr(String line) {
+	public static String[] getDecStr(String line) {
 		//1 - index of name of var
 		String linetemp = line.trim();
 		String[] stringsInLine = linetemp.split("[ ]+");
@@ -360,10 +386,6 @@ public abstract class Scope implements ScopeMediator{
 		throw new BadLineSyntaxException(firstline);
 
 	}
-
-
-
-
 
 	private static String getInsideBrackets(String line){
 		return line=line.trim().substring(line.indexOf("(")+1,line.lastIndexOf(")")).trim();
