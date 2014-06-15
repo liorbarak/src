@@ -34,6 +34,9 @@ public class testing_LIOR {
 	
 	public static void main(String[] args) {
 
+		boolean b= true;
+		int[] a= {1,3,5};
+		a[b]=4;
 		
 		//return new ArrayType(createType(check.replaceAll("[]", "")));
 		
