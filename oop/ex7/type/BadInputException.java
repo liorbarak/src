@@ -15,16 +15,23 @@ public class BadInputException extends CompileException{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static final String ERROR_MESSAGE = "temp error messsage with: ";
-	//the type variable that the inserted input was bad.
+	private static final String ERROR_MESSAGE =
+			"expression tested does not match the specified type : ";
 	private Type varType;
 	
-	
+	/**
+	 * constructor
+	 * 
+	 * @param varType-a type of variable that failed the program
+	 */
 	public BadInputException(Type varType) {	
 		this.varType = varType;
 	}
 	
-	@Override
+	/**
+	 * @Override
+	 * @returns a message specific for this error
+	 */
 	public String getLocalizedMessage() {
 		return ERROR_MESSAGE+varType.toString();
 	}

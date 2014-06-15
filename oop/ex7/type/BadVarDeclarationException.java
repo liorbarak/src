@@ -14,16 +14,23 @@ public class BadVarDeclarationException extends CompileException{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private static final String ERROR_MESSAGE = "temp error messsage with: ";
+	private static final String ERROR_MESSAGE =
+			"error declaring a variable. expression: ";
 	private String badDeclaration;
 	
-	public BadVarDeclarationException(Integer num,String badDeclaration) {
-		super(num);
+	/**
+	 * constructor
+	 * @param badDeclaration- the incorrect string representing a 
+	 * bad attempt to declare a variable
+	 */
+	public BadVarDeclarationException(String badDeclaration) {
 		this.badDeclaration = badDeclaration;
 	}
 	
-	@Override
+	/**
+	 * @Override
+	 * returns a specific error message
+	 */
 	public String getLocalizedMessage() {
 		return ERROR_MESSAGE+this.badDeclaration;
 	}
