@@ -49,6 +49,14 @@ public abstract class Scope implements ScopeMediator{
 		innerVariables = new ArrayList<Variable>();
 	}
 
+	
+	/**
+	 * 
+	 * @throws InvalidScopeException
+	 * @throws EndOfFileException
+	 * @throws BadEndOfLineException
+	 * @throws Exception
+	 */
 	public  void compileScope() throws InvalidScopeException, EndOfFileException, BadEndOfLineException,Exception  {
 
 		ArrayList<Integer> opIndexArray=new ArrayList<Integer>();
