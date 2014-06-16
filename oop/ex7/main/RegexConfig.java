@@ -114,7 +114,7 @@ public class RegexConfig {
 		DECLARATION ("([ \t]*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ \t]*;[ \t]*|"+ARRAY_DECLARE_WITH_SEMICOLON+")"),
 		ASSIGNMENT ("[ \t]*"+GENERAL_NAME+"[ \t]*=[ \t]*"+VALID_EXP+"[ \t]*;[ \t]*"), 
 		ASSIGNMENT_ARRAY ("[ \t]*"+GENERAL_NAME+"[ \t]*\\["+VALID_EXP_WITH_ARRAY+"\\][ \t]*=[ \t]*"+VALID_EXP_WITH_ARRAY+"[ \t]*;[ \t]*"),
-		BOTH ("[ \t]*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ \t]*=[ \t]*"+VALID_EXP+"[ \t]*;[ \t]*"),
+		BOTH ("[ \t]*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ \t]*=[ \t]*"+VALID_EXP_ARRAY_CELL+"[ \t]*;[ \t]*"),
 		BOTH_ARRAY (ARRAY_DECLARE_AND_ASSIGN),
 		RETURN ("([ \t]*return( )+("+VALID_EXP_WITH_ARRAY+"|"+VALID_EXP_ARRAY_CELL+")[ \t]*;[ \t]*|[ \t]*return[ \t]*;[ \t]*)"); 
 		
@@ -137,8 +137,8 @@ public class RegexConfig {
 
 
 
-//		DEBUGRegex( lineType.ASSIGNMENT_ARRAY.getRegex(),"a[9] =       - 5;" );
-		DEBUGRegex( GENERAL_NAME,"_b" );
+		DEBUGRegex( lineType.BOTH.getRegex(),"int a = b[9]" );
+		DEBUGRegex( lineType.BOTH_ARRAY.getRegex(),"int a = b[9]" );
 
 
 
