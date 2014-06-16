@@ -137,11 +137,6 @@ public class testingTal {
 	
 	public static void main(String[] args) throws FileNotFoundException, CompileException {
 	
-		String line = "int []a";
-		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES_METHOD);
-		Matcher m = p.matcher(line);
-		m.find();
-		System.out.println(line.substring(m.start(), m.end()));
 	} 
 		
 }
