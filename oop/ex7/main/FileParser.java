@@ -43,7 +43,10 @@ public class FileParser {
 	 * @throws BadLineSyntaxException 
 	 * @throws BadEndOfLineException 
 	 */
-	public static ArrayList<String>  getlinesList(File origin) throws FileNotFoundException, BadLineSyntaxException, BadEndOfLineException{
+	public static ArrayList<String>  getlinesList(File origin) 
+			throws FileNotFoundException,
+			BadLineSyntaxException,
+			BadEndOfLineException{
 
 		ArrayList<String> fileLines = new ArrayList<String>();
 		Scanner myScan= new Scanner(origin);

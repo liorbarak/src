@@ -346,7 +346,11 @@ in junit:309. really:test510.sjava
 
 import java.io.File;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import oop.ex7.main.RegexConfig;
+import oop.ex7.scope.Scope;
 import oop.ex7.type.ArrayType;
 
 import org.junit.*;
@@ -356,30 +360,53 @@ public class testing_LIOR {
 	
 	public static void main(String[] args) {
 		
-		try{
-		String location= "C://Users//Lior//Desktop//ex7stuff//tests";//location of tester
-		File myFile= new File(location);
-//		Scanner scan=new Scanner(myFile);
-//		while (scan.hasNext()){
-//			System.out.println(scan.nextLine());
+//		try{
+//		String location= "C://Users//Lior//Desktop//ex7stuff//tests";//location of tester
+//		File myFile= new File(location);
+////		Scanner scan=new Scanner(myFile);
+////		while (scan.hasNext()){
+////			System.out.println(scan.nextLine());
+////		}
+////		
+//		//System.out.println(myFile.isDirectory());
+//		
+//		String[] stringList =myFile.list();
+//		
+//		for (int i=0; i<stringList.length;i++){
+//			System.out.println("in junit:"+i+". really:"+stringList[i]);
+//			if (i%10==0)
+//				System.out.println();
 //		}
 //		
-		//System.out.println(myFile.isDirectory());
-		
-		String[] stringList =myFile.list();
-		
-		for (int i=0; i<stringList.length;i++){
-			System.out.println("in junit:"+i+". really:"+stringList[i]);
-			if (i%10==0)
-				System.out.println();
-		}
-		
-		
-		}
-		catch(Exception e){
-			System.out.println("exception u idiot");
-		}
 //		
+//		}
+//		catch(Exception e){
+//			System.out.println("exception u idiot");
+//		}
+//		
+		String line= "a[9]= 6 ;";
+		
+//		String returnExpression=line.substring(line.indexOf(" "), line.indexOf(";")).trim();
+		
+		
+		String[] stringsInLine = Scope.getAssigmentStr(line);		
+		String fullName = stringsInLine[0];
+		Pattern p = Pattern.compile(RegexConfig.GENERAL_NAME);
+		Matcher m = p.matcher(fullName);
+		m.find();
+		String nameOfVar = fullName.substring(m.start(), m.end());
+		String inputValue = stringsInLine[1];
+
+		String[] inputValues = inputValue.split(",");
+		
+		for (String i:inputValues){
+			System.out.println(i);
+		}
+		
+		System.out.println();
+		System.out.println(fullName);
+		System.out.println(nameOfVar);
+		
 //		System.out.println("askdhasd");
 //		System.err.println("bla");
 //		boolean b= true;

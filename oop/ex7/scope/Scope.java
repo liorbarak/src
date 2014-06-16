@@ -116,8 +116,12 @@ public abstract class Scope implements ScopeMediator{
 
 		//return
 		if (line.matches(RegexConfig.lineType.RETURN.getRegex())){
+			
+			Pattern p = Pattern.compile("return");
+			Matcher m = p.matcher(line);
+			m.find();
+			String returnExpression=line.substring(m.end(), line.indexOf(";")).trim();
 
-			String returnExpression=line.substring(line.indexOf(" "), line.indexOf(";")).trim();
 			if(!handleReturn(returnExpression)){
 				throw new BadReturnException(line);//return in case of incorrect location
 			}
@@ -159,8 +163,16 @@ public abstract class Scope implements ScopeMediator{
 			return false;
 		}
 		if (fatherScope.fatherScope == null) {
-			
 			MethodScope method = (MethodScope) this;
+			///////////////////////////////////////////////////////////////////////////////////////////////////////
+			if (method.getReturnType().getRegex().equals(RegexConfig.INPUT_VOID)) {
+			//	System.out.println("asjdklahsdkjabjsdjabsd");
+				if ( returnExpression.matches(RegexConfig.INPUT_VOID)){
+				return true;
+				}
+			}
+			///////////////////////////////////////////////////////////////////////////////////////////////////
+			
 			FileParser.checkExpression(method.getReturnType(), returnExpression, method);
 			return true;
 		}

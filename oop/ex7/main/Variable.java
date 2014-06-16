@@ -1,6 +1,12 @@
 package oop.ex7.main;
 import oop.ex7.type.*;
 
+/**
+ * 
+ * class represents a variable declared by our 'compiler'.
+ * it is used to compare between existing 
+ *
+ */
 public class Variable {
 
 	private Type type;
