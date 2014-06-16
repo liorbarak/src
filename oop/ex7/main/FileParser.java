@@ -58,18 +58,14 @@ public class FileParser {
 			currentLine=myScan.nextLine();
 
 			//if it is commented simply continue and dont add to list
-//			if(currentLine.matches(RegexConfig.PREFIX_SUFFIX_NEWLINE)) {
-//				System.out.println("blah");
-//				currentLine = currentLine.replaceAll("\n", "");
-//			}
-			
-//			if(currentLine.startsWith("/n") || currentLine.endsWith("/n")) {
-//				System.out.println("blah");
-//				currentLine = currentLine.replaceAll("\n", "");
-//			}
 			if(!isLineCommentOrBlank(currentLine)) {
 			
+				if (currentLine.contains("//")){
+					currentLine=currentLine.substring(0, currentLine.indexOf("//"));
 				fileLines.add(currentLine);
+			}
+			
+			
 			}
 		}
 		myScan.close();
