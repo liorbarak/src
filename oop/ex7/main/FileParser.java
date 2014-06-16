@@ -63,10 +63,10 @@ public class FileParser {
 //				currentLine = currentLine.replaceAll("\n", "");
 //			}
 			
-			if(currentLine.startsWith("/n") || currentLine.endsWith("/n")) {
-				System.out.println("blah");
-				currentLine = currentLine.replaceAll("\n", "");
-			}
+//			if(currentLine.startsWith("/n") || currentLine.endsWith("/n")) {
+//				System.out.println("blah");
+//				currentLine = currentLine.replaceAll("\n", "");
+//			}
 			if(!isLineCommentOrBlank(currentLine)) {
 			
 				fileLines.add(currentLine);
