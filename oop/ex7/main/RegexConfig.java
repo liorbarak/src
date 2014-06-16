@@ -65,7 +65,7 @@ public class RegexConfig {
 	public static final String ENDS_WITH_OPEN_BRACKET = "(.*\\{[ \t]*)$";
 	public static final String ENDS_WITH_CLOSED_BRACKET = "(.*\\}[ \t]*)$";
 	
-	public static final String METHOD_CALL = GENERAL_NAME+"\\([ \t]*+[\\d]*[\\D]*[ \t]*\\)[ \t]*;?[ \t]*";
+	public static final String METHOD_CALL = GENERAL_NAME+"\\(.*\\)[ \t]*;?[ \t]*";
 //	public static final String METHOD_CALL = GENERAL_NAME+"\\([ \t]*[\\d]*[\\D]*[ \t]*\\)[ \t]*;?[ \t]*";
 	
 	
