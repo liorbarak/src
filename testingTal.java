@@ -144,9 +144,25 @@ public class testingTal {
 //	}
 	
 	public static void main(String[] args) throws FileNotFoundException, CompileException {
-	
+		String ifs = "      \tif (true) {";
+		String whiles = "\t\twhile (false) {";
 		
+		int test1 = ifs.indexOf("(")+1;
+		int test2 = ifs.indexOf(")");
 		
+		ifs = ifs.substring(test1, test2);
+		System.out.println(ifs);
+		
+		test1 = whiles.indexOf("(")+1;
+		test2 = whiles.indexOf(")");
+		
+		whiles = whiles.substring(test1, test2);
+		System.out.println(whiles);
+		
+//		ifs = ifs.trim().substring(ifs.indexOf("\\("),ifs.lastIndexOf("\\)")).trim();
+//		System.out.println(ifs);
+////		whiles = whiles.trim().substring(whiles.indexOf("\\("),whiles.lastIndexOf("\\)")).trim();
+//		System.out.println(whiles);
 	} 
 		
 }
