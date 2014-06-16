@@ -179,14 +179,17 @@ public abstract class Scope implements ScopeMediator{
 			String callName = MethodScope.getMethodCallNameFromExp(line);
 			if (tempMethod.getNameOfMethod().equals(callName)) {
 				String[] varsCall = tempMethod.getMethodVarsFromCallExp(line);
-
-				for (int i = 0; i < this.innerVariables.size(); i++) {
-					FileParser.checkExpression(this.innerVariables.get(i).getType(), varsCall[i], this);
+				//TODO check num of args!!!
+//				if (varsCall.length != tempMethod.innerVariables.size()) {
+//					throw new CompileException(); //TODO
+//				}
+				for (int i = 0; i < tempMethod.innerVariables.size(); i++) {
+					FileParser.checkExpression(tempMethod.innerVariables.get(i).getType(), varsCall[i], this);
 				}
 				return;
 			}
 		}
-		throw new CompileException();
+		throw new CompileException(); //TODO
 	}
 
 	private boolean handleReturn(String returnExpression) throws CompileException{
