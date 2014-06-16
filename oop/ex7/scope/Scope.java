@@ -482,7 +482,8 @@ public abstract class Scope implements ScopeMediator{
 	}
 
 	private static String getInsideBrackets(String line){
-		return line=line.trim().substring(line.indexOf("(")+1,line.lastIndexOf(")")).trim();
+		return line=line.trim().substring(line.indexOf("(")+1,line.lastIndexOf(")")-1).trim();
+		//return line=line.trim().substring(line.indexOf("("),line.lastIndexOf(")")-1).trim();	//TODO CHECK BRACKETs
 	}
 
 
