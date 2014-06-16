@@ -59,8 +59,8 @@ public class RegexConfig {
 	 */
 	
 	public static final String VALID_OPERATOR = "[ \t]*[\\+\\/\\-\\*][ \t]*";
-	public static final String GENERAL_NAME = "[ \t]*[-]?[ \t]*([_][\\w]+|[\\w][\\w]*)[ \t]*";
-//	public static final String GENERAL_NAME = "[ \t]*[-]?([_][\\w]+|[\\w][\\w]*)[ \t]*";
+	public static final String GENERAL_NAME = "[ \t]*[-]?[ \t]*([_][\\w]+|[a-zA-Z]+[\\w]*)[ \t]*";
+//	public static final String GENERAL_NAME = "[ \t]*[-]?[ \t]*([_][\\w]+|[\\w][\\w]*)[ \t]*";
 	public static final String ENDS_WITH_SEMICOLON = "(.*;[ \t]*)$";
 	public static final String ENDS_WITH_OPEN_BRACKET = "(.*\\{[ \t]*)$";
 	public static final String ENDS_WITH_CLOSED_BRACKET = "(.*\\}[ \t]*)$";
@@ -136,7 +136,7 @@ public class RegexConfig {
 
 
 
-		DEBUGRegex( METHOD_CALL,"		foo2                (            5          , 7   );" );
+		DEBUGRegex( GENERAL_NAME,"3ab" );
 //		DEBUGRegex( lineType.ASSIGNMENT.getRegex(),"a[9] =       -        5;" );
 
 
