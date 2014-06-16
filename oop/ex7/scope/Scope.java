@@ -469,7 +469,7 @@ private void methodInput (ArrayList<String> lines,int start, int finish) throws 
 	for (Scope i:innerScopes){
 		MethodScope method=(MethodScope) i;
 		if (!method.getNameOfMethod().equals(methodName)){
-			throw new DoubleMethodException(lines.get(start));
+			throw new DoubleMethodException(finish, lines.get(start));
 		}
 	}
 	String insideBracketsExp=getInsideBrackets(tempLine);
