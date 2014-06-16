@@ -41,7 +41,7 @@ public class Sjavac {
 			File origin = new File(args[0]);	//debug mode if is commented.TODO change bach for junit
 
 //			origin = new File("C://Users//Lior//Desktop//ex7stuff//tests//test253.sjava");
-//			origin = new File("/Users/taldovrat/Downloads/tests/test433.sjava");
+//			origin = new File("/Users/taldovrat/Downloads/tests/test507.sjava");
 
 
 			ArrayList<String> fileLines= FileParser.getlinesList(origin);
@@ -65,10 +65,6 @@ public class Sjavac {
 		catch(CompileException e1){//make sure all kinds of errors are cought here
 			System.out.println(returnValues.INPUT_ERRORS.ordinal());//prints 1
 
-
-			//for debug
-			System.out.println(e1.toString());
-
 			e1.printStackTrace(System.err);
 			//for debug
 			return;
@@ -76,15 +72,8 @@ public class Sjavac {
 		}
 		catch(Exception e2){	//TODO change type of exception
 
-			//System.out.println("general error. not one of ours");
-
 			e2.printStackTrace(System.err);
 			
-			//for debug
-//			System.out.println(e2.toString());
-			//e2.printStackTrace();
-			//for debug
-
 			return;
 
 		}

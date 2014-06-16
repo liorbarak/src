@@ -183,8 +183,12 @@ public abstract class Scope implements ScopeMediator{
 //				if (varsCall.length != tempMethod.innerVariables.size()) {
 //					throw new CompileException(); //TODO
 //				}
-				for (int i = 0; i < tempMethod.innerVariables.size(); i++) {
-					FileParser.checkExpression(tempMethod.innerVariables.get(i).getType(), varsCall[i], this);
+				if (varsCall.length==1 && varsCall[0].equals("") && tempMethod.inputVars.isEmpty())
+					return;
+				for (int i = 0; i < tempMethod.inputVars.size(); i++) {
+
+					FileParser.checkExpression(tempMethod.inputVars.get(i).getType(), varsCall[i], this);
+					
 				}
 				return;
 			}

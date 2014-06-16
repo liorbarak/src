@@ -15,7 +15,7 @@ public class MethodScope extends Scope {
 
 	private Type returnType;
 	private String nameOfMethod;
-	private ArrayList<Variable> inputVars; 
+	ArrayList<Variable> inputVars; 
 	//TODO add method's input variables - their type by their order!
 
 

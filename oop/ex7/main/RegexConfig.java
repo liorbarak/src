@@ -66,7 +66,7 @@ public class RegexConfig {
 	public static final String ENDS_WITH_OPEN_BRACKET = "(.*\\{[ \t]*)$";
 	public static final String ENDS_WITH_CLOSED_BRACKET = "(.*\\}[ \t]*)$";
 	
-	public static final String METHOD_CALL = GENERAL_NAME+"\\(.*\\)[ \t]*;?[ \t]*";
+	public static final String METHOD_CALL = "[\\s]*"+GENERAL_NAME+"\\(.*\\)[ \t]*;?[ \t]*";
 //	public static final String METHOD_CALL = GENERAL_NAME+"\\([ \t]*[\\d]*[\\D]*[ \t]*\\)[ \t]*;?[ \t]*";
 	
 	
@@ -138,7 +138,7 @@ public class RegexConfig {
 
 
 
-		DEBUGRegex( lineType.BOTH_ARRAY.getRegex(),"int [     ]   a                  =             { };" );
+		DEBUGRegex( METHOD_CALL,"\ndoo()" );
 //		DEBUGRegex( lineType.ASSIGNMENT_ARRAY.getRegex(),"a[8] = b[9];" );
 
 
