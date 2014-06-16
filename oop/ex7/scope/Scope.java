@@ -164,14 +164,14 @@ public abstract class Scope implements ScopeMediator{
 		}
 		if (fatherScope.fatherScope == null) {
 			MethodScope method = (MethodScope) this;
-			///////////////////////////////////////////////////////////////////////////////////////////////////////
+			
 			if (method.getReturnType().getRegex().equals(RegexConfig.INPUT_VOID)) {
-			//	System.out.println("asjdklahsdkjabjsdjabsd");
+			
 				if ( returnExpression.matches(RegexConfig.INPUT_VOID)){
 				return true;
 				}
 			}
-			///////////////////////////////////////////////////////////////////////////////////////////////////
+			
 			
 			FileParser.checkExpression(method.getReturnType(), returnExpression, method);
 			return true;
@@ -220,7 +220,11 @@ public abstract class Scope implements ScopeMediator{
 		Variable varTemp;
 
 		String[] stringsInLine = getAssigmentStr(line);		
-		String nameOfVar = stringsInLine[0];
+		String fullName = stringsInLine[0];
+		Pattern p = Pattern.compile(RegexConfig.GENERAL_NAME);
+		Matcher m = p.matcher(fullName);
+		m.find();
+		String nameOfVar = fullName.substring(m.start(), m.end());
 		String inputValue = stringsInLine[1];
 
 		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
@@ -232,9 +236,20 @@ public abstract class Scope implements ScopeMediator{
 		}
 
 		if (varTemp.getType().sameType(new ArrayType())) {
-			String[] inputValues = inputValue.split(",");
+			ArrayType type = (ArrayType) varTemp.getType();
+			if (!fullName.equals(nameOfVar)) {
+				FileParser.checkInnerArrVarPos(fullName, this);
+				FileParser.checkExpression(type.getInnerType(), inputValue, this);
+				return;
+			}
+			FileParser.checkExpression(varTemp.getType(), inputValue, this);
+			String cleanInputVals = inputValue.replaceAll("[\\{\\}]", "");
+			if (cleanInputVals.matches(RegexConfig.BLANK_LINE)) {
+				return;
+			}
+			String[] inputValues = cleanInputVals.split(",");
 			for (String exp:inputValues) {
-				FileParser.checkExpression(varTemp.getType(), exp, this);
+				FileParser.checkExpression(type.getInnerType(), exp, this);
 			}
 			return;
 		}
@@ -265,7 +280,7 @@ public abstract class Scope implements ScopeMediator{
 		varTemp = this.varExist(nameOfVar);
 		//if the variable doesn't exist:
 		if (varTemp == null) {
-			if (line.matches(RegexConfig.ARRAY_DECLARE)) {
+			if (line.matches(RegexConfig.ARRAY_DECLARE_WITH_SEMICOLON)) {
 				this.innerVariables.add(new Variable(fullType, nameOfVar));
 			}
 			else {
@@ -327,7 +342,7 @@ public abstract class Scope implements ScopeMediator{
 		String linetemp = line.trim();
 		String[] stringsInLine = linetemp.split("=");
 		stringsInLine[1] = stringsInLine[1].trim();
-		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?\\{?\\}?", "");
+		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
 		return stringsInLine;
 	}
 
@@ -341,8 +356,10 @@ public abstract class Scope implements ScopeMediator{
 
 	public static String[] getBothStr(String line) {
 
-		String declarationLine =  getAssigmentStr(line)[0];
+		//String declarationLine =  getAssigmentStr(line)[0];
+		String declarationLine =  getAssigmentStr(line)[0]+";";
 		String[] declaration = getDecStr(declarationLine);
+		
 		String inputValue = getAssigmentStr(line)[1];
 		String decLine = declaration[0]+" "+declaration[1];
 		String assLine = declaration[1]+"="+inputValue;
@@ -451,9 +468,18 @@ public abstract class Scope implements ScopeMediator{
 		String insideBracketsExp=getInsideBrackets(tempLine);
 		if (!insideBracketsExp.matches(RegexConfig.BLANK_LINE)) {
 			String[] insideBrackets=getInsideBrackets(tempLine).split(",");
+			String type;
+			String name;
 			for (String i:insideBrackets){
-				String[] TypeAndName = i.trim().split(" ");
-				Variable tempVar = new Variable(TypeAndName[0], TypeAndName[1]);
+				
+				Pattern p = Pattern.compile(RegexConfig.VALID_TYPES_METHOD);
+				Matcher m = p.matcher(i);			
+				m.find();
+				type = i.substring(m.start(), m.end());
+				name = i.substring(m.end());
+			
+//				String[] TypeAndName = i.trim().split(" ");
+				Variable tempVar = new Variable(type, name);
 				tempVar.setInitialized(true);
 				inputVars.add(tempVar);
 			}

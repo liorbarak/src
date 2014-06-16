@@ -196,7 +196,7 @@ public class FileParser {
 
 			while (tempScope != null) {
 				for(Variable var:tempScope.getVariables()) {
-					if (var.getName().equals(expression)) {
+					if (var.getName().equals(nameOfArr)) {
 						if(!new ArrayType().sameType(var.getType())) {
 							throw new BadTypeException(expression);
 						}
@@ -255,17 +255,25 @@ public class FileParser {
 	 */
 	public static void checkInnerArrVarPos(String expression, ScopeMediator med) throws CompileException {
 
-		String[] stringsInLine = Scope.getAssigmentStr(expression);		
-		String nameOfVar = stringsInLine[0];
-		String expToCheck = nameOfVar.substring(expression.indexOf("[")+1, expression.lastIndexOf("]")).trim();
-
-		FileParser.checkExpression(new IntType(), expToCheck, med);
-		if (expToCheck.matches(RegexConfig.INPUT_INT)) {
-			int intExp = Integer.parseInt(expToCheck);
+		String innerExp = expression.substring(expression.indexOf("[")+1, expression.lastIndexOf("]"));
+		if (innerExp.matches(RegexConfig.INPUT_INT)) {
+			int intExp = Integer.parseInt(innerExp);
 			if (intExp < 0) {
 				throw new CompileException(); //TODO change exception type
 			}
 		}
+		checkExpression(new IntType(), innerExp, med);
+//		String[] stringsInLine = Scope.getAssigmentStr(expression);		
+//		String nameOfVar = stringsInLine[0];
+//		String expToCheck = nameOfVar.substring(expression.indexOf("[")+1, expression.lastIndexOf("]")).trim();
+//
+//		FileParser.checkExpression(new IntType(), expToCheck, med);
+//		if (expToCheck.matches(RegexConfig.INPUT_INT)) {
+//			int intExp = Integer.parseInt(expToCheck);
+//			if (intExp < 0) {
+//				throw new CompileException(); //TODO change exception type
+//			}
+//		}
 	}
 
 	/*
@@ -350,7 +358,7 @@ public class FileParser {
 	public static String[] getExpressions(Type type, String expression)
 			throws CompileException {
 
-		Pattern p = Pattern.compile(type.getRegex());
+		Pattern p = Pattern.compile(RegexConfig.VALID_EXP_ARRAY_CELL);
 		Matcher m = p.matcher(expression);
 		String leftExp;
 		String rightExp;

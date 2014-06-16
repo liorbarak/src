@@ -28,7 +28,7 @@ public class MethodScope extends Scope {
 	//innerScopes.add(new MethodScope (lines,start,finish,Type.createType(returnType),methodName,inputVars, this)   );
 	public MethodScope(ArrayList<String> lines, int start,int finish,
 			Type returnType, String methodName, ArrayList<Variable> inputVars,
-			Scope father){
+			Scope father) throws VarExistException{
 
 		super(lines,start,finish, father);
 		this.inputVars = new ArrayList<Variable>(); 
@@ -41,6 +41,10 @@ public class MethodScope extends Scope {
 
 		//handleinput vars
 		for(Variable var:inputVars){
+			//if Var already exists!
+			if (this.varExist(var.getName()) != null) {
+				throw new VarExistException(var.getName());
+			}
 			var.setInitialized(true);
 			this.inputVars.add(var);
 			this.innerVariables.add(var);

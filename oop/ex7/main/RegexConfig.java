@@ -57,7 +57,8 @@ public class RegexConfig {
 	 */
 	
 	public static final String VALID_OPERATOR = "[ \t]*[\\+\\/\\-\\*][ \t]*";
-	public static final String GENERAL_NAME = "[ \t]*([_][^ \\(\\)\\{\\}\\[\\];]+|[^\\d_\\+-\\/\\*{}\\[\\]; ][^ ,\\[\\]\\{\\};]*)[ \t]*";
+	public static final String GENERAL_NAME = "[ \t]*([_][^ \\(\\)\\{\\}\\[\\];]+|[^\\d_\\+-\\/\\*{}\\[\\]; ][^\\+-\\/\\* ,\\[\\]\\{\\};]*)[ \t]*";
+//	public static final String GENERAL_NAME = "[ \t]*([_][^ \\(\\)\\{\\}\\[\\];]+|[^\\d_\\+-\\/\\*{}\\[\\]; ][^ ,\\[\\]\\{\\};]*)[ \t]*";
 	
 	public static final String ENDS_WITH_SEMICOLON = "(.*;[ \t]*)$";
 	public static final String ENDS_WITH_OPEN_BRACKET = "(.*\\{[ \t]*)$";
@@ -69,6 +70,7 @@ public class RegexConfig {
 	
 	public static final String OPERATOR_EXP ="("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")"+VALID_OPERATOR+"("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")";
 	public static final String VALID_EXP = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+"|"+OPERATOR_EXP+")";
+	public static final String VALID_EXP_ARRAY_CELL = "("+VALID_EXP+"|"+GENERAL_NAME+"\\["+VALID_EXP+"\\][ \t]*)";
 	
 	public static final String ARRAY_INIT="[ \t]*[{](("+VALID_EXP+",[ \t]*)*("+VALID_EXP+")[ \t]*|"+VALID_EXP+"?)*[}][ \t]*";//right of equals-only brackets {}
 	
@@ -81,10 +83,11 @@ public class RegexConfig {
 	public static final String VALID_IF_CALL ="[ \t]*if[ \t]*[(][ \t]*"+VALID_EXP+"[ \t]*[)][ \t]*[{][ \t]*";
 	public static final String VALID_WHILE_CALL="[ \t]*while[ \t]*[(][ \t]*"+VALID_EXP+"[ \t]*[)][ \t]*[{][ \t]*";
 	
-	public static final String TYPE_PLUS_VAR = "[ \t]*"+VALID_TYPES_IN_METHOD+"( )+"+GENERAL_NAME+"[ \t]*"; 
+	public static final String TYPE_PLUS_VAR = "[ \t]*("+VALID_TYPES+"( )+"+GENERAL_NAME+"[ \t]*|"+VALID_TYPES+"\\[[ \t]*\\]"+GENERAL_NAME+")"; 
 	public static final String VALID_METHOD_DECLARE = "[ \t]*"+VALID_TYPES_METHOD+"[ ]+"+GENERAL_NAME+"[ \t]*[(]([ \t]*("+TYPE_PLUS_VAR+")?[ \t]*|("+TYPE_PLUS_VAR+",)+"+TYPE_PLUS_VAR+")[)][ \t]*[{][ \t]*";
 	public static final String ARR_TYPE = VALID_TYPES+"\\[\\][ \t]*";
 	
+//	public static final String TYPE+PLUS_VAR_TEST = 
 	
 	
 	
@@ -96,7 +99,7 @@ public class RegexConfig {
 //	public static String ARRAY_DECLARE_AND_ASSIGN= ARRAY_DECLARE+"[ \t]*=[ \t]*"+ARRAY_INIT+"[ \t]*;[ \t]*" ;//complete "int[]	 q={1,4,a};"
 	public static String ARRAY_DECLARE_AND_ASSIGN= ARRAY_DECLARE+"[ \t]*=[ \t]*"+VALID_EXP_JUST_ARRAY+"[ \t]*;[ \t]*" ;//complete "int[]	 q={1,4,a};"
 	public static final String TYPE_ARRAY = VALID_TYPES+"\\[\\][ \t]*";
-	public static final String ARR_VAR = GENERAL_NAME+"\\["+VALID_EXP+"\\][ \t]*;[ \t]*";
+	public static final String ARR_VAR = GENERAL_NAME+"\\["+VALID_EXP+"\\][ \t]*;?[ \t]*";
 	public static final String RETURN_METHOD = VALID_EXP_WITH_ARRAY+"[ \t]*";
 
 	public static final String ARRAY_DECLARE_BLANK=ARRAY_DECLARE+"[ \t]*=[ \t]*[{][ \t]*[}][ \t]*;[ \t]*";
@@ -108,7 +111,7 @@ public class RegexConfig {
 		ASSIGNMENT_ARRAY ("[ \t]*"+GENERAL_NAME+"[ \t]*\\["+VALID_EXP_WITH_ARRAY+"\\][ \t]*=[ \t]*"+VALID_EXP_WITH_ARRAY+"[ \t]*;[ \t]*"),
 		BOTH ("[ \t]*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ \t]*=[ \t]*"+VALID_EXP+"[ \t]*;[ \t]*"),
 		BOTH_ARRAY (ARRAY_DECLARE_AND_ASSIGN),
-		RETURN ("([ \t]*return( )+"+VALID_EXP_WITH_ARRAY+"[ \t]*;[ \t]*|[ \t]*return[ \t]*;[ \t]*)"); 
+		RETURN ("([ \t]*return( )+("+VALID_EXP_WITH_ARRAY+"|"+VALID_EXP_ARRAY_CELL+")[ \t]*;[ \t]*|[ \t]*return[ \t]*;[ \t]*)"); 
 		
 
 		private String regex;
@@ -127,8 +130,8 @@ public class RegexConfig {
 	public static void main(String[] args) {
 		
 
-		DEBUGRegex(VALID_EXP_WITH_ARRAY,"{b}");
-//		DEBUGRegex(lineType.RETURN.getRegex(),"return  {b} ; ");
+//		DEBUGRegex(lineType.RETURN.getRegex(),"return a[9];");
+		DEBUGRegex( VALID_EXP_ARRAY_CELL,"a[9]");
 
 
 
