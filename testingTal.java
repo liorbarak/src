@@ -144,12 +144,12 @@ public class testingTal {
 //	}
 	
 	public static void main(String[] args) throws FileNotFoundException, CompileException {
-		String ifs = "      \tif (true) {";
+		String ifs = "				 if 	        		   (        		  foo2 (       5           )        )  {	";
 		String whiles = "\t\twhile (false) {";
 		
 		int test1 = ifs.indexOf("(")+1;
 		int test2 = ifs.indexOf(")");
-		
+		System.out.println(test1);
 		ifs = ifs.substring(test1, test2);
 		System.out.println(ifs);
 		
