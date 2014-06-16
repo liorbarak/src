@@ -57,9 +57,9 @@ public class RegexConfig {
 	 */
 	
 	public static final String VALID_OPERATOR = "[ \t]*[\\+\\/\\-\\*][ \t]*";
-	public static final String GENERAL_NAME = "[ \t]*([_][^ \\(\\)\\{\\}\\[\\];]+|[^\\d_\\+-\\/\\*{}\\[\\]; ][^\\+-\\/\\* ,\\[\\]\\{\\};]*)[ \t]*";
-//	public static final String GENERAL_NAME = "[ \t]*([_][^ \\(\\)\\{\\}\\[\\];]+|[^\\d_\\+-\\/\\*{}\\[\\]; ][^ ,\\[\\]\\{\\};]*)[ \t]*";
-	
+	public static final String GENERAL_NAME = "[ \t]*([-]?[_][\\w]+|[\\w][\\w]*)[ \t]*";
+//	public static final String GENERAL_NAME = "[ \t]*([-]?[_][^ \\+\\-\\*\\/\\(\\)\\{\\}\\[\\];]+|[^\\d_,\\+\\/\\*{}\\(\\)\\[\\]; ][^\\+\\/\\* ,\\[\\]\\(\\)\\{\\};]*)[ \t]*";
+//	public static final String GENERAL_NAME = "[ \t]*([_][^ \\(\\)\\{\\}\\[\\];]+|[^\\d_,\\+\\/\\*{}\\[\\]; ][^\\+\\/\\* ,\\[\\]\\{\\};]*)[ \t]*";
 	public static final String ENDS_WITH_SEMICOLON = "(.*;[ \t]*)$";
 	public static final String ENDS_WITH_OPEN_BRACKET = "(.*\\{[ \t]*)$";
 	public static final String ENDS_WITH_CLOSED_BRACKET = "(.*\\}[ \t]*)$";
@@ -69,7 +69,8 @@ public class RegexConfig {
 	
 	
 	public static final String OPERATOR_EXP ="("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")"+VALID_OPERATOR+"("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+")";
-	public static final String VALID_EXP = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+"|"+OPERATOR_EXP+")";
+	public static final String VALID_EXP = "("+SOME_TYPE_VALUE+"|"+METHOD_CALL+"|"+GENERAL_NAME+"|"+OPERATOR_EXP+")";
+//	public static final String VALID_EXP = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+"|"+OPERATOR_EXP+")";
 	public static final String VALID_EXP_ARRAY_CELL = "("+VALID_EXP+"|"+GENERAL_NAME+"\\["+VALID_EXP+"\\][ \t]*)";
 	
 	public static final String ARRAY_INIT="[ \t]*[{](("+VALID_EXP+",[ \t]*)*("+VALID_EXP+")[ \t]*|"+VALID_EXP+"?)*[}][ \t]*";//right of equals-only brackets {}
@@ -103,6 +104,7 @@ public class RegexConfig {
 	public static final String RETURN_METHOD = VALID_EXP_WITH_ARRAY+"[ \t]*";
 
 	public static final String ARRAY_DECLARE_BLANK=ARRAY_DECLARE+"[ \t]*=[ \t]*[{][ \t]*[}][ \t]*;[ \t]*";
+	public static final String PREFIX_SUFFIX_NEWLINE = "(^(\n).*|.*\\n$)";
 	
 	public enum lineType {
 		
@@ -132,7 +134,7 @@ public class RegexConfig {
 
 
 
-		DEBUGRegex( lineType.RETURN.getRegex(),"return -a ;" );
+		DEBUGRegex( GENERAL_NAME,"-5-6" );
 
 
 
