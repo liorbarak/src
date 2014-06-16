@@ -126,8 +126,12 @@ public class RegexConfig {
 	
 	public static void main(String[] args) {
 		
+
 		DEBUGRegex(VALID_EXP_WITH_ARRAY,"{b}");
 //		DEBUGRegex(lineType.RETURN.getRegex(),"return  {b} ; ");
+
+
+
 		
 	}
 	
