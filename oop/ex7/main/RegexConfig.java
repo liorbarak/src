@@ -57,7 +57,7 @@ public class RegexConfig {
 	 */
 	
 	public static final String VALID_OPERATOR = "[ \t]*[\\+\\/\\-\\*][ \t]*";
-	public static final String GENERAL_NAME = "[ \t]*([-]?[_][\\w]+|[\\w][\\w]*)[ \t]*";
+	public static final String GENERAL_NAME = "[ \t]*[-]?([_][\\w]+|[\\w][\\w]*)[ \t]*";
 //	public static final String GENERAL_NAME = "[ \t]*([-]?[_][^ \\+\\-\\*\\/\\(\\)\\{\\}\\[\\];]+|[^\\d_,\\+\\/\\*{}\\(\\)\\[\\]; ][^\\+\\/\\* ,\\[\\]\\(\\)\\{\\};]*)[ \t]*";
 //	public static final String GENERAL_NAME = "[ \t]*([_][^ \\(\\)\\{\\}\\[\\];]+|[^\\d_,\\+\\/\\*{}\\[\\]; ][^\\+\\/\\* ,\\[\\]\\{\\};]*)[ \t]*";
 	public static final String ENDS_WITH_SEMICOLON = "(.*;[ \t]*)$";
@@ -134,7 +134,7 @@ public class RegexConfig {
 
 
 
-		DEBUGRegex( GENERAL_NAME,"-5-6" );
+		DEBUGRegex( GENERAL_NAME,"-foo(,a,b)" );
 
 
 

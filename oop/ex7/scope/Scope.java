@@ -488,7 +488,7 @@ private void methodInput (ArrayList<String> lines,int start, int finish) throws 
 		MethodScope method=(MethodScope) i;
 
 		if (method.getNameOfMethod().equals(methodName)){
-			throw new DoubleMethodException(finish, lines.get(start));
+			throw new DoubleMethodException(lines.get(start));
 
 		}
 	}

@@ -28,7 +28,6 @@ public class DoubleMethodException extends CompileException{
 	 * return String- message unique for this exception
 	 */
 	public String getLocalizedMessage() {
-		//return ERROR_MSG+lineNumber+"/n"+text;
 		return ERROR_MSG+text;
 	}
 	
