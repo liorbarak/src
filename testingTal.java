@@ -128,15 +128,25 @@ public class testingTal {
 //		return expressions;
 	}
 
-	int[    ]a; 
+	 
 	
 	public static int getOper(int a) {
 		return a;
 	}
 
+//	
+//	int[] a = {0};
+//	int[] foo(){
+//		int[] b = {9};
+//		a[8] = b[9];
+//		int[] c = {a,56} 
+//		return c;
+//	}
 	
 	public static void main(String[] args) throws FileNotFoundException, CompileException {
 	
+		
+		
 	} 
 		
 }
