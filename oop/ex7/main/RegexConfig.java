@@ -76,7 +76,7 @@ public class RegexConfig {
 //	public static final String VALID_EXP = "("+GENERAL_NAME+"|"+SOME_TYPE_VALUE+"|"+METHOD_CALL+"|"+OPERATOR_EXP+")";
 	public static final String VALID_EXP_ARRAY_CELL = "("+VALID_EXP+"|"+GENERAL_NAME+"\\["+VALID_EXP+"\\][ \t]*)";
 	
-	public static final String ARRAY_INIT="[ \t]*[{](("+VALID_EXP+",[ \t]*)*("+VALID_EXP+")[ \t]*|"+VALID_EXP+"?)*[}][ \t]*";//right of equals-only brackets {}
+	public static final String ARRAY_INIT="[ \t]*[{](("+VALID_EXP+",[ \t]*)*("+VALID_EXP+")[ \t]*|[ \t]*"+VALID_EXP+"?)*[}][ \t]*";//right of equals-only brackets {}
 	
 	public static final String VALID_EXP_WITH_ARRAY = "("+VALID_EXP+"|[ \t]*[{][ \t]*("+VALID_EXP+")?[}]|[ \t]*[{][ \t]*["+VALID_EXP+",]+[ \t]*"+VALID_EXP+"[}])";
 	public static final String VALID_EXP_JUST_ARRAY = "("+GENERAL_NAME+"|"+METHOD_CALL+"|"+ARRAY_INIT+")";
@@ -138,8 +138,8 @@ public class RegexConfig {
 
 
 
-		DEBUGRegex( lineType.ASSIGNMENT.getRegex(),"a[8] = b[9];" );
-		DEBUGRegex( lineType.ASSIGNMENT_ARRAY.getRegex(),"a[8] = b[9];" );
+		DEBUGRegex( lineType.BOTH_ARRAY.getRegex(),"int [     ]   a                  =             { };" );
+//		DEBUGRegex( lineType.ASSIGNMENT_ARRAY.getRegex(),"a[8] = b[9];" );
 
 
 
