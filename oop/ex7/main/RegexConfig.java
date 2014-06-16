@@ -130,8 +130,10 @@ public class RegexConfig {
 	public static void main(String[] args) {
 		
 
-//		DEBUGRegex(lineType.RETURN.getRegex(),"return a[9];");
+
+
 		DEBUGRegex( lineType.RETURN.getRegex(),"return -a ;" );
+
 
 
 
