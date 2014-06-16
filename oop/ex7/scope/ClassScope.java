@@ -2,6 +2,10 @@ package oop.ex7.scope;
 
 import java.util.ArrayList;
 
+import oop.ex7.main.EndOfFileException;
+import oop.ex7.main.FileParser;
+import oop.ex7.type.BadEndOfLineException;
+
 /**
  * 
  * represents a general class scope
@@ -17,6 +21,46 @@ public class ClassScope extends Scope {
 	 */
 	public ClassScope(ArrayList<String> lines){
 		super(lines,-1,lines.size(), null);
+
+	}
+
+	/**
+	 * 
+	 */
+	public  void compileScope() throws InvalidScopeException, EndOfFileException, BadEndOfLineException,Exception  {
+
+		ArrayList<Integer> opIndexArray=new ArrayList<Integer>();
+		int lineType;
+		//		Variable tempVar;
+		//		Scope tempScope;
+
+		for(int i=this.startIndex+1;i<this.endIndex;i++){
+			lineType=FileParser.scopeOrVariable(relevantLines.get(i),i);//throws if not valid scope or var declaration
+
+			if (lineType==lineTypes.SCOPE.ordinal()){
+
+				int closer = FileParser.findLastCloser(relevantLines,i);
+
+				lineAnalizerSc(relevantLines,i,closer);
+
+				i=closer;
+			}
+			else{
+				opIndexArray.add(i);
+			}
+
+		}
+		for (Integer j : opIndexArray ){
+
+			lineAnalizerOp(relevantLines.get(j));
+		}
+
+		//recursively calls all the crap in the universe. 
+		for (Scope inner:innerScopes){
+			inner.compileScope(); 
+		}
+
+
 
 	}
 
