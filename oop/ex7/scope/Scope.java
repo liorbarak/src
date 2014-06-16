@@ -277,6 +277,7 @@ public abstract class Scope implements ScopeMediator{
 			for (String exp:inputValues) {
 				FileParser.checkExpression(type.getInnerType(), exp, this);
 			}
+			varTemp.setInitialized(true);
 			return;
 		}
 
