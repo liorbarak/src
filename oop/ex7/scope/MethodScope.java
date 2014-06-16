@@ -54,8 +54,16 @@ public class MethodScope extends Scope {
 
 	}
 
-
-
+//	public MethodScope methodExist(String methodName, String[] vars, ScopeMediator med) {
+//		
+//		ScopeMediator tempScope = med;
+//		while (tempScope.getFatherScope() != null) {
+//			tempScope = tempScope.getFatherScope();
+//		}
+//		
+//		
+//	}
+	
 	public boolean compareMethod(String line, ScopeMediator med) throws CompileException {
 
 		String callName = getMethodCallNameFromExp(line);

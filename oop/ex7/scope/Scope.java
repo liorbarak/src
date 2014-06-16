@@ -144,8 +144,13 @@ public abstract class Scope implements ScopeMediator{
 			return;
 		}
 		//both
-		else if (line.matches(RegexConfig.lineType.BOTH.getRegex()) ||line.matches(RegexConfig.lineType.BOTH_ARRAY.getRegex())){
+		else if (line.matches(RegexConfig.lineType.BOTH.getRegex()) || line.matches(RegexConfig.lineType.BOTH_ARRAY.getRegex())){
 			bothLine(line);
+			return;
+		}
+		
+		else if (line.matches(RegexConfig.METHOD_CALL)) {
+			this.checkMethod(line);
 			return;
 		}
 		//
@@ -157,6 +162,19 @@ public abstract class Scope implements ScopeMediator{
 
 	}
 
+
+	private void checkMethod(String line) throws CompileException {
+		// TODO Auto-generated method stub
+		Scope tempScope = this; 
+		while(tempScope.getFatherScope() != null) {
+			tempScope = tempScope.getFatherScope();
+		}
+		ClassScope classScope = (ClassScope) tempScope;
+		for (Scope sc:classScope.innerScopes) {
+			MethodScope tempMethod = (MethodScope) sc;
+			tempMethod.compareMethod(line, tempScope);
+		}	
+	}
 
 	private boolean handleReturn(String returnExpression) throws CompileException{
 		if (fatherScope==null){
@@ -286,7 +304,7 @@ private void declarationLine(String line)  throws CompileException {
 	varTemp = this.varExist(nameOfVar);
 	//if the variable doesn't exist:
 	if (varTemp == null) {
-		if (line.matches(RegexConfig.ARRAY_DECLARE_WITH_SEMICOLON)) {
+		if (line.matches(RegexConfig.ARRAY_DECLARE)||line.matches(RegexConfig.ARRAY_DECLARE_WITH_SEMICOLON)) {
 			this.innerVariables.add(new Variable(fullType, nameOfVar));
 		}
 		else {
@@ -468,7 +486,7 @@ private void methodInput (ArrayList<String> lines,int start, int finish) throws 
 
 	for (Scope i:innerScopes){
 		MethodScope method=(MethodScope) i;
-		if (!method.getNameOfMethod().equals(methodName)){
+		if (method.getNameOfMethod().equals(methodName)){
 			throw new DoubleMethodException(finish, lines.get(start));
 		}
 	}

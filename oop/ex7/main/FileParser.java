@@ -7,6 +7,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.stream.events.StartDocument;
+
 import oop.ex7.scope.MethodScope;
 import oop.ex7.scope.Scope;
 import oop.ex7.scope.ScopeMediator;
@@ -56,7 +58,17 @@ public class FileParser {
 			currentLine=myScan.nextLine();
 
 			//if it is commented simply continue and dont add to list
+//			if(currentLine.matches(RegexConfig.PREFIX_SUFFIX_NEWLINE)) {
+//				System.out.println("blah");
+//				currentLine = currentLine.replaceAll("\n", "");
+//			}
+			
+			if(currentLine.startsWith("/n") || currentLine.endsWith("/n")) {
+				System.out.println("blah");
+				currentLine = currentLine.replaceAll("\n", "");
+			}
 			if(!isLineCommentOrBlank(currentLine)) {
+			
 				fileLines.add(currentLine);
 			}
 		}
@@ -126,34 +138,7 @@ public class FileParser {
 			return;
 		}
 
-		//checks if this is a variable and must be compared with other
-		//variables in relevant scopes
-		if (analyze(expression).equals(expTypes.VAR)) {
-			ScopeMediator tempScope = med;
-			
-			while (tempScope != null) {
-				
-				for(Variable var:tempScope.getVariables()) {
-					
-					if (var.getName().equals(expression)) {
-						
-						if(!typeToCompare.sameType(var.getType())) {
-							throw new BadTypeException(expression);
-						}
-						
-						if(!var.isInitialized()) {
-							throw new VarNotExistException(expression+" - Uninitialized"); //TODO correct exception
-						}
-						
-						return;
-					}
-				}
-				tempScope = tempScope.getFatherScope();
-			}
-			throw new VarExistException(expression);
-		}
-
-		//in case this is a method, it must be compared to relevant methods
+				//in case this is a method, it must be compared to relevant methods
 		if (analyze(expression).equals(expTypes.METHOD)) {
 
 			ScopeMediator tempScope = med;
@@ -173,6 +158,37 @@ public class FileParser {
 			}
 		}
 		
+		
+		//checks if this is a variable and must be compared with other
+				//variables in relevant scopes
+				if (analyze(expression).equals(expTypes.VAR)) {
+					ScopeMediator tempScope = med;
+					expression = expression.replaceAll("-","").trim();
+					while (tempScope != null) {
+						
+						for(Variable var:tempScope.getVariables()) {
+							
+							if (var.getName().equals(expression)) {
+								
+								if(!typeToCompare.sameType(var.getType())) {
+									throw new BadTypeException(expression);
+								}
+								
+								if(!var.isInitialized()) {
+									throw new VarNotExistException(expression+" - Uninitialized"); //TODO correct exception
+								}
+								
+								return;
+							}
+						}
+						tempScope = tempScope.getFatherScope();
+					}
+					throw new VarExistException(expression);
+				}
+
+
+		
+		
 		//checks if there is an expression that contains operators
 		//if so it dismantles it and checks if it is legal by recursion
 		if (analyze(expression).equals(expTypes.OPERATORS)) {
@@ -180,7 +196,9 @@ public class FileParser {
 			for (String exp:expressions) {
 				checkExpression(typeToCompare, exp, med);
 			}
+			return;
 		}
+		
 
 		//checks if this is an assigment pulled out of an array
 		//like b=a[5]. checks its validity
@@ -241,6 +259,7 @@ public class FileParser {
 			for (String exp:exps) {
 				checkExpression(arr.getInnerType(), exp, med);
 			}
+			return;
 		}
 	}
 
@@ -286,13 +305,15 @@ public class FileParser {
 			return expTypes.SOME_TYPE_INPUT;
 		}
 
-		if(expression.matches(RegexConfig.GENERAL_NAME)) {
-			return expTypes.VAR;
-		}
 
 		if (expression.matches(RegexConfig.METHOD_CALL)) {
 			return expTypes.METHOD;
 		}
+		
+		if(expression.matches(RegexConfig.GENERAL_NAME)) {
+			return expTypes.VAR;
+		}
+		
 		if (expression.matches(RegexConfig.OPERATOR_EXP)) {
 			return expTypes.OPERATORS;
 		}
@@ -363,13 +384,13 @@ public class FileParser {
 		String leftExp;
 		String rightExp;
 		if (m.find()) {
-			leftExp = expression.substring(m.start(), m.end());
+			leftExp = expression.substring(m.start(), m.end()).trim();
 		}
 		else {
 			throw new CompileException(); //TODO change exception type
 		}
 		if (m.find()) {
-			rightExp = expression.substring(m.start(), m.end());
+			rightExp = expression.substring(m.start(), m.end()).trim();
 		}
 		else {
 			throw new CompileException(); //TODO change exception type
