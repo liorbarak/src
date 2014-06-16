@@ -128,24 +128,21 @@ public class testingTal {
 //		return expressions;
 	}
 
+	int[    ]a; 
 	
-	public static int getOper() {
-		return 1;
+	public static int getOper(int a) {
+		return a;
 	}
 
 	
 	public static void main(String[] args) throws FileNotFoundException, CompileException {
 	
-		String line = "{7,5}";
-		Pattern p = Pattern.compile(VALID_EXP);
+		String line = "int []a";
+		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES_METHOD);
 		Matcher m = p.matcher(line);
 		m.find();
-		String test1 = line.substring(m.start()+1, m.end());
-		m.find();
-		String test2 = line.substring(m.start(), m.end());
-		System.out.println(test1);
-		System.out.println(test2);
-			} 
+		System.out.println(line.substring(m.start(), m.end()));
+	} 
 		
 }
 

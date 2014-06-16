@@ -1,6 +1,7 @@
 package oop.ex7.type;
 
 import oop.ex7.main.CompileException;
+import oop.ex7.main.RegexConfig;
 
 /**
  * extends Type.
@@ -41,8 +42,11 @@ public class ArrayType extends Type {
 	 * @return true if the expression matches DoubleType
 	 */
 	public boolean isExpressionMatch(String check) {
-		//return check.matches(RegexConfig.ARR_TYPE);
-		return innerType.isExpressionMatch(check);
+		return check.matches(RegexConfig.ARRAY_INIT);
+//			return true;
+//		}
+//		return innerType.isExpressionMatch(check);
+//		return false;
 	}
 
 	/**@Override
