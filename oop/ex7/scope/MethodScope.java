@@ -65,7 +65,7 @@ public class MethodScope extends Scope {
 //	}
 	
 	public boolean compareMethod(String line, ScopeMediator med) throws CompileException {
-
+		
 		String callName = getMethodCallNameFromExp(line);
 		if (!this.getNameOfMethod().equals(callName)) {
 			return false;
@@ -137,11 +137,11 @@ public class MethodScope extends Scope {
 		return true;
 	}
 
-	private static String getMethodCallNameFromExp(String call) {
+	public static String getMethodCallNameFromExp(String call) {
 		return call.substring(0, call.indexOf("(")).trim();
 	}
 
-	private static String[] getMethodVarsFromCallExp(String call) {
+	public static String[] getMethodVarsFromCallExp(String call) {
 		String variablesCall = call.substring(call.indexOf("(")+1,call.indexOf(")")).trim();
 		//Need to check valid expression structure
 		String[] stringVars=variablesCall.split(",");

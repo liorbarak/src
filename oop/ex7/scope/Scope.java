@@ -176,8 +176,17 @@ public abstract class Scope implements ScopeMediator{
 		ClassScope classScope = (ClassScope) tempScope;
 		for (Scope sc:classScope.innerScopes) {
 			MethodScope tempMethod = (MethodScope) sc;
-			tempMethod.compareMethod(line, tempScope);
-		}	
+			String callName = MethodScope.getMethodCallNameFromExp(line);
+			if (tempMethod.getNameOfMethod().equals(callName)) {
+				String[] varsCall = tempMethod.getMethodVarsFromCallExp(line);
+
+				for (int i = 0; i < this.innerVariables.size(); i++) {
+					FileParser.checkExpression(this.innerVariables.get(i).getType(), varsCall[i], this);
+				}
+				return;
+			}
+		}
+		throw new CompileException();
 	}
 
 	private boolean handleReturn(String returnExpression) throws CompileException{

@@ -41,7 +41,7 @@ public class Sjavac {
 			File origin = new File(args[0]);	//debug mode if is commented.TODO change bach for junit
 
 //			origin = new File("C://Users//Lior//Desktop//ex7stuff//tests//test253.sjava");
-//			origin = new File("/Users/taldovrat/Downloads/tests/test428.sjava");
+//			origin = new File("/Users/taldovrat/Downloads/tests/test451.sjava");
 
 			ArrayList<String> fileLines= FileParser.getlinesList(origin);
 //			System.out.println(origin.isDirectory());
@@ -49,7 +49,7 @@ public class Sjavac {
 			mainClass.compileScope();
 
 		}
-		catch(EndOfFileException |FileNotFoundException e){
+		catch(FileNotFoundException e){
 			
 			System.out.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
 
