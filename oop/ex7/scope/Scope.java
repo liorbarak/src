@@ -398,7 +398,7 @@ public Variable varExist(String nameOfVar) {
 	Scope tempScope = this; 
 
 	for (Variable varOfScope:tempScope.getVariables()) {
-		if (varOfScope.getName().equals(nameOfVar)) {
+		if (varOfScope.getName().equals(nameOfVar.trim())) {
 			return varOfScope;
 		}
 	}
