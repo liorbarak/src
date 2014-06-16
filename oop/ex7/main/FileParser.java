@@ -42,13 +42,11 @@ public class FileParser {
 	 * @return list of separate lines
 	 * 
 	 * @throws FileNotFoundException 
-	 * @throws BadLineSyntaxException 
-	 * @throws BadEndOfLineException 
+	 * @throws CompileException 
 	 */
 	public static ArrayList<String>  getlinesList(File origin) 
 			throws FileNotFoundException,
-			BadLineSyntaxException,
-			BadEndOfLineException{
+			CompileException{
 
 		ArrayList<String> fileLines = new ArrayList<String>();
 		Scanner myScan= new Scanner(origin);
@@ -60,13 +58,10 @@ public class FileParser {
 			//if it is commented simply continue and dont add to list
 			if(!isLineCommentOrBlank(currentLine)) {
 			
-				if (currentLine.contains("//")){
-					currentLine=currentLine.substring(0, currentLine.indexOf("//"));
 				fileLines.add(currentLine);
-			}
-			
 			
 			}
+			
 		}
 		myScan.close();
 		return fileLines;
@@ -78,7 +73,10 @@ public class FileParser {
 	 * @param currentLine
 	 * @return
 	 */
-	private static boolean isLineCommentOrBlank(String currentLine) {
+	private static boolean isLineCommentOrBlank(String currentLine) throws CompileException {
+		if (currentLine.matches(".+//.*")) {
+			throw new  CompileException();
+		}
 		return currentLine.matches(RegexConfig.BLANK_LINE) || currentLine.matches(RegexConfig.COMMENT); 
 	}
 
