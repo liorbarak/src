@@ -156,6 +156,7 @@ public class FileParser {
 					return;	
 				}
 			}
+			throw new VarNotExistException(expression); //TODO
 		}
 		
 		
