@@ -101,7 +101,7 @@ public class RegexConfig {
 		ASSIGNMENT_ARRAY ("[ \t]*"+GENERAL_NAME+"[ \t]*\\["+VALID_EXP+"\\][ \t]*=[ \t]*"+VALID_EXP+"[ \t]*;[ \t]*"),
 		BOTH ("[ \t]*"+VALID_TYPES+"[ ]+"+GENERAL_NAME+"[ \t]*=[ \t]*"+VALID_EXP+"[ \t]*;[ \t]*"),
 		BOTH_ARRAY (ARRAY_DECLARE_AND_ASSIGN),
-		RETURN ("([ \t]*return( )+"+VALID_EXP+"[ \t]*;[ \t]*|[ \t]*return[ \t]*;[ \t]*)"); 
+		RETURN ("([ \t]*return( )+"+VALID_EXP_WITH_ARRAY+"[ \t]*;[ \t]*|[ \t]*return[ \t]*;[ \t]*)"); 
 		
 
 		private String regex;
@@ -119,7 +119,7 @@ public class RegexConfig {
 	
 	public static void main(String[] args) {
 		
-		DEBUGRegex(VALID_EXP_WITH_ARRAY,"{}")		;
+		DEBUGRegex(ARRAY_INIT,"{3,a}")		;
 		
 	}
 	
