@@ -39,8 +39,10 @@ public class Sjavac {
 		try{
 
 			File origin = new File(args[0]);	//debug mode if is commented.TODO change bach for junit
+
 //			origin = new File("C://Users//Lior//Desktop//ex7stuff//tests//test253.sjava");
 			origin = new File("/Users/taldovrat/Downloads/tests/test428.sjava");
+
 			ArrayList<String> fileLines= FileParser.getlinesList(origin);
 //			System.out.println(origin.isDirectory());
 			ClassScope mainClass= new ClassScope(fileLines);
