@@ -74,7 +74,7 @@ public class FileParser {
 	 * @return
 	 */
 	private static boolean isLineCommentOrBlank(String currentLine) throws CompileException {
-		if (currentLine.matches(".+//.*")) {
+		if (currentLine.matches("[^ \t]+//.*")) {	// TODO put in constant 
 			throw new  CompileException();
 		}
 		return currentLine.matches(RegexConfig.BLANK_LINE) || currentLine.matches(RegexConfig.COMMENT); 
