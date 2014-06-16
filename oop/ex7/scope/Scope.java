@@ -116,6 +116,7 @@ public abstract class Scope implements ScopeMediator{
 
 		//return
 		if (line.matches(RegexConfig.lineType.RETURN.getRegex())){
+
 			String returnExpression=line.substring(line.indexOf(" "), line.indexOf(";")).trim();
 			if(!handleReturn(returnExpression)){
 				throw new BadReturnException(line);//return in case of incorrect location
@@ -252,7 +253,7 @@ public abstract class Scope implements ScopeMediator{
 		varTemp = this.varExist(nameOfVar);
 		//if the variable doesn't exist:
 		if (varTemp == null) {
-			if (line.matches(RegexConfig.ARRAY_DECLARE_WITH_SEMICOLON)) {
+			if (line.matches(RegexConfig.ARRAY_DECLARE)) {
 				this.innerVariables.add(new Variable(fullType, nameOfVar));
 			}
 			else {

@@ -136,28 +136,16 @@ public class testingTal {
 	
 	public static void main(String[] args) throws FileNotFoundException, CompileException {
 	
-		String line = "a = {12,32,4};";
-
-		String[] stringsInLine = Scope.getAssigmentStr(line);		
-		String nameOfVar = stringsInLine[0];
-		String inputValue = stringsInLine[1];
-		System.out.println(nameOfVar);
-		System.out.println(inputValue);
-//		System.out.println(exps);
-//		for (String str:exps) {
-//			System.out.println(str);
-//		}
-//	
-//		for (String exp:exps) {
-//			FileParser.checkExpression(typeOfExps, exp, );
-//		}
-		
-		
-//		System.out.println(a.indexOf("["));
-////		System.out.println(expToCheck);
-
-
-	} 
+		String line = "{7,5}";
+		Pattern p = Pattern.compile(VALID_EXP);
+		Matcher m = p.matcher(line);
+		m.find();
+		String test1 = line.substring(m.start()+1, m.end());
+		m.find();
+		String test2 = line.substring(m.start(), m.end());
+		System.out.println(test1);
+		System.out.println(test2);
+			} 
 		
 }
 

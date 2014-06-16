@@ -20,7 +20,7 @@ public class DoubleType extends Type {
 	 */
 	
 	public boolean isExpressionMatch(String check) {
-		return check.matches(RegexConfig.INPUT_DOUBLE);
+		return check.matches(RegexConfig.INPUT_DOUBLE) || check.matches(RegexConfig.INPUT_INT);
 		
 	}
 
@@ -34,6 +34,9 @@ public class DoubleType extends Type {
 		return RegexConfig.INPUT_DOUBLE;
 	}
 
+	public boolean sameType(Type target){
+		return this.getClass().equals(target.getClass()) || target.getClass().equals(new IntType().getClass());
+	}
 	
 	
 

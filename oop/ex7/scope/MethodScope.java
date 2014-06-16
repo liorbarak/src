@@ -42,8 +42,8 @@ public class MethodScope extends Scope {
 		//handleinput vars
 		for(Variable var:inputVars){
 			var.setInitialized(true);
-			inputVars.add(var);
-			innerVariables.add(var);
+			this.inputVars.add(var);
+			this.innerVariables.add(var);
 
 		}
 
@@ -70,28 +70,28 @@ public class MethodScope extends Scope {
 	}
 
 
-
-	@Override
-	public ArrayList<Variable> getVariables() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	@Override
-	public ArrayList<Scope> getScopes() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	@Override
-	public Scope getFatherScope() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//
+//	@Override
+//	public ArrayList<Variable> getVariables() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//
+//
+//	@Override
+//	public ArrayList<Scope> getScopes() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//
+//
+//	@Override
+//	public Scope getFatherScope() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 
 

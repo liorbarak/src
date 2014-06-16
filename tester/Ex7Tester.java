@@ -33,8 +33,7 @@ public class Ex7Tester {
 	 * @throws FileNotFoundException 
 	 */
 	public Ex7Tester(String fileName) throws FileNotFoundException {
-		File file = new File(TEST_INPUT_DIR);
-		System.out.println(file.isDirectory());
+	
 		String[] parts = fileName.split(" ");
 		numOfTest = parts[0].substring(4,7);
 		desc = parts[2];

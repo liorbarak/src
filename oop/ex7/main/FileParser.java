@@ -26,7 +26,7 @@ import oop.ex7.type.VarNotExistException;
  */
 public class FileParser {
 
-	public enum expTypes {SOME_TYPE_INPUT, VAR, METHOD, OPERATORS, ARR_VAR} 
+	public enum expTypes {SOME_TYPE_INPUT, VAR, METHOD, OPERATORS, ARR_VAR, ARRAY_INIT} 
 	
 	/**
 	 * parses original file 
@@ -142,7 +142,7 @@ public class FileParser {
 		
 		if (analyze(expression).equals(expTypes.ARR_VAR)) {
 			
-			Pattern p = Pattern.compile(RegexConfig.GENERAL_NAME);
+			Pattern p = Pattern.compile(RegexConfig.VALID_EXP);
 			Matcher m = p.matcher(expression);
 			m.find();
 			String nameOfArr = expression.substring(m.start(), m.end());
@@ -169,7 +169,33 @@ public class FileParser {
 				tempScope = tempScope.getFatherScope();
 			}
 			throw new VarExistException(expression);
+		}
 		
+		if (analyze(expression).equals(expTypes.ARRAY_INIT)) {
+			
+			ArrayList<String> exps = new ArrayList<String>();
+			Pattern p = Pattern.compile(RegexConfig.VALID_EXP);
+			Matcher m = p.matcher(expression);
+			
+			while (m.find()) {
+				exps.add(expression.substring(m.start(), m.end()).trim());
+			}
+			
+//			ScopeMediator tempScope = med;
+//			
+//			if (tempScope.getFatherScope() == null) {
+//				throw new CompileException(); //TODO change Exception
+//			}
+//			while (tempScope.getFatherScope().getFatherScope() != null) {
+//				tempScope = tempScope.getFatherScope();
+//			}
+//			
+//			MethodScope method = (MethodScope) tempScope;
+			ArrayType arr = (ArrayType)typeToCompare;
+			for (String exp:exps) {
+				checkExpression(arr.getInnerType(), exp, med);
+			}
+			
 		}
 	}
 
@@ -191,6 +217,7 @@ public class FileParser {
 	private static expTypes analyze(String expression) throws BadLineSyntaxException {
 		
 		if(expression.matches(RegexConfig.SOME_TYPE_VALUE)) {
+			
 			return expTypes.SOME_TYPE_INPUT;
 		}
 		
@@ -206,7 +233,12 @@ public class FileParser {
 		}
 		
 		if (expression.matches(RegexConfig.ARR_VAR)) {
+			
 			return expTypes.ARR_VAR;
+		}
+		if (expression.matches(RegexConfig.ARRAY_INIT)) {
+			
+			return expTypes.ARRAY_INIT;
 		}
 		throw new BadLineSyntaxException(expression);
 	}
