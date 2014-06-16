@@ -254,6 +254,7 @@ public class FileParser {
 			for (String exp:exps) {
 				checkExpression(arr.getInnerType(), exp, med);
 			}
+			
 			return;
 		}
 	}

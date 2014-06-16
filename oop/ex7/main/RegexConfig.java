@@ -81,7 +81,7 @@ public class RegexConfig {
 	public static final String BLANK_LINE = "[ \t]*";
 	public static final String COMMENT = "^[ \t]*//.*";
 
-	public static final String VALID_IF_CALL ="[ \t]*if[ \t]*[(][ \t]*"+VALID_EXP+"[ \t]*[)][ \t]*[{][ \t]*";
+	public static final String VALID_IF_CALL ="[ \t]*if[ \t]*[(][ \t]*"+VALID_EXP_ARRAY_CELL+"[ \t]*[)][ \t]*[{][ \t]*";
 	public static final String VALID_WHILE_CALL="[ \t]*while[ \t]*[(][ \t]*"+VALID_EXP+"[ \t]*[)][ \t]*[{][ \t]*";
 	
 	public static final String TYPE_PLUS_VAR = "[ \t]*("+VALID_TYPES+"( )+"+GENERAL_NAME+"[ \t]*|"+VALID_TYPES+"\\[[ \t]*\\]"+GENERAL_NAME+")"; 
