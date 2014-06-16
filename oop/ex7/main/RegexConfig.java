@@ -131,7 +131,7 @@ public class RegexConfig {
 		
 
 //		DEBUGRegex(lineType.RETURN.getRegex(),"return a[9];");
-		DEBUGRegex( VALID_EXP_ARRAY_CELL,"a[9]");
+		DEBUGRegex( lineType.RETURN.getRegex(),"return -a ;" );
 
 
 
