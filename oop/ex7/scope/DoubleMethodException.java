@@ -11,7 +11,8 @@ public class DoubleMethodException extends CompileException{
 
 	private static final long serialVersionUID = 1L;
 	private String text;
-	private static final String ERROR_MSG= "two methods declared with the same name. line: ";
+	private static final String ERROR_MSG=
+			"two methods declared with the same name: ";
 	
 	/**
 	 * constructor 
@@ -27,7 +28,8 @@ public class DoubleMethodException extends CompileException{
 	 * return String- message unique for this exception
 	 */
 	public String getLocalizedMessage() {
-		return ERROR_MSG+lineNumber+"/n"+text;
+		//return ERROR_MSG+lineNumber+"/n"+text;
+		return ERROR_MSG+text;
 	}
 	
 	
