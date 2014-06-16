@@ -218,11 +218,20 @@ public abstract class Scope implements ScopeMediator{
 	private void assignmentLine(String line) throws CompileException {
 
 		Variable varTemp;
-
+///
 		String[] stringsInLine = getAssigmentStr(line);		
-		String nameOfVar = stringsInLine[0];
+//		String nameOfVar = stringsInLine[0];
 		String inputValue = stringsInLine[1];
-
+///
+		String fullName = stringsInLine[0];
+		Pattern p = Pattern.compile(RegexConfig.GENERAL_NAME);
+		Matcher m = p.matcher(fullName);
+		m.find();
+		String nameOfVar = fullName.substring(m.start(), m.end());
+		
+		
+		
+		
 		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
 		varTemp = this.varExistInAll(nameOfVar);
 
@@ -232,12 +241,19 @@ public abstract class Scope implements ScopeMediator{
 		}
 
 		if (varTemp.getType().sameType(new ArrayType())) {
+			
+			if (fullName.equals(nameOfVar)){
+				if (inputValue.matches(RegexConfig.BLANK_LINE)){
+					return;
+				}
 			String[] inputValues = inputValue.split(",");
 			for (String exp:inputValues) {
 				FileParser.checkExpression(varTemp.getType(), exp, this);
 			}
 			return;
+			}
 		}
+		
 		//check if the right expression is of the same type.
 		FileParser.checkExpression(varTemp.getType(), inputValue, this);
 		varTemp.setInitialized(true);
@@ -435,6 +451,7 @@ public abstract class Scope implements ScopeMediator{
 	 * 
 	 */
 	private void methodInput (ArrayList<String> lines,int start, int finish) throws CompileException {
+		
 		String tempLine=lines.get(start).trim();
 		ArrayList<Variable> inputVars=new ArrayList<Variable>();
 
@@ -445,7 +462,7 @@ public abstract class Scope implements ScopeMediator{
 		for (Scope i:innerScopes){
 			MethodScope method=(MethodScope) i;
 			if (!method.getNameOfMethod().equals(methodName)){
-				throw new DoubleMethodException(start,lines.get(start));
+				throw new DoubleMethodException(lines.get(start));
 			}
 		}
 		String insideBracketsExp=getInsideBrackets(tempLine);
