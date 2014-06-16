@@ -21,8 +21,8 @@ public class RegexConfig {
 	/** Input Expression that matches a value of a specific type.
 	 *  For example: 34 - matches int type, true - matches boolean type. 
 	 */
-	public static final String INPUT_INT = "[ \t]*(-)?[\\d]+[ \t]*";
-	public static final String INPUT_DOUBLE = "([ \t]*(-)?[\\d]+(\\.)([\\d]+)?[ \t]*|"+INPUT_INT+")";
+	public static final String INPUT_INT = "[ \t]*(-)?[ \t]*[\\d]+[ \t]*";
+	public static final String INPUT_DOUBLE = "([ \t]*(-)?[ \t]*[\\d]+(\\.)([\\d]+)?[ \t]*|"+INPUT_INT+")";
 	public static final String INPUT_STRING = "[ \t]*\"[^\"]*\"[ \t]*";
 	public static final String INPUT_BOOLEAN = "[ \t]*(true|false)[ \t]*";
 	public static final String INPUT_CHAR = "[ \t]*'[^']'[ \t]*";
@@ -136,8 +136,8 @@ public class RegexConfig {
 
 
 
-		DEBUGRegex( GENERAL_NAME,"3ab" );
-//		DEBUGRegex( lineType.ASSIGNMENT.getRegex(),"a[9] =       -        5;" );
+//		DEBUGRegex( lineType.ASSIGNMENT_ARRAY.getRegex(),"a[9] =       - 5;" );
+		DEBUGRegex( VALID_EXP," - 5 " );
 
 
 
