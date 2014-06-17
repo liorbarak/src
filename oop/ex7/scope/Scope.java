@@ -2,6 +2,7 @@ package oop.ex7.scope;
 
 import java.util.ArrayList;
 import java.util.regex.*;
+
 import oop.ex7.main.*;
 import oop.ex7.type.*;
 
@@ -230,93 +231,94 @@ public abstract class Scope implements ScopeMediator{
 	 * @throws VarExistException   
 	 */
 	private void checkMethod(String line) throws VarNotExistException, BadLineSyntaxException, BadTypeException, VarExistException  {
-		// TODO Auto-generated method stub
+		
+		//tempScope to get to the class scope.
 		Scope tempScope = this; 
+		
 		while(tempScope.getFatherScope() != null) {
 			tempScope = tempScope.getFatherScope();
 		}
+		//tempScope is now class scope.
 		ClassScope classScope = (ClassScope) tempScope;
+		//go over all innerScopes of the class (only methods!)
 		for (Scope sc:classScope.innerScopes) {
+			//cast is legal always - only methods inside class.
 			MethodScope tempMethod = (MethodScope) sc;
+			//the call name of the method from the text. "foo(7)" -> "foo".
 			String callName = MethodScope.getMethodCallNameFromExp(line);
+			//check if there is a method in the class with the same name.
 			if (tempMethod.getNameOfMethod().equals(callName)) {
+				//save variables in the call . "foo(7, 8)" -> ["7","8"]
 				String[] varsCall = MethodScope.getMethodVarsFromCallExp(line);
-				
-				//TODO check num of args!!!
-				
-				if (varsCall.length==1 && varsCall[0].equals("") && tempMethod.inputVars.isEmpty())
+					
+				//case for empty call and empty method in the class - legal.
+				if (varsCall.length==1 && varsCall[0].equals("") && 
+						tempMethod.inputVars.isEmpty()) {
+					
 					return;
+				}
+				//check if num of variables in the call matches the num of 
+				//variables in the real method.
 				if (varsCall.length != tempMethod.innerVariables.size()) {
 					throw new VarNotExistException(callName); //TODO
 				}
+				//for every variable in the input variables of the method, 
+				//check if the variable called matches the type of the input.
 				for (int i = 0; i < tempMethod.inputVars.size(); i++) {
-
+					//throws if not matches.
 					FileParser.checkExpression(tempMethod.inputVars.get(i).getType(), varsCall[i], this);
-					
 				}
+				
 				return;
 			}
 		}
 		throw new VarNotExistException(line); 
 	}
 
-	private boolean handleReturn(String returnExpression) throws BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException {
+	/*
+	 * checks if the return type of the mathod call matches the return type
+	 * of the method reffered to.
+	 * @param returnExpression - only the return expression itself: if the call
+	 * is "return 7;", then the returnExpression param will be "7".
+	 */
+	private boolean handleReturn(String returnExpression) 
+		throws BadLineSyntaxException, BadTypeException, VarNotExistException, 
+									VarExistException, BadInputException {
+		
+		//if this scope is class scope:
 		if (fatherScope==null){
 			return false;
 		}
+		//if reached method scope:
 		if (fatherScope.fatherScope == null) {
+			//cast always legal! the if checks this exactly.
 			MethodScope method = (MethodScope) this;
-
+			
+			//if the return type is void:
 			if (method.getReturnType().getRegex().equals(RegexConfig.INPUT_VOID)) {
-
-				if ( returnExpression.matches(RegexConfig.INPUT_VOID)){
+				
+				if (returnExpression.matches(RegexConfig.INPUT_VOID)){
 					return true;
 				}
+				throw new BadInputException(new VoidType());
 			}
 
-
+			//if not void, check if matches to other types possible
 			FileParser.checkExpression(method.getReturnType(), returnExpression, method);
 			return true;
 		}
-
+		//recursive until reaches method.
 		return fatherScope.handleReturn(returnExpression);
 	}
 
-	//
-	//	private void assignmentLineArr(String line) throws CompileException {
-	//
-	//		Variable varTemp;
-	//
-	//		String[] stringsInLine = Scope.getAssigmentStr(line);		
-	//		String nameOfVar = stringsInLine[0];
-	//		String inputValue = stringsInLine[1];
-	//		String nameOfArr = nameOfVar.split("\\[")[0].trim();
-	////		String expToCheck = nameOfVar.substring(line.indexOf("[")+1, line.lastIndexOf("]")).trim();
-	//
-	//		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
-	//		varTemp = this.varExistInAll(nameOfArr);
-	//		
-	//		//if the variable doesn't exist:
-	//		if (varTemp == null || varTemp.getType().sameType(new ArrayType())) {
-	//			throw new VarExistException(line);
-	//		}
-	//		//check if the expression of the index in the array call is valid:
-	////		FileParser.checkExpression(new IntType(), expToCheck, this);
-	////		if (expToCheck.matches(RegexConfig.INPUT_INT)) {
-	////			int intExp = Integer.parseInt(expToCheck);
-	////			if (intExp < 0) {
-	////				throw new CompileException(); //TODO change exception type
-	////			}
-	////		}
-	//		FileParser.checkInnerArrVarPos(line, this);
-	//		
-	//		//check if the right expression is of the same type.
-	//		FileParser.checkExpression(varTemp.getType(), inputValue, this);
-	//		varTemp.setInitialized(true);
-	//		return;
-	//
-	//	}
 
+	/*
+	 * This method executes all action related to an assignment line type 
+	 * analysis. checks if the variables to which we are trying to assign 
+	 * exists and if the type of the expression on the right side of the assign
+	 * matches the type of the variable.
+	 * @param line - the assignment line from the file 
+	 */
 	private void assignmentLine(String line) throws VarExistException, BadTypeException, BadLineSyntaxException, VarNotExistException  {
 
 		Variable varTemp;
