@@ -8,15 +8,26 @@ liorbarak
 
 
 
-___________________________files___________________________
+___________________________files used___________________________
 
 package oop.ex7.main:
 
-Sjavac.java-
+Sjavac.java- a basic compiler for a 'simple java' language.
+	this language supports basic java operations like building functions,
+	using arrays, assigning variables and so forth
+
 FileParser.java-
+
 RegexConfig.java-
-BadLineSyntaxException.java-
-CompileException.java-
+BadLineSyntaxException.java-  used when there is problem with the general
+ syntax of the line for example it isn't a legal "if" statements,
+  or not a legal array declaration.
+  
+CompileException.java-  this exception is the main one in this exercise
+	all compile exception exceptions extend it
+	the only ones that don't inherit from it are the ones
+	that handle IO errors or file opening errors
+
 EndOfFileException.java-
 
 
@@ -83,6 +94,18 @@ VarNotExistException.java- extends CompileException.
 
 
 ___________________________design___________________________
+
+our design in a nutshell:
+each scope is represented by a separate class, each scope holds a list of
+the nested scopes within it and a list of variables initialized (or like in a method,
+are part of its declaration) inside it, also a list of relevant lines in the
+original text file. for each scope there are different kinds of scope it is
+allowed to hold within it.
+the main sJavac.java goes over the text file and initializes a new classType
+for the file. after that all the method declarations are initiated as new Scope
+classes ,and after that all the methods are compiled and checked for errors.
+all errors found are handled via the exception mechanisms.
+if no error was found 0 is printed.       
 
 adding more variable types:
 the way we designed the structure enables to add more variables with relative

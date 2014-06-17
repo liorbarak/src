@@ -6,7 +6,6 @@ package oop.ex7.main;
  * all compile exception exceptions extend it
  * the olny ones that don't inherit from it are the ones
  * that handle IO errors or file opening errors
- * @author Lior
  *
  */
 public class CompileException extends Exception{

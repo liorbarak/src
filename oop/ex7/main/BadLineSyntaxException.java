@@ -2,7 +2,9 @@ package oop.ex7.main;
 
 /**
  * extends CompileException
- * used when there is problem with the general syntex of the line
+ * used when there is problem with the general syntax of the line
+ * for example it isnt a legal "if" statements, or not a legal array
+ * declaration
  * @author Lior
  *
  */
@@ -21,8 +23,6 @@ public class BadLineSyntaxException extends CompileException {
 	 * @param lineText- the text of the bad line
 	 */
 	public BadLineSyntaxException(String lineText){
-		//super(num);
-		//lineNumber=num;
 		this.lineText=lineText;
 	}
 	
