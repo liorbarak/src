@@ -1,1 +1,48 @@
 taldovrat
+
+
+
+
+
+
+___________________________files___________________________
+
+
+
+
+
+
+___________________________design___________________________
+
+adding more variable types:
+the way we designed the structure enables to add more variables with relative
+ease. it will require:
+a. adding a class that extends Type (short, for instance).
+b.adding another condition to 'createType', the static method that 
+determines which type to create with a given  input of a variable type.
+c. and creating a new regex in RegexConfig to match the new type.
+
+
+adding if\else block:
+this will require again a few steps:
+a.adding a new class that extends the father of all other scopes-Scope.
+b.adding a regex that accepts this new scope in the RegexConfing library
+c.adding another condition in createScope- our static factory method
+
+compiling multiple files together:
+this will require the following steps:
+a.creating a new father scope-"project" that extends scope
+b.change "classScope" so it extends project
+c.interaction between the different classes will be handled within "project"
+class. meaning the mechanism that will be implemented as part of this class
+or as another mediator class that will expose only certain methods to
+the outside. 
+
+
+main regex examples: 
+
+
+
+___________________________errors___________________________
+
+there are generally two types of errors in our excersize  

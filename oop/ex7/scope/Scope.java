@@ -1,25 +1,9 @@
 package oop.ex7.scope;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.management.BadStringOperationException;
-
-import oop.ex7.main.BadLineSyntaxException;
-import oop.ex7.main.CompileException;
-import oop.ex7.main.EndOfFileException;
-import oop.ex7.main.FileParser;
-import oop.ex7.main.RegexConfig;
-import oop.ex7.main.Variable;
-import oop.ex7.type.ArrayType;
-import oop.ex7.type.BadTypeException;
-import oop.ex7.type.BooleanType;
-import oop.ex7.type.IntType;
-import oop.ex7.type.Type;
-import oop.ex7.type.VarExistException;
-import oop.ex7.type.BadEndOfLineException;
-import oop.ex7.type.VarNotExistException;
+import java.util.regex.*;
+import oop.ex7.main.*;
+import oop.ex7.type.*;
 
 
 
