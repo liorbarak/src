@@ -148,10 +148,11 @@ public abstract class Scope implements ScopeMediator{
 	 * @throws BadTypeException
 	 * @throws VarNotExistException
 	 * @throws VarExistException
+	 * @throws BadInputException 
 	 */
 	public void lineAnalizerOp(String line) throws  BadReturnException, 
 				BadLineSyntaxException, BadTypeException, VarNotExistException, 
-														VarExistException  {
+										VarExistException, BadInputException  {
 		
 		/*
 		 * 5 cases- return, assign,initialize, declaration and assign (=both),
@@ -317,43 +318,57 @@ public abstract class Scope implements ScopeMediator{
 	 * matches the type of the variable.
 	 * @param line - the assignment line from the file 
 	 */
-	private void assignmentLine(String line) throws VarExistException, BadTypeException, BadLineSyntaxException, VarNotExistException  {
+	private void assignmentLine(String line) throws VarExistException, 
+			BadTypeException, BadLineSyntaxException, VarNotExistException  {
 
 		Variable varTemp;
-		///
+		//divide the strings in the expressions to left expression and right 
+		//expression.
 		String[] stringsInLine = getAssigmentStr(line);		
 
+		//get the full name - if it is an array it will be different from the 
+		//name of the variable.
 		String fullName = stringsInLine[0];
+		//find the name of the variable called in the text.
 		Pattern p = Pattern.compile(RegexConfig.GENERAL_NAME);
 		Matcher m = p.matcher(fullName);
 		m.find();
+		//get the name of the var.
 		String nameOfVar = fullName.substring(m.start(), m.end());
-
+		
 		String inputValue = stringsInLine[1];
 
-		//if the variable exists, somewhere in the code, put it into varTemp, else, put null into varTemp.
+		//if the variable exists, somewhere in the code (only relevant scopes
+		//will be checked), put it into varTemp, else, put null into varTemp.
 		varTemp = this.varExistInAll(nameOfVar);
 
 		//if the variable doesn't exist:
 		if (varTemp == null) {
 			throw new VarExistException(line);
 		}
-
+		//check if the variable called is an array.
 		if (varTemp.getType().sameType(new ArrayType())) {
-
+			
 			ArrayType type = (ArrayType) varTemp.getType();
+			//if the call is an array
 			if (!fullName.equals(nameOfVar)) {
+				//compare the inner variable of the array.
 				FileParser.checkInnerArrVarPos(fullName, this);
 				FileParser.checkExpression(type.getInnerType(), inputValue, this);
 				return;
 			}
+			
 			FileParser.checkExpression(varTemp.getType(), inputValue, this);
+			
 			String cleanInputVals = inputValue.replaceAll("[\\{\\}]", "");
+			
 			if (cleanInputVals.matches(RegexConfig.BLANK_LINE)) {
 				return;
 			}
 			String[] inputValues = cleanInputVals.split(",");
 
+			//check if the inner variables in the call match in type to the
+			//type of the array.
 			for (String exp:inputValues) {
 				FileParser.checkExpression(type.getInnerType(), exp, this);
 			}
@@ -361,23 +376,29 @@ public abstract class Scope implements ScopeMediator{
 			return;
 		}
 
-
 		//check if the right expression is of the same type.
 		FileParser.checkExpression(varTemp.getType(), inputValue, this);
 		varTemp.setInitialized(true);
 		return;
-
 	}
 
+	/*
+	 * This method executes all action related to an declaration line type 
+	 * analysis. checks if the variables we are trying to declare already 
+	 * exists and what type of variable it will be.
+	 * @param line - the declaration line from the file 
+	 */
 	private void declarationLine(String line) throws VarExistException, BadTypeException {
 
+		
 		Variable varTemp;
-		//save the left expression as the name of the variable
-		//save the right expression as the input value
+		//same as assignment
 		String fullType = getDecStr(line)[0];
+		//finds the type of the declared variable.
 		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES);
 		Matcher m = p.matcher(line);
 		m.find();
+		
 		String typeOfVar = line.substring(m.start(), m.end());
 		int lastEnd = m.end();
 		p = Pattern.compile(RegexConfig.GENERAL_NAME);
@@ -389,7 +410,8 @@ public abstract class Scope implements ScopeMediator{
 		varTemp = this.varExist(nameOfVar);
 		//if the variable doesn't exist:
 		if (varTemp == null) {
-			if (line.matches(RegexConfig.ARRAY_DECLARE)||line.matches(RegexConfig.ARRAY_DECLARE_WITH_SEMICOLON)) {
+			//if the variable is an array:
+			if (line.matches(RegexConfig.ARRAY_DECLARE) || line.matches(RegexConfig.ARRAY_DECLARE_WITH_SEMICOLON)) {
 				this.innerVariables.add(new Variable(fullType, nameOfVar));
 			}
 			else {
@@ -401,52 +423,29 @@ public abstract class Scope implements ScopeMediator{
 		throw new VarExistException(line);	
 	}
 
+	/*
+	 * like assingment and daclare, but for both actions.
+	 * @param line - the declaration and assign line from the file 
+	 */
 	private void bothLine(String line) throws VarExistException, BadTypeException, BadLineSyntaxException, VarNotExistException  {
 
-		//Variable varTemp;
-		//save the left expression as the name of the variable
-		//save the right expression as the input value
 		String linetemp = line.trim();
 		String[] stringsInLine = getBothStr(linetemp);
+		
 		String decLine = stringsInLine[0];
 		String assLine = stringsInLine[1];
-		//		System.out.println(decLine);
-		//		System.out.println(assLine);
-
+		
 		this.declarationLine(decLine);
 		this.assignmentLine(assLine);	
 
 	}
-	//
-	//	private void bothLineArr(String line) throws CompileException {
-	//		
-	//		String fullAss = getAssigmentStr(line)[0].trim();
-	//		String fullType = getAssigmentStr(fullAss)[0];
-	//		String nameOfVar = getAssigmentStr(fullAss)[1];
-	//		String lineTemp = line.trim();
-	//		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES);
-	//		Matcher m = p.matcher(lineTemp);
-	//		m.find();
-	//		String typeOfExps = lineTemp.substring(m.start(), m.end());
-	//		
-	//		if (line.matches(RegexConfig.ARRAY_DECLARE_BLANK)) {
-	//			this.innerVariables.add(new Variable(fullType, nameOfVar));
-	//		}
-	//		String[] exps = getAssigmentStr(lineTemp)[1].split("\\,");
-	//		//TODO lior added
-	//		//checks if the expression we get on the right side of the = is '{}'
-	//		if (exps[0].matches(RegexConfig.BLANK_LINE)){
-	//			return;
-	//		}
-	//		//TODO lior added
-	//		
-	//		for (String exp:exps) {
-	//			FileParser.checkExpression(Type.createType(typeOfExps), exp, this);
-	//		}
-	//		
-	//	}
 
-	public static String[] getAssigmentStr(String line) {
+	/*
+	 * This method return an array of the left and right expressions from an
+	 * assignment line type.
+	 * @param line - the line of code.
+	 */
+	private static String[] getAssigmentStr(String line) {
 		//1 - index of input value
 		String linetemp = line.trim();
 		String[] stringsInLine = linetemp.split("=");
@@ -455,10 +454,14 @@ public abstract class Scope implements ScopeMediator{
 		return stringsInLine;
 	}
 
-	public static String[] getDecStr(String line) {
-		//1 - index of name of var
-//		String linetemp = line.trim();
-//		String[] stringsInLine = linetemp.split("[ ]+");
+	/*
+	 * This method return an array of the type and name of the variable 
+	 * declared  from an declared line type.
+	 * @param line - the line of code.
+	 */
+	private static String[] getDecStr(String line) {
+		//0 - index of type of var.
+		//1 - index of name of var.
 		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES+"(\\[[\\s]*\\])?");
 		Matcher m = p.matcher(line);
 		m.find();
@@ -471,9 +474,12 @@ public abstract class Scope implements ScopeMediator{
 		return stringsInLine;
 	}
 
-	public static String[] getBothStr(String line) {
+	/*
+	 * This method divides the both line to declaration and assignment lines. 
+	 * @param line - the line of code.
+	 */
+	private static String[] getBothStr(String line) {
 
-		//String declarationLine =  getAssigmentStr(line)[0];
 		String declarationLine =  getAssigmentStr(line)[0]+";";
 		String[] declaration = getDecStr(declarationLine);
 
@@ -560,8 +566,6 @@ public abstract class Scope implements ScopeMediator{
 		int first = line.indexOf("(")+1;
 		int second = line.lastIndexOf(")");
 		return line.substring(first, second);
-//		return line=line.trim().substring(line.indexOf("(")+1,line.lastIndexOf(")")).trim();
-//		return line=line.trim().substring(line.indexOf("("),line.lastIndexOf(")")-1).trim();	//TODO CHECK BRACKETs
 	}
 
 
