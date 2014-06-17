@@ -45,7 +45,6 @@ public class Sjavac {
 
 
 			ArrayList<String> fileLines= FileParser.getlinesList(origin);
-//			System.out.println(origin.isDirectory());
 			ClassScope mainClass= new ClassScope(fileLines);
 			mainClass.compileScope();
 
@@ -53,34 +52,19 @@ public class Sjavac {
 		catch(FileNotFoundException e){
 			
 			System.out.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
-//			System.err.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
-
-			
-			//for debug
-//			System.out.println(e.toString());
-//			e.printStackTrace(System.err);
-			//for debug
+			e.printStackTrace(System.err);
 
 			return;
 		}
 		catch(CompileException e1){//make sure all kinds of errors are cought here
+			
 			System.out.println(returnValues.INPUT_ERRORS.ordinal());//prints 1
-//			System.err.println(returnValues.INPUT_ERRORS.ordinal());//prints 1
-//			e1.printStackTrace(System.err);
-			//for debug
-			return;
-
-		}
-		catch(Exception e2){	//TODO change type of exception
-//			System.out.println(2);
-//			System.out.println(e2.getMessage());
-			e2.printStackTrace(System.err);
+			e1.printStackTrace(System.err);
 			
 			return;
 
 		}
-
-
+		
 		//if i got this far in the program it means compilation found no errors. print 0
 		System.out.println(returnValues.NO_ERRORS.ordinal());
 		

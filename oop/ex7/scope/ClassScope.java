@@ -30,17 +30,10 @@ public class ClassScope extends Scope {
 	}
 
 	/**
-	 * @throws BadEndOfLineException 
-	 * @throws EndOfFileException 
-	 * @throws DoubleMethodException 
-	 * @throws VarExistException 
-	 * @throws VarNotExistException 
-	 * @throws BadTypeException 
-	 * @throws BadLineSyntaxException 
-	 * @throws InvalidScopeException 
+	 * @throws CompileException 
 	 * 
 	 */
-	public  void compileScope() throws InvalidScopeException, EndOfFileException, BadEndOfLineException, BadReturnException, BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException, DoubleMethodException   {
+	public  void compileScope() throws CompileException   {
 
 		ArrayList<Integer> opIndexArray=new ArrayList<Integer>();
 		int lineType;
@@ -48,13 +41,13 @@ public class ClassScope extends Scope {
 		//		Scope tempScope;
 
 		for(int i=this.startIndex+1;i<this.endIndex;i++){
-			lineType=FileParser.scopeOrVariable(relevantLines.get(i),i);//throws if not valid scope or var declaration
+			lineType=FileParser.scopeOrVariable(fileLines.get(i),i);//throws if not valid scope or var declaration
 
 			if (lineType==lineTypes.SCOPE.ordinal()){
 
-				int closer = FileParser.findLastCloser(relevantLines,i);
+				int closer = FileParser.findLastCloser(fileLines,i);
 
-				lineAnalizerSc(relevantLines,i,closer);
+				lineAnalizerSc(fileLines,i,closer);
 
 				i=closer;
 			}
@@ -65,7 +58,7 @@ public class ClassScope extends Scope {
 		}
 		for (Integer j : opIndexArray ){
 
-			lineAnalizerOp(relevantLines.get(j));
+			lineAnalizerOp(fileLines.get(j));
 		}
 
 		//recursively calls all the crap in the universe. 

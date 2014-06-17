@@ -1,37 +1,40 @@
 package oop.ex7.scope;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.*;
+import oop.ex7.main.*;
+import oop.ex7.type.*;
 
-import javax.management.BadStringOperationException;
-
-import oop.ex7.main.BadLineSyntaxException;
-import oop.ex7.main.CompileException;
-import oop.ex7.main.EndOfFileException;
-import oop.ex7.main.FileParser;
-import oop.ex7.main.RegexConfig;
-import oop.ex7.main.Variable;
-import oop.ex7.type.ArrayType;
-import oop.ex7.type.BadTypeException;
-import oop.ex7.type.BooleanType;
-import oop.ex7.type.IntType;
-import oop.ex7.type.Type;
-import oop.ex7.type.VarExistException;
-import oop.ex7.type.BadEndOfLineException;
-import oop.ex7.type.VarNotExistException;
-
-
-
-
-enum Scopetypes {CLASS,METHOD,IF,WHILE};
+/**
+ * The enum lineTypes represent the type of the line in the Scope. lines in 
+ * the different scopes have basic possibilities and this enum tells which type
+ * of line is it.
+ * @author taldovrat
+ *
+ */
 enum lineTypes {SCOPE, VARIABLE};
 
-
+/**
+ * This class is a father class for all other scope types in the program. This 
+ * class is an abstract class and implements the interface Scopemediator. 
+ * This class represents and holds all the joint properties of all scopes in 
+ * the program.      
+ * @author taldovrat
+ */
+/*
+ * This class holds and handles all the data that is shared by all inheriting 
+ * classes. For example, this class holds all inner scopes that the scope has,
+ * because it is a property relevant to all inheriting classes. Also, like in
+ * fields, This class implements methods that are shared by its inheriting 
+ * classes like compileScope which is a very important method that is used in 
+ * a certain way in all classes that are not from the type of Class Scope. 
+ */
 public abstract class Scope implements ScopeMediator{
-
+	//The scope in which this scope is nested in the code. null if the scope
+	//is the class scope.
 	Scope fatherScope;
-	ArrayList<String> relevantLines;
+	//
+	ArrayList<String> fileLines;
 	int startIndex;
 	int endIndex;
 	ArrayList<Scope> innerScopes;
@@ -42,7 +45,7 @@ public abstract class Scope implements ScopeMediator{
 	//no constructor at the moment
 	Scope (ArrayList<String> lines,int begin,int end, Scope father){
 		fatherScope=father;
-		relevantLines=lines;
+		fileLines=lines;
 		startIndex=begin;
 		endIndex=end;
 		innerScopes = new ArrayList<Scope>();
@@ -62,33 +65,35 @@ public abstract class Scope implements ScopeMediator{
 	 * @throws BadLineSyntaxException 
 	 * @throws DoubleMethodException 
 	 */
-	public  void compileScope() throws 
-	InvalidScopeException, EndOfFileException, BadEndOfLineException, 
-	BadReturnException, BadLineSyntaxException, BadTypeException, 
-	VarNotExistException, VarExistException, DoubleMethodException  {
+//	public  void compileScope() throws 
+//	InvalidScopeException, EndOfFileException, BadEndOfLineException, 
+//	BadReturnException, BadLineSyntaxException, BadTypeException, 
+//	VarNotExistException, VarExistException, DoubleMethodException  {
+		
+	public  void compileScope() throws CompileException  {
 
 		ArrayList<Integer> opIndexArray=new ArrayList<Integer>();
 		int lineType;
 
 		for(int i=this.startIndex+1;i<this.endIndex;i++){
-			lineType=FileParser.scopeOrVariable(relevantLines.get(i),i);//throws if not valid scope or var declaration
+			lineType=FileParser.scopeOrVariable(fileLines.get(i),i);//throws if not valid scope or var declaration
 
 			if (lineType==lineTypes.VARIABLE.ordinal()){
-				lineAnalizerOp(relevantLines.get(i));
+				lineAnalizerOp(fileLines.get(i));
 			}
 
 			else if (lineType==lineTypes.SCOPE.ordinal()){
 
-				int closer = FileParser.findLastCloser(relevantLines,i);
+				int closer = FileParser.findLastCloser(fileLines,i);
 
-				lineAnalizerSc(relevantLines,i,closer);
+				lineAnalizerSc(fileLines,i,closer);
 
 				i=closer;
 
 				this.innerScopes.get(this.innerScopes.size()-1).compileScope();
 			}
 			else{
-				throw new BadEndOfLineException(i, relevantLines.get(i));
+				throw new BadEndOfLineException(i, fileLines.get(i));
 			}
 			
 		}
