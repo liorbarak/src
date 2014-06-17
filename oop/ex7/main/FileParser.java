@@ -12,13 +12,10 @@ import oop.ex7.type.*;
 /**
  * class holds static methods and is used to parse the document and its
  * String expressions in different ways as needed
- * @author Lior
  *
  */
 public class FileParser {
-
-
-	private enum expTypes {SOME_TYPE_INPUT, VAR, METHOD, OPERATORS, ARR_VAR, ARRAY_INIT} 
+	
 	private static final int SCOPE=0;
 	private static final int OPERATION=1;	
 
@@ -45,11 +42,11 @@ public class FileParser {
 
 			//if it is commented simply continue and dont add to list
 			if(!isLineCommentOrBlank(currentLine)) {
-			
+
 				fileLines.add(currentLine);
-			
+
 			}
-			
+
 		}
 		myScan.close();
 		return fileLines;
@@ -61,17 +58,16 @@ public class FileParser {
 	 * @param currentLine
 	 * @return
 	 */
-	private static boolean isLineCommentOrBlank(String currentLine) throws BadLineSyntaxException  {
+	private static boolean isLineCommentOrBlank(String currentLine)
+			throws BadLineSyntaxException  {
+		
 		if (currentLine.matches(RegexConfig.ILLEGAL_COMMENT)) { 
 			throw new  BadLineSyntaxException(currentLine);
 		}
-		return currentLine.matches(RegexConfig.BLANK_LINE) || currentLine.matches(RegexConfig.COMMENT); 
+		return currentLine.matches(RegexConfig.BLANK_LINE) 
+				|| currentLine.matches(RegexConfig.COMMENT); 
 	}
 
-	
-	//return 0-scope
-	//return 1-variable
-	
 	/**
 	 * determines if a certain line ends with an open bracket or a semicolon.
 	 * is used to check if this line is the beginning of a scope or
@@ -84,8 +80,11 @@ public class FileParser {
 	 * 
 	 * @throws BadEndOfLineException
 	 */
-	public static int scopeOrVariable(String lineText,int lineNumber) throws BadEndOfLineException{
+	public static int scopeOrVariable(String lineText,int lineNumber)
+			throws BadEndOfLineException{
+		
 		String tempString=lineText.trim();
+		
 		if(tempString.matches(RegexConfig.ENDS_WITH_OPEN_BRACKET)) {
 			return SCOPE;
 		}
@@ -112,29 +111,34 @@ public class FileParser {
 	 * @throws VarExistException 
 	 */
 	public static void checkExpression(Type typeToCompare, String expression, 
-			ScopeMediator med) throws BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException  {
-		
+			ScopeMediator med) throws BadLineSyntaxException, BadTypeException,
+			VarNotExistException, VarExistException  {
+
 		//represents a basic rhs value. only needs to check if valid
-		if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
+		//if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
+		if (expression.matches(RegexConfig.SOME_TYPE_VALUE)) {
 			if (!typeToCompare.isExpressionMatch(expression)) {
 				throw new BadTypeException(expression);
 			}
 			return;
 		}
 
-				//in case this is a method, it must be compared to relevant methods
-		if (analyze(expression).equals(expTypes.METHOD)) {
-
+		//in case this is a method, it must be compared to relevant methods
+//		if (analyze(expression).equals(expTypes.METHOD)) {
+		if (expression.matches(RegexConfig.METHOD_CALL)) {
 			ScopeMediator tempScope = med;
 			//get up to the Class scope
+			
 			while (tempScope.getFatherScope() != null) {
 				tempScope = tempScope.getFatherScope();
 			}
-			
+
 			for(Scope method:tempScope.getScopes()) {
 				MethodScope tempMethodScope = (MethodScope) method;
 				if (tempMethodScope.compareMethod(expression, med)) {
-					if(!typeToCompare.sameType(tempMethodScope.getReturnType())) {
+					if(!typeToCompare.sameType
+							(tempMethodScope.getReturnType())) {
+						
 						throw new BadTypeException(expression);
 					}
 					return;	
@@ -142,74 +146,84 @@ public class FileParser {
 			}
 			throw new VarNotExistException(expression);
 		}
-		
-		
+
+
 		//checks if this is a variable and must be compared with other
-				//variables in relevant scopes
-				if (analyze(expression).equals(expTypes.VAR)) {
-					ScopeMediator tempScope = med;
-					expression = expression.replaceAll("-","").trim();
-					while (tempScope != null) {
-						
-						for(Variable var:tempScope.getVariables()) {
-							
-							if (var.getName().equals(expression)) {
-								
-								if(!typeToCompare.sameType(var.getType())) {
-									throw new BadTypeException(expression);
-								}
-								
-								if(!var.isInitialized()) {
-									throw new VarNotExistException(expression); 
-								}
-								
-								return;
-							}
+		//variables in relevant scopes
+//		if (analyze(expression).equals(expTypes.VAR)) {
+		if (expression.matches(RegexConfig.GENERAL_NAME)) {
+			
+			ScopeMediator tempScope = med;
+			expression = expression.replaceAll("-","").trim();
+			while (tempScope != null) {
+
+				for(Variable var:tempScope.getVariables()) {
+
+					if (var.getName().equals(expression)) {
+
+						if(!typeToCompare.sameType(var.getType())) {
+							throw new BadTypeException(expression);
 						}
-						tempScope = tempScope.getFatherScope();
+
+						if(!var.isInitialized()) {
+							throw new VarNotExistException(expression); 
+						}
+
+						return;
 					}
-					throw new VarExistException(expression);
 				}
+				tempScope = tempScope.getFatherScope();
+			}
+			throw new VarExistException(expression);
+		}
 
 
-		
-		
+
+
 		//checks if there is an expression that contains operators
 		//if so it dismantles it and checks if it is legal by recursion
-		if (analyze(expression).equals(expTypes.OPERATORS)) {
+//		if (analyze(expression).equals(expTypes.OPERATORS)) {
+		if (expression.matches(RegexConfig.OPERATOR_EXP)) {	
 			String[] expressions = getExpressions(typeToCompare, expression);
+			
 			for (String exp:expressions) {
 				checkExpression(typeToCompare, exp, med);
 			}
 			return;
 		}
-		
+
 
 		//checks if this is an assigment pulled out of an array
 		//like b=a[5]. checks its validity
-		if (analyze(expression).equals(expTypes.ARR_VAR)) {
+//		if (analyze(expression).equals(expTypes.ARR_VAR)) {
+		if (expression.matches(RegexConfig.ARR_VAR)) {	
 
 			Pattern p = Pattern.compile(RegexConfig.GENERAL_NAME);
-
 			Matcher m = p.matcher(expression);
 			m.find();
 			String nameOfArr = expression.substring(m.start(), m.end());
-
 			ScopeMediator tempScope = med;
 
 			while (tempScope != null) {
+				
 				for(Variable var:tempScope.getVariables()) {
+					
 					if (var.getName().equals(nameOfArr)) {
+						
 						if(!new ArrayType().sameType(var.getType())) {
 							throw new BadTypeException(expression);
 						}
+						
 						ArrayType varTempArrType = (ArrayType) var.getType();
-						if(!typeToCompare.sameType(varTempArrType.getInnerType())) {
+						if(!typeToCompare.sameType
+								(varTempArrType.getInnerType())) {
 							throw new BadTypeException(expression);
 						}
+						
 						if(!var.isInitialized()) {
 							throw new VarNotExistException(expression);
 						}
+						
 						checkInnerArrVarPos(expression, med);
 						return;
 					}
@@ -219,34 +233,26 @@ public class FileParser {
 			throw new VarExistException(expression);
 
 		}
-		
-		if (analyze(expression).equals(expTypes.ARRAY_INIT)) {
-			
+
+//		if (analyze(expression).equals(expTypes.ARRAY_INIT)) {
+		if (expression.matches(RegexConfig.ARRAY_INIT)) {					
+
 			ArrayList<String> exps = new ArrayList<String>();
 			Pattern p = Pattern.compile(RegexConfig.VALID_EXP);
 			Matcher m = p.matcher(expression);
-			
+
 			while (m.find()) {
 				exps.add(expression.substring(m.start(), m.end()).trim());
 			}
-			
-//			ScopeMediator tempScope = med;
-//			
-//			if (tempScope.getFatherScope() == null) {
-//				throw new CompileException(); 
-//			}
-//			while (tempScope.getFatherScope().getFatherScope() != null) {
-//				tempScope = tempScope.getFatherScope();
-//			}
-//			
-//			MethodScope method = (MethodScope) tempScope;
+
 			ArrayType arr = (ArrayType)typeToCompare;
 			for (String exp:exps) {
 				checkExpression(arr.getInnerType(), exp, med);
 			}
-			
+
 			return;
 		}
+		throw new BadLineSyntaxException(expression);
 	}
 
 	/**
@@ -261,64 +267,27 @@ public class FileParser {
 	 * @throws VarNotExistException 
 	 * @throws BadLineSyntaxException 
 	 */
-	public static void checkInnerArrVarPos(String expression, ScopeMediator med) throws BadTypeException, BadLineSyntaxException, VarNotExistException, VarExistException  {
+	public static void checkInnerArrVarPos
+		(String expression, ScopeMediator med)
+			throws BadTypeException, BadLineSyntaxException, 
+			VarNotExistException, VarExistException  {
 
-		String innerExp = expression.substring(expression.indexOf("[")+1, expression.lastIndexOf("]"));
+		String innerExp = expression.substring(expression.
+				indexOf("[")+1, expression.lastIndexOf("]"));
+		
 		if (innerExp.matches(RegexConfig.INPUT_INT)) {
+			
 			int intExp = Integer.parseInt(innerExp.trim());
+			
 			if (intExp < 0) {
 				throw new BadTypeException(innerExp);
 			}
+			
 		}
 		checkExpression(new IntType(), innerExp, med);
-//		String[] stringsInLine = Scope.getAssigmentStr(expression);		
-//		String nameOfVar = stringsInLine[0];
-//		String expToCheck = nameOfVar.substring(expression.indexOf("[")+1, expression.lastIndexOf("]")).trim();
-//
-//		FileParser.checkExpression(new IntType(), expToCheck, med);
-//		if (expToCheck.matches(RegexConfig.INPUT_INT)) {
-//			int intExp = Integer.parseInt(expToCheck);
-//			if (intExp < 0) {
-//				throw new CompileException(); 
-//			}
-//		}
 	}
 
-	/*
-	 * used to differentiate between kinds of line structures
-	 */
-	private static expTypes analyze(String expression) throws BadLineSyntaxException {
 
-		if(expression.matches(RegexConfig.SOME_TYPE_VALUE)) {
-			
-			return expTypes.SOME_TYPE_INPUT;
-		}
-
-
-		if (expression.matches(RegexConfig.METHOD_CALL)) {
-			return expTypes.METHOD;
-		}
-		
-		if(expression.matches(RegexConfig.GENERAL_NAME)) {
-			return expTypes.VAR;
-		}
-		
-		if (expression.matches(RegexConfig.OPERATOR_EXP)) {
-			return expTypes.OPERATORS;
-		}
-
-		if (expression.matches(RegexConfig.ARR_VAR)) {
-			
-			return expTypes.ARR_VAR;
-		}
-		if (expression.matches(RegexConfig.ARRAY_INIT)) {
-			
-			return expTypes.ARRAY_INIT;
-		}
-		throw new BadLineSyntaxException(expression);
-	}
-
-	
 	/**
 	 * when the program encounters an open bracket '{' this method is called
 	 * it finds and returns the location of the end of the scope.
@@ -365,7 +334,7 @@ public class FileParser {
 	 * @return- Strings[] with two String, lhs and rhs
 	 */
 	public static String[] getExpressions(Type type, String expression) throws BadTypeException
-			 {
+	{
 
 		Pattern p = Pattern.compile(RegexConfig.VALID_EXP_ARRAY_CELL);
 		Matcher m = p.matcher(expression);
