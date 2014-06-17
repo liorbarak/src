@@ -58,19 +58,21 @@ public abstract class Scope implements ScopeMediator{
 	 */
 	ArrayList<Variable> innerVariables;
 
-	//Contructor for 
+	//Contructor for inheriting classes
 	Scope (ArrayList<String> lines,int begin,int end, Scope father){
-		fatherScope=father;
-		fileLines=lines;
-		startIndex=begin;
-		endIndex=end;
-		innerScopes = new ArrayList<Scope>();
-		innerVariables = new ArrayList<Variable>();
+		this.fatherScope = father;
+		this.fileLines = lines;
+		this.startIndex = begin;
+		this.endIndex = end;
+		this.innerScopes = new ArrayList<Scope>();
+		this.innerVariables = new ArrayList<Variable>();
 	}
-
 	
 	/**
-	 * 
+	 * This method is responsible for compiling all scopes in the file. 
+	 * The method represents the compiling process for all scopes besides the 
+	 * Class Scope which implements this class also. Throws CompileException 
+	 * that is a father class for all Exception classes mentioned.  
 	 * @throws InvalidScopeException
 	 * @throws EndOfFileException
 	 * @throws BadEndOfLineException
@@ -81,119 +83,152 @@ public abstract class Scope implements ScopeMediator{
 	 * @throws BadLineSyntaxException 
 	 * @throws DoubleMethodException 
 	 */
-//	public  void compileScope() throws 
-//	InvalidScopeException, EndOfFileException, BadEndOfLineException, 
-//	BadReturnException, BadLineSyntaxException, BadTypeException, 
-//	VarNotExistException, VarExistException, DoubleMethodException  {
-		
 	public  void compileScope() throws CompileException  {
-
-		ArrayList<Integer> opIndexArray=new ArrayList<Integer>();
+		//will save the line type returned from the enum.
 		int lineType;
 
+		//go over all lines in the file except the first and last line (the
+		//declaration of the scope and the "}" closing line of the scope).
 		for(int i=this.startIndex+1;i<this.endIndex;i++){
-			lineType=FileParser.scopeOrVariable(fileLines.get(i),i);//throws if not valid scope or var declaration
-
+			//throws if not valid scope declaration or Variable type line.
+			lineType=FileParser.scopeOrVariable(fileLines.get(i),i);
+			//if line handles Variable: 
 			if (lineType==lineTypes.VARIABLE.ordinal()){
+				//Analyze the line.
 				lineAnalizerOp(fileLines.get(i));
 			}
 
 			else if (lineType==lineTypes.SCOPE.ordinal()){
-
+				//find the index of the last line. throws if end of file is
+				//reached.
 				int closer = FileParser.findLastCloser(fileLines,i);
-
+				//Analyze the line.
 				lineAnalizerSc(fileLines,i,closer);
 
+				//advance the index of the line to after the scope.
 				i=closer;
-
+				
+				//run compileScope on the scope added in lineAnalizer.
 				this.innerScopes.get(this.innerScopes.size()-1).compileScope();
 			}
+			
 			else{
 				throw new BadEndOfLineException(i, fileLines.get(i));
-			}
-			
+			}	
 		}
-	}
-
-
-
-
-
-	public ArrayList<Variable> getVariables(){
-		return innerVariables;
-	}
-
-	public ArrayList<Scope> getScopes(){
-		return innerScopes;
-	}
-
-	public Scope getFatherScope(){
-		return fatherScope;
 	}
 
 	/**
-	 * overridden in methodScope 
-	 * all other scopes do not have return type
-	 * @return
+	 * Getter - innerVariables
 	 */
-	public Type getReturnType() {
-		return null;
+	public ArrayList<Variable> getVariables(){
+		return this.innerVariables;
 	}
 
+	/**
+	 * Getter - innerScopes
+	 */
+	public ArrayList<Scope> getScopes(){
+		return this.innerScopes;
+	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////operations
-	public void lineAnalizerOp(String line) throws  BadReturnException, BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException  {
-		//4 cases- return, assign,initialize, both
+	/**
+	 * Getter - fatherScope
+	 */
+	public Scope getFatherScope(){
+		return this.fatherScope;
+	}
 
-		//return
+	/**
+	 * Analyzes the line if it is a operation line that is  Variable related,  
+	 * or method call related. this method checks exactly what type of line is
+	 * it and checks whether or not the line is legal according to the text.
+	 * @param line - the line to analyze
+	 * @throws BadReturnException
+	 * @throws BadLineSyntaxException
+	 * @throws BadTypeException
+	 * @throws VarNotExistException
+	 * @throws VarExistException
+	 */
+	public void lineAnalizerOp(String line) throws  BadReturnException, 
+				BadLineSyntaxException, BadTypeException, VarNotExistException, 
+														VarExistException  {
+		
+		/*
+		 * 5 cases- return, assign,initialize, declaration and assign (=both),
+		 * method call 
+		 */
+		
+		//return ("return 7:")
 		if (line.matches(RegexConfig.lineType.RETURN.getRegex())){
-
+			
 			Pattern p = Pattern.compile("return");
 			Matcher m = p.matcher(line);
-			m.find();
-			String returnExpression=line.substring(m.end(), line.indexOf(";")).trim();
+			m.find(); //find the appearance of return in the line:
+			
+			//get only return expression itself. for example, if the line is:
+			//"return 7;", return expression will be "7";
+			String returnExpression = 
+							line.substring(m.end(), line.indexOf(";")).trim();
 
+			//check whether or not the return expression type matches the type
+			//of the father method scope. false if no match.
 			if(!handleReturn(returnExpression)){
-				throw new BadReturnException(line);//return in case of incorrect location
+				throw new BadReturnException(line);
 			}
-			return;
 		}
 
-		//assign
-		else if (line.matches(RegexConfig.lineType.ASSIGNMENT.getRegex()) || line.matches(RegexConfig.lineType.ASSIGNMENT_ARRAY.getRegex())){
+		//assign ("a = 7;")
+		else if (line.matches(RegexConfig.lineType.ASSIGNMENT.getRegex()) || 
+			line.matches(RegexConfig.lineType.ASSIGNMENT_ARRAY.getRegex())){
+			
+			//continue process the assignment line.
 			assignmentLine(line);
-			return;
 		}
-		//		//assign array
-		//		else if (line.matches(RegexConfig.lineType.ASSIGNMENT_ARRAY.getRegex())){
-		//			assignmentLineArr(line);
-		//			return;
-		//		}
-		//initialize
-		else if (line.matches(RegexConfig.lineType.DECLARATION.getRegex()) || line.matches(RegexConfig.ARRAY_DECLARE)){
+		
+		//initialize ("int a;")
+		else if (line.matches(RegexConfig.lineType.DECLARATION.getRegex()) || 
+								line.matches(RegexConfig.ARRAY_DECLARE)){
+
+			//continue process the declaration line.
 			declarationLine(line);
-			return;
 		}
-		//both
-		else if (line.matches(RegexConfig.lineType.BOTH.getRegex()) || line.matches(RegexConfig.lineType.BOTH_ARRAY.getRegex())){
+		//declaration and assign ("int a = 7;")
+		else if (line.matches(RegexConfig.lineType.BOTH.getRegex()) || 
+				line.matches(RegexConfig.lineType.BOTH_ARRAY.getRegex())){
+
+			//continue process the declaration and assign line.
 			bothLine(line);
-			return;
-		}
 
+		}
+		//method call ("foo(7)")
 		else if (line.matches(RegexConfig.METHOD_CALL)) {
+	
+			//continue process the method call line.
 			this.checkMethod(line);
-			return;
 		}
-		//
-		//		else if (line.matches(RegexConfig.lineType.BOTH_ARRAY.getRegex())){
-		//			bothLineArr(line);
-		//			return;
-		//		}
-		throw new BadLineSyntaxException(line);
-
+		
+		//no match!
+		else {
+			throw new BadLineSyntaxException(line);	
+		}
 	}
 
-
+	/*
+	 * Checks if the method called in the line exists in the class and if it 
+	 * called properly. For example, if the method call is "foo(7)", this 
+	 * method checks if there is a method in the name of "foo", and after it 
+	 * finds the method in the scopes list of the class, it checks if the 
+	 * input variable in the call is the same as the method declaration. in 
+	 * the example case, the input variable called is 7, and int, so the method 
+	 * will checked if the input variable of the method foo was declared with 1
+	 * input variable and that this input variable is of the type int.
+	 * @param line - the line of the method call.
+	 * @throws BadLineSyntaxException
+	 * @throws BadTypeException
+	 * @throws VarNotExistException
+	 * @throws VarExistException   
+	 */
 	private void checkMethod(String line) throws VarNotExistException, BadLineSyntaxException, BadTypeException, VarExistException  {
 		// TODO Auto-generated method stub
 		Scope tempScope = this; 
