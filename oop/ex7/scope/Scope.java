@@ -121,7 +121,7 @@ public abstract class Scope implements ScopeMediator{
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////operations
-	public void lineAnalizerOp(String line) throws BadReturnException, BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException   {
+	public void lineAnalizerOp(String line) throws  BadReturnException, BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException  {
 		//4 cases- return, assign,initialize, both
 
 		//return
@@ -173,7 +173,7 @@ public abstract class Scope implements ScopeMediator{
 	}
 
 
-	private void checkMethod(String line) throws BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException  {
+	private void checkMethod(String line) throws VarNotExistException, BadLineSyntaxException, BadTypeException, VarExistException  {
 		// TODO Auto-generated method stub
 		Scope tempScope = this; 
 		while(tempScope.getFatherScope() != null) {
@@ -187,12 +187,12 @@ public abstract class Scope implements ScopeMediator{
 				String[] varsCall = MethodScope.getMethodVarsFromCallExp(line);
 				
 				//TODO check num of args!!!
-//				if (varsCall.length != tempMethod.innerVariables.size()) {
-//					throw new CompileException(); //TODO
-//				}
 				
 				if (varsCall.length==1 && varsCall[0].equals("") && tempMethod.inputVars.isEmpty())
 					return;
+				if (varsCall.length != tempMethod.innerVariables.size()) {
+					throw new VarNotExistException(callName); //TODO
+				}
 				for (int i = 0; i < tempMethod.inputVars.size(); i++) {
 
 					FileParser.checkExpression(tempMethod.inputVars.get(i).getType(), varsCall[i], this);
@@ -401,9 +401,17 @@ public abstract class Scope implements ScopeMediator{
 
 	public static String[] getDecStr(String line) {
 		//1 - index of name of var
-		String linetemp = line.trim();
-		String[] stringsInLine = linetemp.split("[ ]+");
-		stringsInLine[1] = stringsInLine[1].replaceAll("( )*;?", "");
+//		String linetemp = line.trim();
+//		String[] stringsInLine = linetemp.split("[ ]+");
+		Pattern p = Pattern.compile(RegexConfig.VALID_TYPES+"(\\[[\\s]*\\])?");
+		Matcher m = p.matcher(line);
+		m.find();
+		String[] stringsInLine = new String[2];
+		stringsInLine[0] = line.substring(0, m.end());
+		stringsInLine[0] = stringsInLine[0].replaceAll("[\\s]*;?", "");
+		
+		stringsInLine[1] = line.substring(m.end());
+		stringsInLine[1] = stringsInLine[1].replaceAll("[\\s]*;?", "");
 		return stringsInLine;
 	}
 
@@ -414,6 +422,7 @@ public abstract class Scope implements ScopeMediator{
 		String[] declaration = getDecStr(declarationLine);
 
 		String inputValue = getAssigmentStr(line)[1];
+		
 		String decLine = declaration[0]+" "+declaration[1];
 		String assLine = declaration[1]+"="+inputValue;
 		String[] both = {decLine, assLine};

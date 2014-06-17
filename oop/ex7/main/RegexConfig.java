@@ -133,15 +133,15 @@ public class RegexConfig {
 	
 	//TODO remove before sending
 	//used for testing
-	
+//	
 	public static void main(String[] args) {
-		
-
-
-
-		DEBUGRegex( METHOD_CALL,"\ndoo()" );
+//		
+//
+//
+//
+		DEBUGRegex( lineType.BOTH_ARRAY.getRegex(),"int [     ]   a                  =             {          };");
 //		DEBUGRegex( lineType.ASSIGNMENT_ARRAY.getRegex(),"a[8] = b[9];" );
-
+//
 
 
 

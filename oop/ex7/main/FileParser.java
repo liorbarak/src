@@ -265,7 +265,7 @@ public class FileParser {
 
 		String innerExp = expression.substring(expression.indexOf("[")+1, expression.lastIndexOf("]"));
 		if (innerExp.matches(RegexConfig.INPUT_INT)) {
-			int intExp = Integer.parseInt(innerExp);
+			int intExp = Integer.parseInt(innerExp.trim());
 			if (intExp < 0) {
 				throw new BadTypeException(innerExp);
 			}

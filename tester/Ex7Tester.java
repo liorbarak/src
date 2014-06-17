@@ -18,11 +18,10 @@ public class Ex7Tester {
 	private static final String TEST_INPUT_DIR = 
 			//"/cs/course/2013/oop/scripts/ex7/tests/"; 
 			"/Users/taldovrat/git/ex7/tests/";	
-//			"C://Users//Lior//Desktop//ex7stuff//tests//";	//liors comp
+
+//	private static final String TEST_SOL_DIR = "sjavac_tests.txt";
+	//private static final String TEST_SOL_DIR = "/cs/course/2013/oop/scripts/ex7/sjavac_tests.txt";
 	private static final String TEST_SOL_DIR = "/Users/taldovrat/git/ex7/sjavac_tests.txt";
-	
-//	private static final String TEST_SOL_DIR = "/cs/course/2013/oop/scripts/ex7/sjavac_tests.txt";
-//	private static final String TEST_SOL_DIR ="C://Users//Lior//Desktop//ex7stuff//sjavac_tests.txt" 	;//liors comp
 	
 	private String retVal;
 	private String numOfTest;
@@ -33,7 +32,7 @@ public class Ex7Tester {
 	 * @throws FileNotFoundException 
 	 */
 	public Ex7Tester(String fileName) throws FileNotFoundException {
-	
+		
 		String[] parts = fileName.split(" ");
 		numOfTest = parts[0].substring(4,7);
 		desc = parts[2];
@@ -64,10 +63,8 @@ public class Ex7Tester {
 		 // if no more lines the readLine() returns null
 		 while ((line = br.readLine()) != null) {
 			 if (!line.equals(""))
-				 
 				 tests.add(new String[] {line.toString()});
 		 }
-		 
 		return tests;
 	}
 
@@ -114,12 +111,14 @@ public class Ex7Tester {
         File student = new File("tmp.txt");// Student output
         FileReader fR_student = new FileReader(student);
         BufferedReader reader1 = new BufferedReader(fR_student);
-        
+
         String line1 = null;       
     	line1 = reader1.readLine();
-    	
-    	if((line1 != null)) {
-            assertEquals(desc + " problem in test number:"+numOfTest,retVal,line1);
+    	if((line1 == null)) {
+    		fail("Please print your result to System.out");
+    	}
+    	else{
+    		assertEquals(desc + " problem in test number:"+numOfTest,retVal,line1);
     	}
        
         reader1.close();

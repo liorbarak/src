@@ -41,7 +41,7 @@ public class Sjavac {
 			File origin = new File(args[0]);	//debug mode if is commented.TODO change bach for junit
 
 //			origin = new File("C://Users//Lior//Desktop//ex7stuff//tests//test253.sjava");
-//			origin = new File("/Users/taldovrat/Downloads/tests/test507.sjava");
+//			origin = new File("/Users/taldovrat/Downloads/tests/test255.sjava");
 
 
 			ArrayList<String> fileLines= FileParser.getlinesList(origin);
@@ -53,25 +53,27 @@ public class Sjavac {
 		catch(FileNotFoundException e){
 			
 			System.out.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
+//			System.err.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
 
 			
 			//for debug
-			System.out.println(e.toString());
-			e.printStackTrace(System.err);
+//			System.out.println(e.toString());
+//			e.printStackTrace(System.err);
 			//for debug
 
 			return;
 		}
 		catch(CompileException e1){//make sure all kinds of errors are cought here
 			System.out.println(returnValues.INPUT_ERRORS.ordinal());//prints 1
-
-			e1.printStackTrace(System.err);
+//			System.err.println(returnValues.INPUT_ERRORS.ordinal());//prints 1
+//			e1.printStackTrace(System.err);
 			//for debug
 			return;
 
 		}
 		catch(Exception e2){	//TODO change type of exception
-
+//			System.out.println(2);
+//			System.out.println(e2.getMessage());
 			e2.printStackTrace(System.err);
 			
 			return;
@@ -81,5 +83,6 @@ public class Sjavac {
 
 		//if i got this far in the program it means compilation found no errors. print 0
 		System.out.println(returnValues.NO_ERRORS.ordinal());
+		
 	}
 }
