@@ -3,7 +3,7 @@ package oop.ex7.type;
 import oop.ex7.main.RegexConfig;
 
 /**
- * 
+ * this class represents a primitive boolean type 
  * @author Lior
  *
  */

@@ -5,7 +5,7 @@ import oop.ex7.main.CompileException;
 
 /**
  * extends CompileException
- * used when there is an illegal assigment.
+ * used when there is an illegal assignment.
  * a value is being assigned to a variable that does not exist in 
  * any relevant scope.
  * @author Lior

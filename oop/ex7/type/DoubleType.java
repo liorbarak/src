@@ -5,7 +5,6 @@ import oop.ex7.main.RegexConfig;
 /**
  * this class represents a double type in the compiler
  * extends Type
- * @author Lior
  *
  */
 public class DoubleType extends Type {

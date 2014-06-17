@@ -4,7 +4,7 @@ import oop.ex7.main.RegexConfig;
 
 
 /**
- * This class represents the integer variable type. 
+ * This class represents the integer  type. 
  * @author taldovrat
  *
  */

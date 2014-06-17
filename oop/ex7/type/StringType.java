@@ -3,9 +3,8 @@ package oop.ex7.type;
 import oop.ex7.main.RegexConfig;
 
 /**
- * class represents String 
+ * class represents String  type
  * extends Type
- * @author Lior
  *
  */
 public class StringType extends Type {

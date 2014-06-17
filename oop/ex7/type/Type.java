@@ -6,9 +6,8 @@ import oop.ex7.main.RegexConfig;
 /**
  * This interface represents the type of the variable in the code - int,
  * double, String, boolean, char, an array of one of these types and the return
- * type of a method void. This code will be checked and compared to the
+ * type of a method void, and so on. This code will be checked and compared to the
  * constants in RegexConfig to detect which type of variable is used in the code. 
- * @author taldovrat
  *
  */
 public abstract class  Type {

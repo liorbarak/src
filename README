@@ -1,4 +1,7 @@
 taldovrat
+301406856
+liorbarak
+200443034
 
 
 
@@ -7,6 +10,73 @@ taldovrat
 
 ___________________________files___________________________
 
+package oop.ex7.main:
+
+Sjavac.java-
+FileParser.java-
+RegexConfig.java-
+BadLineSyntaxException.java-
+CompileException.java-
+EndOfFileException.java-
+
+
+package oop.ex7.scope:
+
+Scope.java-
+ClassScope.java-
+IfScope.java-
+MethodScope.java-
+WhileScope.java-
+Variable.java-
+BadReturnException.java-
+DoubleMethodException.java-
+InvalidScopeException.java-
+ScopeMediator.java-
+
+
+package oop.ex7.type
+
+Type.java-  This interface represents the type of the variable in the code
+	boolean, char, an array of one of these types and the return type of a 
+	method void, and so on. This code will be checked and compared to the
+	constants in RegexConfig to detect which type of variable is used in 
+	the code. 
+ 
+	ArrayType.java-  extends Type.represents an array of a certain type
+		also holds within itself another type. this is a decorator class
+
+	BooleanType.java- this class represents a primitive boolean type 
+
+	CharType.java- this class represents a variable CharType
+
+	DoubleType.java- this class represents a double type in the compiler
+
+	IntType.java- This class represents the integer  type. 
+
+	StringType.java- class represents String  type
+
+	VoidType.java-   represents void type. relevant for methods.
+
+BadEndOfLineException.java- extends CompileException.
+	used when a line does not end with a { or a ; as it should
+
+BadInputException.java- extends CompileException.
+	thrown when a non-matching input expression is inserted.
+	
+BadTypeException.java- extends CompileException.
+	represents an incorrect input for type.
+	for example if a type was spelled incorrectly or doesn't exist.
+	
+BadVarDeclarationException.java- extends CompileException.
+	thrown when a variable declaration is bad.
+	
+VarExistException.java- extends CompileException.
+	is used when a variable with the same name it declared twice
+
+VarNotExistException.java- extends CompileException.
+	used when there is an illegal assignment.
+	a value is being assigned to a variable that does not exist in 
+	any relevant scope.
 
 
 

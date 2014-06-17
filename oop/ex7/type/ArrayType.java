@@ -1,13 +1,12 @@
 package oop.ex7.type;
 
-import oop.ex7.main.CompileException;
+
 import oop.ex7.main.RegexConfig;
 
 /**
  * extends Type.
  * represents an array of a certain type
- * @author Lior
- *
+ *also holds within itself another type. this is a decorator class
  */
 public class ArrayType extends Type {
 

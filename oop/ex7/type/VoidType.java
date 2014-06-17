@@ -6,7 +6,6 @@ import oop.ex7.main.RegexConfig;
  * represents void type.
  * relevant for methods
  * extends Type
- * @author Lior
  *
  */
 public class VoidType extends Type {
