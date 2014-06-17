@@ -1,4 +1,4 @@
-package oop.ex7.main;
+package oop.ex7.scope;
 import oop.ex7.type.*;
 
 /**

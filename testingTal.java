@@ -10,8 +10,8 @@ import javax.print.DocFlavor.READER;
 import oop.ex7.main.CompileException;
 import oop.ex7.main.FileParser;
 import oop.ex7.main.RegexConfig;
-import oop.ex7.main.Variable;
 import oop.ex7.scope.Scope;
+import oop.ex7.scope.Variable;
 import oop.ex7.type.*;
 public class testingTal {
 	

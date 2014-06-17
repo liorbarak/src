@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import oop.ex7.main.BadLineSyntaxException;
 import oop.ex7.main.CompileException;
 import oop.ex7.main.FileParser;
-import oop.ex7.main.Variable;
 import oop.ex7.type.BadTypeException;
 import oop.ex7.type.Type;
 import oop.ex7.type.VarExistException;
