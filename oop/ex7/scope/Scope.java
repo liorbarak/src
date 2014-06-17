@@ -10,7 +10,6 @@ import oop.ex7.type.*;
  * The enum lineTypes represent the type of the line in the Scope. lines in 
  * the different scopes have basic possibilities and this enum tells which type
  * of line is it.
- * @author taldovrat
  *
  */
 enum lineTypes {SCOPE, VARIABLE};
@@ -20,7 +19,6 @@ enum lineTypes {SCOPE, VARIABLE};
  * class is an abstract class and implements the interface Scopemediator. 
  * This class represents and holds all the joint properties of all scopes in 
  * the program.      
- * @author taldovrat
  */
 /*
  * This class holds and handles all the data that is shared by all inheriting 

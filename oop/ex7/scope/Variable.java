@@ -4,7 +4,7 @@ import oop.ex7.type.*;
 /**
  * 
  * class represents a variable declared by our 'compiler'.
- * it is used to compare between existing 
+ * only scopes hold and manage variables
  *
  */
 public class Variable {

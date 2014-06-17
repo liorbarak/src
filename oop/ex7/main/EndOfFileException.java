@@ -6,7 +6,6 @@ package oop.ex7.main;
  * 
  * this error happens when running over the unexpectedly hits the EOF
  * usually this happens when there is a problem with scope brackets{}  
- * @author Lior
  *
  */
 public class EndOfFileException extends CompileException {

@@ -3,13 +3,15 @@ package oop.ex7.scope;
 import java.util.ArrayList;
 
 import oop.ex7.main.BadLineSyntaxException;
-import oop.ex7.main.CompileException;
 import oop.ex7.main.FileParser;
-import oop.ex7.type.BadTypeException;
-import oop.ex7.type.Type;
-import oop.ex7.type.VarExistException;
-import oop.ex7.type.VarNotExistException;
+import oop.ex7.type.*;
 
+/**
+ * extends Scope
+ * represents a method scope. this scope has more information inside it than
+ * Scope. it has a name, input variables and a return type.
+ *
+ */
 public class MethodScope extends Scope {
 
 	private Type returnType;

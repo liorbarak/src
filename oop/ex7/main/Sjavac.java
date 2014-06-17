@@ -38,7 +38,7 @@ public class Sjavac {
 
 		try{
 
-			File origin = new File(args[0]);	//debug mode if is commented.TODO change bach for junit
+			File origin = new File(args[0]);
 
 //			origin = new File("C://Users//Lior//Desktop//ex7stuff//tests//test253.sjava");
 //			origin = new File("/Users/taldovrat/Downloads/tests/test255.sjava");
@@ -49,23 +49,25 @@ public class Sjavac {
 			mainClass.compileScope();
 
 		}
-		catch(FileNotFoundException e){
+		catch(FileNotFoundException e){//prints 2
 			
-			System.out.println(returnValues.CRITICAL_IO_ERRORS.ordinal());//prints 2
+			
+			System.out.println(returnValues.CRITICAL_IO_ERRORS.ordinal());
 			e.printStackTrace(System.err);
 
 			return;
 		}
-		catch(CompileException e1){//make sure all kinds of errors are cought here
+		catch(CompileException e1){//prints 1
 			
-			System.out.println(returnValues.INPUT_ERRORS.ordinal());//prints 1
+			System.out.println(returnValues.INPUT_ERRORS.ordinal());
 			e1.printStackTrace(System.err);
 			
 			return;
 
 		}
 		
-		//if i got this far in the program it means compilation found no errors. print 0
+		//if i got this far in the program it means
+		//compilation found no errors. print 0
 		System.out.println(returnValues.NO_ERRORS.ordinal());
 		
 	}

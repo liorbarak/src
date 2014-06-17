@@ -1,15 +1,9 @@
 package oop.ex7.scope;
 
 import java.util.ArrayList;
-
-import oop.ex7.main.BadLineSyntaxException;
 import oop.ex7.main.CompileException;
-import oop.ex7.main.EndOfFileException;
 import oop.ex7.main.FileParser;
-import oop.ex7.type.BadEndOfLineException;
-import oop.ex7.type.BadTypeException;
-import oop.ex7.type.VarExistException;
-import oop.ex7.type.VarNotExistException;
+
 
 /**
  * 

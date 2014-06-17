@@ -115,7 +115,6 @@ public class FileParser {
 			VarNotExistException, VarExistException  {
 
 		//represents a basic rhs value. only needs to check if valid
-		//if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
 		if (expression.matches(RegexConfig.SOME_TYPE_VALUE)) {
 			if (!typeToCompare.isExpressionMatch(expression)) {
 				throw new BadTypeException(expression);
@@ -124,7 +123,6 @@ public class FileParser {
 		}
 
 		//in case this is a method, it must be compared to relevant methods
-//		if (analyze(expression).equals(expTypes.METHOD)) {
 		if (expression.matches(RegexConfig.METHOD_CALL)) {
 			ScopeMediator tempScope = med;
 			//get up to the Class scope
@@ -150,7 +148,6 @@ public class FileParser {
 
 		//checks if this is a variable and must be compared with other
 		//variables in relevant scopes
-//		if (analyze(expression).equals(expTypes.VAR)) {
 		if (expression.matches(RegexConfig.GENERAL_NAME)) {
 			
 			ScopeMediator tempScope = med;
@@ -182,7 +179,6 @@ public class FileParser {
 
 		//checks if there is an expression that contains operators
 		//if so it dismantles it and checks if it is legal by recursion
-//		if (analyze(expression).equals(expTypes.OPERATORS)) {
 		if (expression.matches(RegexConfig.OPERATOR_EXP)) {	
 			String[] expressions = getExpressions(typeToCompare, expression);
 			
@@ -195,7 +191,6 @@ public class FileParser {
 
 		//checks if this is an assigment pulled out of an array
 		//like b=a[5]. checks its validity
-//		if (analyze(expression).equals(expTypes.ARR_VAR)) {
 		if (expression.matches(RegexConfig.ARR_VAR)) {	
 
 			Pattern p = Pattern.compile(RegexConfig.GENERAL_NAME);
@@ -234,7 +229,7 @@ public class FileParser {
 
 		}
 
-//		if (analyze(expression).equals(expTypes.ARRAY_INIT)) {
+		
 		if (expression.matches(RegexConfig.ARRAY_INIT)) {					
 
 			ArrayList<String> exps = new ArrayList<String>();

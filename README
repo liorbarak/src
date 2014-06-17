@@ -16,9 +16,11 @@ Sjavac.java- a basic compiler for a 'simple java' language.
 	this language supports basic java operations like building functions,
 	using arrays, assigning variables and so forth
 
-FileParser.java-
+FileParser.java- class holds static methods and is used to parse the 
+	document and its String expressions in different ways as needed
 
-RegexConfig.java-
+RegexConfig.java-a library of final regex strings that are relevant for ex7
+
 BadLineSyntaxException.java-  used when there is problem with the general
  syntax of the line for example it isn't a legal "if" statements,
   or not a legal array declaration.
@@ -28,21 +30,46 @@ CompileException.java-  this exception is the main one in this exercise
 	the only ones that don't inherit from it are the ones
 	that handle IO errors or file opening errors
 
-EndOfFileException.java-
+EndOfFileException.java- this error happens when running over the
+	unexpectedly hits the EOFusually this happens when there is a 
+	problem with scope brackets{} 
 
 
 package oop.ex7.scope:
 
-Scope.java-
-ClassScope.java-
-IfScope.java-
-MethodScope.java-
-WhileScope.java-
-Variable.java-
-BadReturnException.java-
-DoubleMethodException.java-
-InvalidScopeException.java-
-ScopeMediator.java-
+Scope.java- This class is a father class for all other scope types
+	 in the program. This class is an abstract class and implements the 
+	 interface Scopemediator.This class represents and holds all the joint 
+	 properties of all scopes in the program.      
+
+	ClassScope.java-extends Scope. represents a general class scope.
+	every file has a class scope because it is the file itself
+
+	IfScope.java- extends Scope.represents an 'if' scope
+
+	MethodScope.java-extends Scope. represents a method scope. 
+	this scope has more information inside it than Scope. 
+	it has a name, input variables and a return type.
+
+	WhileScope.java-extends Scope.represents a 'while' scope
+
+Variable.java-class represents a variable declared by our 'compiler'.
+	only scopes hold and manage variables
+
+BadReturnException.java- extends CompileException.
+	is called when a return deceleration is in a bad location
+	or the return type and the return expression don't match.
+
+DoubleMethodException.java- 
+	is called when when two methods are declared with the same name
+
+InvalidScopeException.java- extends CompileException.
+	is called when trying to create an illegal scope.
+	for instance creating a method inside an 'if' scope
+
+ScopeMediator.java- interface.only Scope implement this interface directly.
+	but all scopes implement it indirectly.
+	enables other classes to access only part of the available methods
 
 
 package oop.ex7.type
@@ -105,7 +132,11 @@ the main sJavac.java goes over the text file and initializes a new classType
 for the file. after that all the method declarations are initiated as new Scope
 classes ,and after that all the methods are compiled and checked for errors.
 all errors found are handled via the exception mechanisms.
-if no error was found 0 is printed.       
+if no error was found 0 is printed.
+we created a regex library in its own class called RegexConfig
+so there would be only one place that contains all the constants
+we did this because of the abundance of constants used by our code.       
+
 
 adding more variable types:
 the way we designed the structure enables to add more variables with relative
@@ -121,6 +152,7 @@ this will require again a few steps:
 a.adding a new class that extends the father of all other scopes-Scope.
 b.adding a regex that accepts this new scope in the RegexConfing library
 c.adding another condition in createScope- our static factory method
+
 
 compiling multiple files together:
 this will require the following steps:
