@@ -13,7 +13,7 @@ public class Variable {
 	private String name;
 	private boolean isInitialized;
 
-	public Variable(String type, String name) throws CompileException {
+	public Variable(String type, String name) throws BadTypeException {
 
 		this.type = Type.createType(type);
 		this.name = name;

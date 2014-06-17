@@ -83,6 +83,7 @@ public class RegexConfig {
 	//public static final String VALID_EXP3 = "("+VALID_EXP2+"|[{][}])";
 	public static final String BLANK_LINE = "[ \t]*";
 	public static final String COMMENT = "^[ \t]*//.*";
+	public static final String ILLEGAL_COMMENT = "[^ \t]+//.*";
 
 	public static final String VALID_IF_CALL ="[ \t]*if[ \t]*[(][ \t]*"+VALID_EXP_ARRAY_CELL+"[ \t]*[)][ \t]*[{][ \t]*";
 	public static final String VALID_WHILE_CALL="[ \t]*while[ \t]*[(][ \t]*"+VALID_EXP_ARRAY_CELL+"[ \t]*[)][ \t]*[{][ \t]*";

@@ -15,7 +15,7 @@ public class CompileException extends Exception{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final String ERROR_MESSAGE = "compile error. line number: ";
+	private final String ERROR_MESSAGE = "general compile error";
 	protected Integer lineNumber=null;
 
 	/**

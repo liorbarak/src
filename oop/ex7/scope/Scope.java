@@ -55,14 +55,20 @@ public abstract class Scope implements ScopeMediator{
 	 * @throws InvalidScopeException
 	 * @throws EndOfFileException
 	 * @throws BadEndOfLineException
-	 * @throws Exception
+	 * @throws BadReturnException 
+	 * @throws VarExistException 
+	 * @throws VarNotExistException 
+	 * @throws BadTypeException 
+	 * @throws BadLineSyntaxException 
+	 * @throws DoubleMethodException 
 	 */
-	public  void compileScope() throws InvalidScopeException, EndOfFileException, BadEndOfLineException,Exception  {
+	public  void compileScope() throws 
+	InvalidScopeException, EndOfFileException, BadEndOfLineException, 
+	BadReturnException, BadLineSyntaxException, BadTypeException, 
+	VarNotExistException, VarExistException, DoubleMethodException  {
 
 		ArrayList<Integer> opIndexArray=new ArrayList<Integer>();
 		int lineType;
-		//		Variable tempVar;
-		//		Scope tempScope;
 
 		for(int i=this.startIndex+1;i<this.endIndex;i++){
 			lineType=FileParser.scopeOrVariable(relevantLines.get(i),i);//throws if not valid scope or var declaration
@@ -115,7 +121,7 @@ public abstract class Scope implements ScopeMediator{
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////operations
-	public void lineAnalizerOp(String line) throws CompileException  {
+	public void lineAnalizerOp(String line) throws BadReturnException, BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException   {
 		//4 cases- return, assign,initialize, both
 
 		//return
@@ -167,7 +173,7 @@ public abstract class Scope implements ScopeMediator{
 	}
 
 
-	private void checkMethod(String line) throws CompileException {
+	private void checkMethod(String line) throws BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException  {
 		// TODO Auto-generated method stub
 		Scope tempScope = this; 
 		while(tempScope.getFatherScope() != null) {
@@ -178,11 +184,13 @@ public abstract class Scope implements ScopeMediator{
 			MethodScope tempMethod = (MethodScope) sc;
 			String callName = MethodScope.getMethodCallNameFromExp(line);
 			if (tempMethod.getNameOfMethod().equals(callName)) {
-				String[] varsCall = tempMethod.getMethodVarsFromCallExp(line);
+				String[] varsCall = MethodScope.getMethodVarsFromCallExp(line);
+				
 				//TODO check num of args!!!
 //				if (varsCall.length != tempMethod.innerVariables.size()) {
 //					throw new CompileException(); //TODO
 //				}
+				
 				if (varsCall.length==1 && varsCall[0].equals("") && tempMethod.inputVars.isEmpty())
 					return;
 				for (int i = 0; i < tempMethod.inputVars.size(); i++) {
@@ -193,10 +201,10 @@ public abstract class Scope implements ScopeMediator{
 				return;
 			}
 		}
-		throw new CompileException(); //TODO
+		throw new VarNotExistException(line); 
 	}
 
-	private boolean handleReturn(String returnExpression) throws CompileException{
+	private boolean handleReturn(String returnExpression) throws BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException {
 		if (fatherScope==null){
 			return false;
 		}
@@ -253,7 +261,7 @@ public abstract class Scope implements ScopeMediator{
 	//
 	//	}
 
-	private void assignmentLine(String line) throws CompileException {
+	private void assignmentLine(String line) throws VarExistException, BadTypeException, BadLineSyntaxException, VarNotExistException  {
 
 		Variable varTemp;
 		///
@@ -305,7 +313,7 @@ public abstract class Scope implements ScopeMediator{
 
 	}
 
-	private void declarationLine(String line)  throws CompileException {
+	private void declarationLine(String line) throws VarExistException, BadTypeException {
 
 		Variable varTemp;
 		//save the left expression as the name of the variable
@@ -337,7 +345,7 @@ public abstract class Scope implements ScopeMediator{
 		throw new VarExistException(line);	
 	}
 
-	private void bothLine(String line) throws CompileException {
+	private void bothLine(String line) throws VarExistException, BadTypeException, BadLineSyntaxException, VarNotExistException  {
 
 		//Variable varTemp;
 		//save the left expression as the name of the variable
@@ -443,11 +451,9 @@ public abstract class Scope implements ScopeMediator{
 
 	///////////////////////////////////////////////////////////////////////////////////////////scopes
 
-	//public void lineAnalizerSc(String line) {
-	public void lineAnalizerSc (ArrayList<String> lines,int start, int finish) throws CompileException  {
+	public void lineAnalizerSc (ArrayList<String> lines,int start, int finish) throws InvalidScopeException, BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException, DoubleMethodException   {
 
 		String firstline=lines.get(start);
-		//		ArrayList<String> subScopeLines=(ArrayList<String>) (lines.subList(start, finish));
 
 
 		//method
@@ -500,7 +506,7 @@ public abstract class Scope implements ScopeMediator{
 	 * creates a new methodscope while checking all its variables
 	 * 
 	 */
-	private void methodInput (ArrayList<String> lines,int start, int finish) throws CompileException {
+	private void methodInput (ArrayList<String> lines,int start, int finish) throws DoubleMethodException, BadTypeException, VarExistException  {
 
 		String tempLine=lines.get(start).trim();
 		ArrayList<Variable> inputVars=new ArrayList<Variable>();

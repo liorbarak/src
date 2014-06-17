@@ -6,20 +6,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.xml.stream.events.StartDocument;
-
-import oop.ex7.scope.MethodScope;
-import oop.ex7.scope.Scope;
-import oop.ex7.scope.ScopeMediator;
-import oop.ex7.type.ArrayType;
-import oop.ex7.type.BadTypeException;
-import oop.ex7.type.IntType;
-import oop.ex7.type.Type;
-import oop.ex7.type.BadEndOfLineException;
-import oop.ex7.type.VarExistException;
-import oop.ex7.type.VarNotExistException;
-
+import oop.ex7.scope.*;
+import oop.ex7.type.*;
 
 /**
  * class holds static methods and is used to parse the document and its
@@ -30,8 +18,9 @@ import oop.ex7.type.VarNotExistException;
 public class FileParser {
 
 
-	public enum expTypes {SOME_TYPE_INPUT, VAR, METHOD, OPERATORS, ARR_VAR, ARRAY_INIT} 
-	
+	private enum expTypes {SOME_TYPE_INPUT, VAR, METHOD, OPERATORS, ARR_VAR, ARRAY_INIT} 
+	private static final int SCOPE=0;
+	private static final int OPERATION=1;	
 
 	/*
 	 * used to differentiate between kinds of lines
@@ -42,11 +31,10 @@ public class FileParser {
 	 * @return list of separate lines
 	 * 
 	 * @throws FileNotFoundException 
-	 * @throws CompileException 
+	 * @throws BadLineSyntaxException 
 	 */
 	public static ArrayList<String>  getlinesList(File origin) 
-			throws FileNotFoundException,
-			CompileException{
+			throws FileNotFoundException, BadLineSyntaxException{
 
 		ArrayList<String> fileLines = new ArrayList<String>();
 		Scanner myScan= new Scanner(origin);
@@ -73,9 +61,9 @@ public class FileParser {
 	 * @param currentLine
 	 * @return
 	 */
-	private static boolean isLineCommentOrBlank(String currentLine) throws CompileException {
-		if (currentLine.matches("[^ \t]+//.*")) {	// TODO put in constant 
-			throw new  CompileException();
+	private static boolean isLineCommentOrBlank(String currentLine) throws BadLineSyntaxException  {
+		if (currentLine.matches(RegexConfig.ILLEGAL_COMMENT)) { 
+			throw new  BadLineSyntaxException(currentLine);
 		}
 		return currentLine.matches(RegexConfig.BLANK_LINE) || currentLine.matches(RegexConfig.COMMENT); 
 	}
@@ -99,11 +87,11 @@ public class FileParser {
 	public static int scopeOrVariable(String lineText,int lineNumber) throws BadEndOfLineException{
 		String tempString=lineText.trim();
 		if(tempString.matches(RegexConfig.ENDS_WITH_OPEN_BRACKET)) {
-			return 0;		//TODO make const
+			return SCOPE;
 		}
 
 		else if (tempString.matches(RegexConfig.ENDS_WITH_SEMICOLON)) {
-			return 1;		//TODO make const
+			return OPERATION;
 		}
 		throw new BadEndOfLineException(lineNumber,lineText);
 	}
@@ -118,11 +106,13 @@ public class FileParser {
 	 * @param expression- a complex string, may contain all the different
 	 * 						expressions the program can compile
 	 * @param med- this represents the scope and is used as an interface
-	 * 
-	 * @throws CompileException
+	 * @throws BadTypeException 
+	 * @throws BadLineSyntaxException 
+	 * @throws VarNotExistException 
+	 * @throws VarExistException 
 	 */
 	public static void checkExpression(Type typeToCompare, String expression, 
-			ScopeMediator med) throws CompileException {
+			ScopeMediator med) throws BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException  {
 		
 		//represents a basic rhs value. only needs to check if valid
 		if (analyze(expression).equals(expTypes.SOME_TYPE_INPUT)) {
@@ -150,7 +140,7 @@ public class FileParser {
 					return;	
 				}
 			}
-			throw new VarNotExistException(expression); //TODO
+			throw new VarNotExistException(expression);
 		}
 		
 		
@@ -170,7 +160,7 @@ public class FileParser {
 								}
 								
 								if(!var.isInitialized()) {
-									throw new VarNotExistException(expression+" - Uninitialized"); //TODO correct exception
+									throw new VarNotExistException(expression); 
 								}
 								
 								return;
@@ -203,7 +193,7 @@ public class FileParser {
 
 			Matcher m = p.matcher(expression);
 			m.find();
-			String nameOfArr = expression.substring(m.start(), m.end()); // TODO delete this if not needed
+			String nameOfArr = expression.substring(m.start(), m.end());
 
 			ScopeMediator tempScope = med;
 
@@ -218,7 +208,7 @@ public class FileParser {
 							throw new BadTypeException(expression);
 						}
 						if(!var.isInitialized()) {
-							throw new VarNotExistException(expression+" - Uninitialized"); //TODO fix exception
+							throw new VarNotExistException(expression);
 						}
 						checkInnerArrVarPos(expression, med);
 						return;
@@ -243,7 +233,7 @@ public class FileParser {
 //			ScopeMediator tempScope = med;
 //			
 //			if (tempScope.getFatherScope() == null) {
-//				throw new CompileException(); //TODO change Exception
+//				throw new CompileException(); 
 //			}
 //			while (tempScope.getFatherScope().getFatherScope() != null) {
 //				tempScope = tempScope.getFatherScope();
@@ -266,15 +256,18 @@ public class FileParser {
 	 * @param expression-expression inside calling brackets '[expression]'
 	 * 
 	 * @param med- an interface used to refer to the current scope
-	 * @throws CompileException
+	 * @throws BadTypeException 
+	 * @throws VarExistException 
+	 * @throws VarNotExistException 
+	 * @throws BadLineSyntaxException 
 	 */
-	public static void checkInnerArrVarPos(String expression, ScopeMediator med) throws CompileException {
+	public static void checkInnerArrVarPos(String expression, ScopeMediator med) throws BadTypeException, BadLineSyntaxException, VarNotExistException, VarExistException  {
 
 		String innerExp = expression.substring(expression.indexOf("[")+1, expression.lastIndexOf("]"));
 		if (innerExp.matches(RegexConfig.INPUT_INT)) {
 			int intExp = Integer.parseInt(innerExp);
 			if (intExp < 0) {
-				throw new CompileException(); //TODO change exception type
+				throw new BadTypeException(innerExp);
 			}
 		}
 		checkExpression(new IntType(), innerExp, med);
@@ -286,7 +279,7 @@ public class FileParser {
 //		if (expToCheck.matches(RegexConfig.INPUT_INT)) {
 //			int intExp = Integer.parseInt(expToCheck);
 //			if (intExp < 0) {
-//				throw new CompileException(); //TODO change exception type
+//				throw new CompileException(); 
 //			}
 //		}
 	}
@@ -368,12 +361,11 @@ public class FileParser {
 	 * 
 	 * @param type- the type of the wanted expression
 	 * @param expression- a String representing the right side of the '=' sign
+	 * @throws BadTypeException 
 	 * @return- Strings[] with two String, lhs and rhs
-	 * 
-	 * @throws CompileException
 	 */
-	public static String[] getExpressions(Type type, String expression)
-			throws CompileException {
+	public static String[] getExpressions(Type type, String expression) throws BadTypeException
+			 {
 
 		Pattern p = Pattern.compile(RegexConfig.VALID_EXP_ARRAY_CELL);
 		Matcher m = p.matcher(expression);
@@ -383,13 +375,13 @@ public class FileParser {
 			leftExp = expression.substring(m.start(), m.end()).trim();
 		}
 		else {
-			throw new CompileException(); //TODO change exception type
+			throw new BadTypeException("a"); 
 		}
 		if (m.find()) {
 			rightExp = expression.substring(m.start(), m.end()).trim();
 		}
 		else {
-			throw new CompileException(); //TODO change exception type
+			throw new  BadTypeException("a"); 
 		}
 
 		String[] expressions = {leftExp, rightExp};

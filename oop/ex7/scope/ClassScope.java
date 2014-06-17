@@ -2,9 +2,14 @@ package oop.ex7.scope;
 
 import java.util.ArrayList;
 
+import oop.ex7.main.BadLineSyntaxException;
+import oop.ex7.main.CompileException;
 import oop.ex7.main.EndOfFileException;
 import oop.ex7.main.FileParser;
 import oop.ex7.type.BadEndOfLineException;
+import oop.ex7.type.BadTypeException;
+import oop.ex7.type.VarExistException;
+import oop.ex7.type.VarNotExistException;
 
 /**
  * 
@@ -25,9 +30,17 @@ public class ClassScope extends Scope {
 	}
 
 	/**
+	 * @throws BadEndOfLineException 
+	 * @throws EndOfFileException 
+	 * @throws DoubleMethodException 
+	 * @throws VarExistException 
+	 * @throws VarNotExistException 
+	 * @throws BadTypeException 
+	 * @throws BadLineSyntaxException 
+	 * @throws InvalidScopeException 
 	 * 
 	 */
-	public  void compileScope() throws InvalidScopeException, EndOfFileException, BadEndOfLineException,Exception  {
+	public  void compileScope() throws InvalidScopeException, EndOfFileException, BadEndOfLineException, BadReturnException, BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException, DoubleMethodException   {
 
 		ArrayList<Integer> opIndexArray=new ArrayList<Integer>();
 		int lineType;

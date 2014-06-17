@@ -29,9 +29,9 @@ public class ArrayType extends Type {
 	/**
 	 * constructor, receives an inner type that the array will hold
 	 * @param primitiveType - the type the array contains
-	 * @throws CompileException
+	 * @throws BadTypeException 
 	 */
-	public ArrayType(String primitiveType) throws CompileException{
+	public ArrayType(String primitiveType) throws BadTypeException {
 		innerType = Type.createType(primitiveType);
 	}
 	
@@ -43,10 +43,6 @@ public class ArrayType extends Type {
 	 */
 	public boolean isExpressionMatch(String check) {
 		return check.matches(RegexConfig.ARRAY_INIT);
-//			return true;
-//		}
-//		return innerType.isExpressionMatch(check);
-//		return false;
 	}
 
 	/**@Override

@@ -64,7 +64,7 @@ public class MethodScope extends Scope {
 //		
 //	}
 	
-	public boolean compareMethod(String line, ScopeMediator med) throws CompileException {
+	public boolean compareMethod(String line, ScopeMediator med) throws BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException  {
 		
 		String callName = getMethodCallNameFromExp(line);
 		if (!this.getNameOfMethod().equals(callName)) {
@@ -130,7 +130,7 @@ public class MethodScope extends Scope {
 	}
 
 
-	public boolean handleReturn(String returnExpression) throws CompileException{
+	public boolean handleReturn(String returnExpression) throws BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException {
 
 		FileParser.checkExpression(this.returnType,returnExpression,this);
 

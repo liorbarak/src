@@ -1,6 +1,5 @@
 package oop.ex7.type;
 
-import oop.ex7.main.CompileException;
 import oop.ex7.main.RegexConfig;
 
 
@@ -35,6 +34,7 @@ public abstract class  Type {
 
 
 /**
+ * @throws BadTypeException 
  * static method.
  * checks which type an expression matches and return the initialized
  * type
@@ -42,7 +42,7 @@ public abstract class  Type {
  * @return initialized sub type
  * @throws 
  */
-	public static Type createType(String check) throws CompileException{//TODO create specific exception
+	public static Type createType(String check) throws BadTypeException {//TODO create specific exception
 
 
 		if (check.matches(RegexConfig.TYPE_INT)){
@@ -71,7 +71,7 @@ public abstract class  Type {
 			return new ArrayType(check.replaceAll("\\[\\]", ""));
 		}
 
-		throw new CompileException();//throw exception because not a valid type string//TODO make more specific
+		throw new BadTypeException(check);
 
 	}
 
