@@ -1,1 +1,78 @@
 taldovrat
+
+
+
+
+
+
+___________________________files___________________________
+
+
+
+
+
+
+___________________________design___________________________
+
+adding more variable types:
+the way we designed the structure enables to add more variables with relative
+ease. it will require:
+a. adding a class that extends Type (short, for instance).
+b.adding another condition to 'createType', the static method that 
+determines which type to create with a given  input of a variable type.
+c. and creating a new regex in RegexConfig to match the new type.
+
+
+adding if\else block:
+this will require again a few steps:
+a.adding a new class that extends the father of all other scopes-Scope.
+b.adding a regex that accepts this new scope in the RegexConfing library
+c.adding another condition in createScope- our static factory method
+
+compiling multiple files together:
+this will require the following steps:
+a.creating a new father scope-"project" that extends scope
+b.change "classScope" so it extends project
+c.interaction between the different classes will be handled within "project"
+class. meaning the mechanism that will be implemented as part of this class
+or as another mediator class that will expose only certain methods to
+the outside. 
+
+
+main regex types used: 
+	
+	the regexes	served two purposes in our implementation:
+	
+	1- identify legal input. like GENERAL_NAME (checks legal names for
+		methods and variables). this also include regexes that
+		recognize describe legal "if" statements or legal line structure 
+		a certain kind of line, like a method declaration.
+		
+	2- differentiate between inputs that were already labeled as legal.
+		for example checking which type is a certain variable initialized to.
+		these regexes are compared to a relevant part of a line and return
+		what type should be initialized. these are like "int", "int[]",
+		"String","if" and so on.		
+
+
+
+___________________________errors___________________________
+
+there are generally two types of errors in our exercise. 
+an error that causes printing  of 2- which is FilenotfoundExceoption. 
+this only happens if there was an IO exception while opening the file.
+we did not implement this exception because it already exists in java.
+
+an error that causes printing 1- we created a general class called 
+	CompileException. all other exceptions extend it.
+	this is used so we can build a hirarchy of exceptions so they
+	are easier to use.
+	when a CompileException is caught it results in printing out 1,
+	this saves us a lot of work, there is no need to check specifically 
+	which exception is thrown. so 1 is printed and the name of the 
+	exception and the string saved in it in the "throw" statement
+	give us (and the user) all the information he needs to be able to
+	find the errors in his code and debug them.
+
+ 
+

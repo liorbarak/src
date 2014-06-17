@@ -33,16 +33,32 @@ public abstract class Scope implements ScopeMediator{
 	//The scope in which this scope is nested in the code. null if the scope
 	//is the class scope.
 	Scope fatherScope;
-	//
+	//the lines of code that the file has.
 	ArrayList<String> fileLines;
+	//start index of line that is relevant to this scope. 
 	int startIndex;
+	//end index of line that is relevant to this scope.
 	int endIndex;
+	/*
+	 * holds all nested scopes of this scope. Holds only the first level of
+	 * nested scopes. for example, if this scope is a method, that has an if
+	 * scope inside it, and the if scope has a while scope inside of it,
+	 * scope will have the while scope as its inner scope.
+	 * the method scope will have the if scope as its inner scope and the if 
+	 */
 	ArrayList<Scope> innerScopes;
+	/*
+	 * holds all nested variables of this scope. Holds only the first level of
+	 * nested Variables. for example, if this scope is a method, that has a 
+	 * Variable "int a" inside it, and inside the method there is an if scope 
+	 * that has an "int b" inside of it, then the int a is the innerVariables
+	 * of the method and the "int b" is in the if scope innerVariables field.  
+	 * Important - Input Variables for Method scopes are put inside of this 
+	 * ArrayList! 
+	 */
 	ArrayList<Variable> innerVariables;
 
-
-
-	//no constructor at the moment
+	//Contructor for 
 	Scope (ArrayList<String> lines,int begin,int end, Scope father){
 		fatherScope=father;
 		fileLines=lines;
