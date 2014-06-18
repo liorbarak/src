@@ -229,7 +229,8 @@ public abstract class Scope implements ScopeMediator{
 	 * @throws VarNotExistException
 	 * @throws VarExistException   
 	 */
-	private void checkMethod(String line) throws VarNotExistException, BadLineSyntaxException, BadTypeException, VarExistException  {
+	private void checkMethod(String line) throws VarNotExistException, 
+			BadLineSyntaxException, BadTypeException, VarExistException  {
 		
 		//tempScope to get to the class scope.
 		Scope tempScope = this; 
@@ -265,7 +266,8 @@ public abstract class Scope implements ScopeMediator{
 				//check if the variable called matches the type of the input.
 				for (int i = 0; i < tempMethod.inputVars.size(); i++) {
 					//throws if not matches.
-					FileParser.checkExpression(tempMethod.inputVars.get(i).getType(), varsCall[i], this);
+					FileParser.checkExpression
+					(tempMethod.inputVars.get(i).getType(), varsCall[i], this);
 				}
 				
 				return;
@@ -294,7 +296,8 @@ public abstract class Scope implements ScopeMediator{
 			MethodScope method = (MethodScope) this;
 			
 			//if the return type is void:
-			if (method.getReturnType().getRegex().equals(RegexConfig.INPUT_VOID)) {
+			if (method.getReturnType().getRegex().
+											equals(RegexConfig.INPUT_VOID)) {
 				
 				if (returnExpression.matches(RegexConfig.INPUT_VOID)){
 					return true;
@@ -303,7 +306,9 @@ public abstract class Scope implements ScopeMediator{
 			}
 
 			//if not void, check if matches to other types possible
-			FileParser.checkExpression(method.getReturnType(), returnExpression, method);
+			FileParser.checkExpression(method.getReturnType(), 
+												returnExpression, method);
+			
 			return true;
 		}
 		//recursive until reaches method.
@@ -354,7 +359,9 @@ public abstract class Scope implements ScopeMediator{
 			if (!fullName.equals(nameOfVar)) {
 				//compare the inner variable of the array.
 				FileParser.checkInnerArrVarPos(fullName, this);
-				FileParser.checkExpression(type.getInnerType(), inputValue, this);
+				FileParser.checkExpression(type.getInnerType(), inputValue, 
+																		this);
+				
 				return;
 			}
 			
@@ -388,7 +395,8 @@ public abstract class Scope implements ScopeMediator{
 	 * exists and what type of variable it will be.
 	 * @param line - the declaration line from the file 
 	 */
-	private void declarationLine(String line) throws VarExistException, BadTypeException {
+	private void declarationLine(String line) throws VarExistException, 
+															BadTypeException {
 
 		
 		Variable varTemp;
@@ -406,12 +414,14 @@ public abstract class Scope implements ScopeMediator{
 		m.find(lastEnd);
 		String nameOfVar = line.substring(m.start(), m.end()).trim();
 
-		//if the variable exists, put it into varTemp, else, put null into varTemp.
+		//if the variable exists, put it into varTemp, else, put null into 
+		//varTemp.
 		varTemp = this.varExist(nameOfVar);
 		//if the variable doesn't exist:
 		if (varTemp == null) {
 			//if the variable is an array:
-			if (line.matches(RegexConfig.ARRAY_DECLARE) || line.matches(RegexConfig.ARRAY_DECLARE_WITH_SEMICOLON)) {
+			if (line.matches(RegexConfig.ARRAY_DECLARE) || 
+					line.matches(RegexConfig.ARRAY_DECLARE_WITH_SEMICOLON)) {
 				this.innerVariables.add(new Variable(fullType, nameOfVar));
 			}
 			else {
@@ -427,7 +437,8 @@ public abstract class Scope implements ScopeMediator{
 	 * like assingment and daclare, but for both actions.
 	 * @param line - the declaration and assign line from the file 
 	 */
-	private void bothLine(String line) throws VarExistException, BadTypeException, BadLineSyntaxException, VarNotExistException  {
+	private void bothLine(String line) throws VarExistException, 
+			BadTypeException, BadLineSyntaxException, VarNotExistException  {
 
 		String linetemp = line.trim();
 		String[] stringsInLine = getBothStr(linetemp);
@@ -475,7 +486,8 @@ public abstract class Scope implements ScopeMediator{
 	}
 
 	/*
-	 * This method divides the both line to declaration and assignment lines. 
+	 * This method divides the both line to declaration and assignment lines.
+	 * uses the declaration and assign methods. 
 	 * @param line - the line of code.
 	 */
 	private static String[] getBothStr(String line) {
@@ -492,8 +504,15 @@ public abstract class Scope implements ScopeMediator{
 
 	}
 
-
-	public Variable varExist(String nameOfVar) {
+	/**
+	 * checks if the variable, that is represented by its name - a string input
+	 * value, already exists in the current scope.
+	 * @param nameOfVar - the variable name which we want to check if exists 
+	 * in the current scope.
+	 * @return the variable we searched for if found it, null if variable does 
+	 * not exist.
+	 */
+	 protected Variable varExist(String nameOfVar) {
 
 		Scope tempScope = this; 
 
@@ -505,7 +524,14 @@ public abstract class Scope implements ScopeMediator{
 		return null;
 	}
 
-	private Variable varExistInAll(String nameOfVar) {
+	 /**
+	  * like varExist method, but checks in the current scope and all father 
+	  * scopes of the current method. uses varExist method.
+	  * @param nameOfVar - the variable we want to see if exists or not.
+	  * @return the variable we searched for if found it, null if variable does 
+	 * not exist.
+	  */
+	protected Variable varExistInAll(String nameOfVar) {
 
 		Scope tempScope = this;
 		Variable tempVar;
@@ -520,48 +546,72 @@ public abstract class Scope implements ScopeMediator{
 	}
 
 
-	///////////////////////////////////////////////////////////////////////////////////////////scopes
-
-	public void lineAnalizerSc (ArrayList<String> lines,int start, int finish) throws InvalidScopeException, BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException, DoubleMethodException   {
+	
+	/**
+	 * Analyzes the line if it is a scope line that is scope related. this 
+	 * method checks exactly what type of line is it and checks whether or not
+	 * the line is legal according to the text. if legal, calls other methods
+	 * for creating scopes and handles their variables and so on.
+	 * @param lines - file lines
+	 * @param start - index of the first line of the scope.
+	 * @param finish - index of the last line of the scope.
+	 * @throws InvalidScopeException
+	 * @throws BadLineSyntaxException
+	 * @throws BadTypeException
+	 * @throws VarNotExistException
+	 * @throws VarExistException
+	 * @throws DoubleMethodException
+	 */
+	protected void lineAnalizerSc (ArrayList<String> lines,int start, 
+			int finish) throws InvalidScopeException, BadLineSyntaxException, 
+			BadTypeException, VarNotExistException, VarExistException, 
+													DoubleMethodException {
 
 		String firstline=lines.get(start);
 
 
-		//method
+		//method scope
 		if (firstline.matches(RegexConfig.VALID_METHOD_DECLARE)){
 
 			if (fatherScope!=null){
 				throw new InvalidScopeException(start);
 			}
-
+			//creates the method
 			methodInput(lines, start, finish);
-			return;
 		}
-		//while
+		
+		//while scope
 		else if (firstline.matches(RegexConfig.VALID_WHILE_CALL)){
 			if (fatherScope==null){
 				throw new InvalidScopeException(start);
 			}
-
-			FileParser.checkExpression(new BooleanType(), getInsideBrackets(firstline), this);
+			//checks if the argument inside the brackets is a boolean.
+			FileParser.checkExpression(new BooleanType(), 
+										getInsideBrackets(firstline), this);
 			innerScopes.add( new WhileScope(lines,start,finish,this));
-			return;
 		}
-		//if
+		//if scope
 		else if (firstline.matches(RegexConfig.VALID_IF_CALL)){
 			if (fatherScope==null){
 				throw new InvalidScopeException(start);
 			}
-
-			FileParser.checkExpression(new BooleanType(), getInsideBrackets(firstline), this);
+			
+			//checks if the argument inside the brackets is a boolean.
+			FileParser.checkExpression(new BooleanType(), 
+										getInsideBrackets(firstline), this);
 			innerScopes.add( new IfScope(lines,start,finish,this));
-			return;
 		}
-
-		throw new BadLineSyntaxException(firstline);
-
+		//if no matching type line found:
+		else {
+			throw new BadLineSyntaxException(firstline);	
+		}
 	}
-
+	
+	/*
+	 * This method allows you to get a string representation of an expression
+	 * that originally was inside of brackets in some expression.
+	 * @param line - the line with the brackets expression
+	 */
 	private static String getInsideBrackets(String line){
 		int first = line.indexOf("(")+1;
 		int second = line.lastIndexOf(")");
@@ -571,19 +621,23 @@ public abstract class Scope implements ScopeMediator{
 
 
 	/*
-	 * recives relevant lines for method, takes it apart, and
+	 * receives relevant lines for method, takes it apart, and
 	 * creates a new methodscope while checking all its variables
-	 * 
 	 */
-	private void methodInput (ArrayList<String> lines,int start, int finish) throws DoubleMethodException, BadTypeException, VarExistException  {
+	private void methodInput (ArrayList<String> lines,int start, int finish) 
+			throws DoubleMethodException, BadTypeException, VarExistException {
 
+		//get the first line of the scope - the method declaration line
 		String tempLine=lines.get(start).trim();
 		ArrayList<Variable> inputVars=new ArrayList<Variable>();
-
+		
+		//get return type
 		String returnType=tempLine.substring(0, tempLine.indexOf(" "));
-		String methodName=tempLine.substring(tempLine.indexOf(" "), tempLine.indexOf("(")).trim();
-		//String[] insideBrackets=getInsideBrackets(tempLine).split(",");
-
+		//get method name
+		String methodName=tempLine.substring(tempLine.indexOf(" "), 
+												tempLine.indexOf("(")).trim();
+		
+		//check if this name is another already existing methods name
 		for (Scope i:innerScopes){
 			MethodScope method=(MethodScope) i;
 
@@ -592,11 +646,14 @@ public abstract class Scope implements ScopeMediator{
 
 			}
 		}
+		//get the expression inside the brackets in the declaration
 		String insideBracketsExp=getInsideBrackets(tempLine);
+		//if inside brackets not blank line
 		if (!insideBracketsExp.matches(RegexConfig.BLANK_LINE)) {
 			String[] insideBrackets=getInsideBrackets(tempLine).split(",");
 			String type;
 			String name;
+			//create and add all the input variables to the method.
 			for (String i:insideBrackets){
 
 				Pattern p = Pattern.compile(RegexConfig.VALID_TYPES_METHOD);
@@ -605,7 +662,6 @@ public abstract class Scope implements ScopeMediator{
 				type = i.substring(m.start(), m.end());
 				name = i.substring(m.end());
 
-				//				String[] TypeAndName = i.trim().split(" ");
 				Variable tempVar = new Variable(type, name);
 				tempVar.setInitialized(true);
 				inputVars.add(tempVar);

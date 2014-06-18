@@ -15,7 +15,9 @@ public class WhileScope extends Scope {
 	 * @param finish- last relevant line
 	 * @param father- the scope encapsulating this scope
 	 */
-	public WhileScope(ArrayList<String> lines,int begin,int finish, Scope father){
+	public WhileScope(ArrayList<String> lines,int begin,int finish, 
+																Scope father){
+		
 		super(lines,begin,finish, father);
 		
 	}

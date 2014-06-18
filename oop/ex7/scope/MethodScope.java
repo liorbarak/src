@@ -17,26 +17,31 @@ public class MethodScope extends Scope {
 	private Type returnType;
 	private String nameOfMethod;
 	ArrayList<Variable> inputVars; 
-	//TODO add method's input variables - their type by their order!
-
-
-
+	
+	/**
+	 * Getter input variables
+	 * @return this method's input variables.
+	 */
 	public ArrayList<Variable> getInputVars() {
 		return inputVars;
 	}
-
-
-	//innerScopes.add(new MethodScope (lines,start,finish,Type.createType(returnType),methodName,inputVars, this)   );
+	/**
+	 * constructor
+	 * @param lines - file lines
+	 * @param start - first line of the scope
+	 * @param finish - last line of the scope
+	 * @param returnType - the return type of this method.
+	 * @param methodName - this method's name.
+	 * @param inputVars - input variables of this method
+	 * @param father - class that holds this method.
+	 * @throws VarExistException
+	 */
 	public MethodScope(ArrayList<String> lines, int start,int finish,
 			Type returnType, String methodName, ArrayList<Variable> inputVars,
 			Scope father) throws VarExistException{
 
 		super(lines,start,finish, father);
-		this.inputVars = new ArrayList<Variable>(); 
-		//stringRepresentation=Scopetypes.METHOD.name();
-
-		//		validScopes.add(Scopetypes.WHILE);
-		//		validScopes.add(Scopetypes.IF);
+		this.inputVars = new ArrayList<Variable>(); 		
 		this.returnType=returnType;
 		this.nameOfMethod=methodName;
 
@@ -55,96 +60,94 @@ public class MethodScope extends Scope {
 
 	}
 
-//	public MethodScope methodExist(String methodName, String[] vars, ScopeMediator med) {
-//		
-//		ScopeMediator tempScope = med;
-//		while (tempScope.getFatherScope() != null) {
-//			tempScope = tempScope.getFatherScope();
-//		}
-//		
-//		
-//	}
-	
-	public boolean compareMethod(String line, ScopeMediator med) throws BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException  {
+	/**
+	 * This method checks if a method equals to another, represented by a line 
+	 * of code. This method breaks down the line and check if every element in
+	 * the method represented in the line of code matches the "this" method.
+	 * @param line - the line of code.
+	 * @param med - a scopeMediator obj for accessing relevant info.
+	 * @return true if same method, false otherwise.
+	 * @throws BadLineSyntaxException
+	 * @throws BadTypeException
+	 * @throws VarNotExistException
+	 * @throws VarExistException
+	 */
+	public boolean compareMethod(String line, ScopeMediator med) 
+					throws BadLineSyntaxException, BadTypeException, 
+									VarNotExistException, VarExistException  {
 		
+		//extract call name from the line of code.
 		String callName = getMethodCallNameFromExp(line);
+		//if method name doesn't equal to the call name:
 		if (!this.getNameOfMethod().equals(callName)) {
 			return false;
 		}
 
 		String[] varsCall = getMethodVarsFromCallExp(line);
-
+		//go over all the input variables of the method and compare them to the
+		//variables in the line of code
 		for (int i = 0; i < this.innerVariables.size(); i++) {
 
-			FileParser.checkExpression(this.innerVariables.get(i).getType(), varsCall[i], med);
+			FileParser.checkExpression(this.innerVariables.get(i).getType(), 
+														varsCall[i], med);
 
 		}
 		return true;
 	}
-
-
-//
-//	@Override
-//	public ArrayList<Variable> getVariables() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//
-//
-//	@Override
-//	public ArrayList<Scope> getScopes() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//
-//
-//	@Override
-//	public Scope getFatherScope() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-
-
+	/**
+	 * Getter - return type of method
+	 * @return  the return type of the method
+	 */
 	public Type getReturnType() {
 		return returnType;
 	}
 
-
-
-	public void setReturnType(Type returnType) {
-		this.returnType = returnType;
-	}
-
-
-
+	/**
+	 * Getter - name of method
+	 * @return - returns the name of the method
+	 */
 	public String getNameOfMethod() {
 		return nameOfMethod;
 	}
 
-
-
-	public void setNameOfMethod(String nameOfMethod) {
-		this.nameOfMethod = nameOfMethod;
-	}
-
-
-	public boolean handleReturn(String returnExpression) throws BadLineSyntaxException, BadTypeException, VarNotExistException, VarExistException {
+	/*
+	 * This method checks if the return of the method matches to the return
+	 * type input string
+	 * @param return expression to be checked.
+	 * @return true if matches, false otherwise.
+	 */
+	private boolean handleReturn(String returnExpression) 
+		throws BadLineSyntaxException, BadTypeException, VarNotExistException, 
+														VarExistException {
 
 		FileParser.checkExpression(this.returnType,returnExpression,this);
 
 		return true;
 	}
 
-	public static String getMethodCallNameFromExp(String call) {
+	/**
+	 * This method returns the call name of a method from a given line of code
+	 * that represent a method call.
+	 * @param call - the line of code of the method call.
+	 * @return The call name of the method.
+	 */
+	protected static String getMethodCallNameFromExp(String call) {
 		return call.substring(0, call.indexOf("(")).trim();
 	}
 
-	public static String[] getMethodVarsFromCallExp(String call) {
-		String variablesCall = call.substring(call.indexOf("(")+1,call.indexOf(")")).trim();
-		//Need to check valid expression structure
+	/**
+	 * This method returns an array of strings representing the input variables
+	 * call in a method call line.
+	 * @param call - the method call
+	 * @return an array of strings of the call of the input variables of the
+	 * method
+	 */
+	protected static String[] getMethodVarsFromCallExp(String call) {
+		//get the expression inside the brackets in the call
+		String variablesCall = call.substring(call.indexOf("(")+1, 
+													call.indexOf(")")).trim();
+		
+		//organize each variable from the call in an array.
 		String[] stringVars=variablesCall.split(",");
 		String[] expVars = new String[stringVars.length];
 

@@ -17,13 +17,13 @@ public class Ex7Tester {
 	 */
 	private static final String TEST_INPUT_DIR = 
 			//"/cs/course/2013/oop/scripts/ex7/tests/"; 
-			//"/Users/taldovrat/git/ex7/tests/";
-			"C://Users//Lior//Desktop//ex7stuff//tests//";
+			"/Users/taldovrat/git/ex7/tests/";
+//			"C://Users//Lior//Desktop//ex7stuff//tests//";
 
 //	private static final String TEST_SOL_DIR = "sjavac_tests.txt";
 	//private static final String TEST_SOL_DIR = "/cs/course/2013/oop/scripts/ex7/sjavac_tests.txt";
-//	private static final String TEST_SOL_DIR = "/Users/taldovrat/git/ex7/sjavac_tests.txt";
-	private static final String TEST_SOL_DIR = "C://Users//Lior//Desktop//ex7stuff//sjavac_tests.txt";
+	private static final String TEST_SOL_DIR = "/Users/taldovrat/git/ex7/sjavac_tests.txt";
+//	private static final String TEST_SOL_DIR = "C://Users//Lior//Desktop//ex7stuff//sjavac_tests.txt";
 	
 	private String retVal;
 	private String numOfTest;
